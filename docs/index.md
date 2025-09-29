@@ -1,6 +1,6 @@
 ---
 layout: page
-title: AddressBook Level-3
+title: EduConnect
 ---
 
 [![CI Status](https://github.com/AY2526S1-CS2103-F11-1/tp/workflows/Java%20CI/badge.svg)](https://github.com/AY2526S1-CS2103-F11-1/tp/actions)
