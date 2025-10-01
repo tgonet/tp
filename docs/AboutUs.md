@@ -38,15 +38,15 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 * Role: Developer
 * Responsibilities: Data
 
-### Jean Doe
+### Loh Xian Jie
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/lohxianjie.png" width="200px">
 
-[[github](http://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
+[[github](https://github.com/XJie97)]
+[[portfolio](team/lohxianjie.md)]
 
 * Role: Developer
-* Responsibilities: Dev Ops + Threading
+* Responsibilities: AY2526S1-CS2103-F11 team member
 
 ### James Doe
 
