@@ -57,3 +57,13 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 * Role: Developer
 * Responsibilities: Integration
+
+### Kwan Li Hao
+
+<img src="images/partillay791.png" width="200px">
+
+[[github](http://github.com/Partillay791)]
+[[portfolio](team/johndoe.md)]
+
+* Role: Developer
+* Responsibilities: Code quality
