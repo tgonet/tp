@@ -9,15 +9,15 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 ## Project team
 
-### John Doe
+### Kok Yong Hsien
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/yhkok.png" width="200px">
 
 [[homepage](http://www.comp.nus.edu.sg/~damithch)]
-[[github](https://github.com/johndoe)]
+[[github](https://github.com/YHKok)]
 [[portfolio](team/johndoe.md)]
 
-* Role: Project Advisor
+* Role: Deliverables and deadlines
 
 ### Jane Doe
 
@@ -29,15 +29,6 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 * Role: Team Lead
 * Responsibilities: UI
 
-### Johnny Doe
-
-<img src="images/johndoe.png" width="200px">
-
-[[github](http://github.com/johndoe)] [[portfolio](team/johndoe.md)]
-
-* Role: Developer
-* Responsibilities: Data
-
 ### Loh Xian Jie
 
 <img src="images/lohxianjie.png" width="200px">
@@ -46,14 +37,23 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 [[portfolio](team/lohxianjie.md)]
 
 * Role: Developer
+* Responsibilities: Data
+
+### Tan Ming Zhe
+
+<img src="images/tgonet.png" width="200px">
+
+[[github](http://github.com/tgonet)]
+
+* Role: Developer
 * Responsibilities: AY2526S1-CS2103-F11 team member
 
-### James Doe
+### Gareth Too Yu Sheng
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/gareth2yusheng.png" width="200px">
 
-[[github](http://github.com/johndoe)]
+[[github](https://github.com/Gareth2YuSheng)]
 [[portfolio](team/johndoe.md)]
 
 * Role: Developer
-* Responsibilities: UI
+* Responsibilities: Integration
