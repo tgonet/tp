@@ -3,7 +3,7 @@ layout: page
 title: Developer Guide
 ---
 * Table of Contents
-{:toc}
+  {:toc}
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -229,13 +229,13 @@ The following activity diagram summarizes what happens when a user executes a ne
 **Aspect: How undo & redo executes:**
 
 * **Alternative 1 (current choice):** Saves the entire address book.
-  * Pros: Easy to implement.
-  * Cons: May have performance issues in terms of memory usage.
+    * Pros: Easy to implement.
+    * Cons: May have performance issues in terms of memory usage.
 
 * **Alternative 2:** Individual command knows how to undo/redo by
   itself.
-  * Pros: Will use less memory (e.g. for `delete`, just save the person being deleted).
-  * Cons: We must ensure that the implementation of each individual command are correct.
+    * Pros: Will use less memory (e.g. for `delete`, just save the person being deleted).
+    * Cons: We must ensure that the implementation of each individual command are correct.
 
 _{more aspects and alternatives to be added}_
 
@@ -295,34 +295,91 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `*`      | tutor | flag contacts           | reach them easily
 *{More to be added}*
 
-### Use cases
+## Use cases
 
-(For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `user`, unless specified otherwise)
+(For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `user`, unless specified otherwise.)
 
-**Use case: Delete a person**
+### UC01 — Add a student contact
+**Goal**: Create a new student entry with name, address, and phone.  
+**Precondition**: Application is running; storage is writable.  
+**Main Success Scenario (MSS)**
+1. User enters `add n/NAME a/ADDRESS p/PHONE`.
+2. System validates fields and creates the contact.
+3. System confirms creation and displays the new contact.  
+   Use case ends.  
+   **Extensions**
+* 2a. Validation fails (e.g., invalid name/phone, missing field).
+    * 2a1. System shows error and usage hint. Resume at step 1.
+* 2b. Duplicate contact detected by exact same name and phone.
+    * 2b1. System warns about duplicate and aborts creation. Use case ends.
 
+### UC02 — List all contacts
+**Goal**: Show every stored contact without filtering or sorting.  
+**Precondition**: Application is running.  
 **MSS**
+1. User enters `list`.
+2. System displays all contacts in index order.  
+   Use case ends.  
+   **Extensions**
+* 2a. Address book is empty.
+    * 2a1. System displays “no contacts” placeholder. Use case ends.
 
-1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
+### UC03 — Find contacts by name
+**Goal**: Locate contacts by case-insensitive name matching.  
+**Precondition**: At least one contact exists.  
+**MSS**
+1. User enters `find KEYWORD…`.
+2. System filters contacts whose names contain all provided keywords.
+3. System displays the filtered list with new indices.  
+   Use case ends.  
+   **Extensions**
+* 2a. No matches found.
+    * 2a1. System shows empty result with guidance to broaden search.
 
-    Use case ends.
+### UC04 — Delete a contact by index
+**Goal**: Remove one contact referenced by the current visible index.  
+**Precondition**: At least one contact is visible (e.g., after `list` or `find`).  
+**MSS**
+1. User enters `delete I` where `I` is a 1-based index in the current list.
+2. System deletes the referenced contact.
+3. System confirms deletion and updates the visible list.  
+   Use case ends.  
+   **Extensions**
+* 1a. `I` is not a valid visible index (≤0 or > list size, or non-integer).
+    * 1a1. System shows error and keeps list unchanged. Use case ends.
+* 2a. Underlying data changed between list and delete (rare race).
+    * 2a1. System rejects operation and asks user to refresh (`list`). Use case ends.
 
-**Extensions**
+### UC05 — [Proposed] Delete multiple contacts by indices
+**Goal**: Remove several contacts in a single command.  
+**Precondition**: Multiple contacts are visible.  
+**MSS**
+1. User enters `delete I1, I2, …, Ik` with distinct, valid visible indices.
+2. System validates all indices against the current list snapshot.
+3. System deletes all referenced contacts atomically.
+4. System confirms deletion and updates the visible list.  
+   Use case ends.  
+   **Extensions**
+* 2a. Any index is invalid or duplicated.
+    * 2a1. System aborts the entire operation, reporting the offending indices. Use case ends.
+* 3a. Partial failure due to I/O error.
+    * 3a1. System rolls back and reports failure. Use case ends.
 
-* 2a. The list is empty.
+### UC06 — View help
+**Goal**: Display command summary and usage.  
+**Precondition**: Application is running.  
+**MSS**
+1. User enters `help`.
+2. System opens help window/panel with command formats and examples.  
+   Use case ends.
 
-  Use case ends.
-
-* 3a. The given index is invalid.
-
-    * 3a1. AddressBook shows an error message.
-
-      Use case resumes at step 2.
-
-*{More to be added}*
+### UC07 — Exit the application
+**Goal**: Close the application gracefully.  
+**Precondition**: Application is running.  
+**MSS**
+1. User enters `exit` (or clicks the window close button).
+2. System persists preferences, releases resources, and terminates.  
+   Use case ends.
 
 ### Non-Functional Requirements
 #### Portability
@@ -332,13 +389,13 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 3. A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
 #### Reliability & Availability
 4. The application should not crash or lose data under normal usage conditions (adding, viewing, deleting contacts).
-5. The application should be able to recover gracefully from invalid inputs without terminating unexpectedly. 
+5. The application should be able to recover gracefully from invalid inputs without terminating unexpectedly.
 #### Usability
 6. Error messages should be clear, concise, and actionable, enabling the user to correct mistakes quickly.
 7. Command feedback (success/error outputs) must be displayed in under 0.5 seconds to maintain responsiveness.
 8. The system should preserve the user’s original casing (e.g., “Alice Tan” not “alice tan”) to avoid frustration.
 #### Maintainability & Extensibility
-9. The system should be designed so that new features (e.g., search, filter, update contact) can be integrated with minimal modification to existing code. 
+9. The system should be designed so that new features (e.g., search, filter, update contact) can be integrated with minimal modification to existing code.
 10. All source code should be documented with clear method/class descriptions to support future maintenance.
 
 *{More to be added}*
@@ -363,15 +420,15 @@ testers are expected to do more *exploratory* testing.
 
 1. Initial launch
 
-   1. Download the jar file and copy into an empty folder
+    1. Download the jar file and copy into an empty folder
 
-   1. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+    1. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
 
 1. Saving window preferences
 
-   1. Resize the window to an optimum size. Move the window to a different location. Close the window.
+    1. Resize the window to an optimum size. Move the window to a different location. Close the window.
 
-   1. Re-launch the app by double-clicking the jar file.<br>
+    1. Re-launch the app by double-clicking the jar file.<br>
        Expected: The most recent window size and location is retained.
 
 1. _{ more test cases …​ }_
@@ -380,16 +437,16 @@ testers are expected to do more *exploratory* testing.
 
 1. Deleting a person while all persons are being shown
 
-   1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
+    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
-   1. Test case: `delete 1`<br>
-      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+    1. Test case: `delete 1`<br>
+       Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
 
-   1. Test case: `delete 0`<br>
-      Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
+    1. Test case: `delete 0`<br>
+       Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
 
-   1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
-      Expected: Similar to previous.
+    1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
+       Expected: Similar to previous.
 
 1. _{ more test cases …​ }_
 
@@ -397,6 +454,6 @@ testers are expected to do more *exploratory* testing.
 
 1. Dealing with missing/corrupted data files
 
-   1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
+    1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
 
 1. _{ more test cases …​ }_
