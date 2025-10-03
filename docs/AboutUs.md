@@ -31,7 +31,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 ### Loh Xian Jie
 
-<img src="images/lohxianjie.png" width="200px">
+<img src="images/xjie97.png" width="200px">
 
 [[github](https://github.com/XJie97)]
 [[portfolio](team/lohxianjie.md)]
