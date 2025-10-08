@@ -24,15 +24,15 @@ public class TypicalPersons {
     public static final Person ALICE = new PersonBuilder().withName("Alice Pauline")
             .withAddress("123, Jurong West Ave 6, #08-111")
             .withPhone("94351253")
-            .withTags("friends").build();
+            .withTags("student").build();
     public static final Person BENSON = new PersonBuilder().withName("Benson Meier")
             .withAddress("311, Clementi Ave 2, #02-25")
             .withPhone("98765432")
-            .withTags("owesMoney", "friends").build();
+            .withTags("student").build();
     public static final Person CARL = new PersonBuilder().withName("Carl Kurz").withPhone("95352563")
             .withAddress("wall street, Singapore 678901").build();
     public static final Person DANIEL = new PersonBuilder().withName("Daniel Meier").withPhone("87652533")
-            .withAddress("10th street, Singapore 654321").withTags("friends").build();
+            .withAddress("10th street, Singapore 654321").withTags("student").build();
     public static final Person ELLE = new PersonBuilder().withName("Elle Meyer").withPhone("94822245")
             .withAddress("michegan ave, City Hall, Singapore").build();
     public static final Person FIONA = new PersonBuilder().withName("Fiona Kunz").withPhone("94824276")
