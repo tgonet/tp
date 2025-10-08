@@ -5,13 +5,14 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 
 /**
  * Represents a Person's address in the address book.
- * Guarantees: immutable; is valid as declared in {@link #isValidAddress(String)}
+ * Guarantees: immutable; is valid as declared in
+ * {@link #isValidAddress(String)}
  */
 public class Address {
 
-    public static final String MESSAGE_CONSTRAINTS =
-            "Addresses should be between 20 - 100 characters long and can take any values except for special characters"
-                    + ", and it should not be blank";
+    public static final String MESSAGE_CONSTRAINTS = "Addresses should be between 20 - 100 characters long and can"
+            + "take any values except for special characters"
+            + ", and it should not be blank";
 
     /*
      * The first character of the address must not be a whitespace,
