@@ -27,19 +27,24 @@ public class AddressTest {
         // invalid addresses
         assertFalse(Address.isValidAddress("")); // empty string
         assertFalse(Address.isValidAddress(" ")); // spaces only
+        assertFalse(Address.isValidAddress("-")); // one character
+        assertFalse(Address.isValidAddress("Blk 4, Den, #01-3")); //too short
+        assertFalse(Address.isValidAddress("Leng Inc; 1234 Market St; "
+                + "San Francisco CA 2349879; USA")); // invalid special characters
+        assertFalse(Address.isValidAddress("Leng Inc, 123131424456789 Market Street, San Francisco CA 2346, "
+                + "UNITED STATES OF AMERICA")); // long address
 
         // valid addresses
-        assertTrue(Address.isValidAddress("Blk 456, Den Road, #01-355"));
-        assertTrue(Address.isValidAddress("-")); // one character
-        assertTrue(Address.isValidAddress("Leng Inc; 1234 Market St; San Francisco CA 2349879; USA")); // long address
+        assertTrue(Address.isValidAddress("Blk 456, Denver Road, #01-355"));
+        assertTrue(Address.isValidAddress("Leng Inc, 1234 Market St., Simei CA 2349879, SG")); // long address
     }
 
     @Test
     public void equals() {
-        Address address = new Address("Valid Address");
+        Address address = new Address("Leng Inc, 1234 Market St., Simei CA 2349879, SG");
 
         // same values -> returns true
-        assertTrue(address.equals(new Address("Valid Address")));
+        assertTrue(address.equals(new Address("Leng Inc, 1234 Market St., Simei CA 2349879, SG")));
 
         // same object -> returns true
         assertTrue(address.equals(address));
@@ -51,6 +56,6 @@ public class AddressTest {
         assertFalse(address.equals(5.0f));
 
         // different values -> returns false
-        assertFalse(address.equals(new Address("Other Valid Address")));
+        assertFalse(address.equals(new Address("Blk 456, Denver Road, #01-355")));
     }
 }
