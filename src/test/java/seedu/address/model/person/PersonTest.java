@@ -86,6 +86,13 @@ public class PersonTest {
     }
 
     @Test
+    public void testEqualsAndHashCodeConsistency() {
+        Person aliceCopy = new PersonBuilder(ALICE).build();
+        assertTrue(ALICE.equals(aliceCopy));
+        assertEquals(ALICE.hashCode(), aliceCopy.hashCode());
+    }
+
+    @Test
     public void toStringMethod() {
         String expected = Person.class.getCanonicalName() + "{name=" + ALICE.getName() + ", phone=" + ALICE.getPhone()
                 + ", address=" + ALICE.getAddress() + ", tags=" + ALICE.getTags() + "}";
