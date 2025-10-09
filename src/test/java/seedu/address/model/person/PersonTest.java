@@ -11,6 +11,8 @@ import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.BOB;
 
+import java.beans.Transient;
+
 import org.junit.jupiter.api.Test;
 
 import seedu.address.testutil.PersonBuilder;
@@ -83,6 +85,13 @@ public class PersonTest {
         // different tags -> returns false
         editedAlice = new PersonBuilder(ALICE).withTags(VALID_TAG_PARENT).build();
         assertFalse(ALICE.equals(editedAlice));
+    }
+
+    @Test
+    public void testEqualsAndHashCodeConsistency() {
+        Person aliceCopy = new PersonBuilder(ALICE).build();
+        assertTrue(ALICE.equals(aliceCopy));
+        assertEquals(ALICE.hashCode(), aliceCopy.hashCode());
     }
 
     @Test
