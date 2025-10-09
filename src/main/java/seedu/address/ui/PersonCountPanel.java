@@ -10,14 +10,20 @@ import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.person.Person;
 
+/**
+ * Panel that displays number of contacts in the address book.
+ */
 public class PersonCountPanel extends UiPart<Region> {
     private static final String FXML = "PersonCountPanel.fxml";
-    private static final String PERSON_COUNT_MESSAGE =  "You currently have %d contact(s).";
+    private static final String PERSON_COUNT_MESSAGE = "You currently have %d contact(s).";
     private final Logger logger = LogsCenter.getLogger(getClass());
 
     @FXML
     private Label personCountText;
 
+    /**
+     * Creates a {@code PersonCountPanel} with the given {@code ObservableList}.
+     */
     public PersonCountPanel(ObservableList<Person> personList) {
         super(FXML);
         personCountText.textProperty().bind(
