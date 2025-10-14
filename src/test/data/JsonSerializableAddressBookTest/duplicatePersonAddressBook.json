@@ -4,7 +4,7 @@
     "phone": "94351253",
     "address": "123, Jurong West Ave 6, #08-111",
     "role": "student",
-    "tags": [ { "tagName": "student" } ]
+    "tags": [ "student" ]
   }, {
     "name": "Alice Pauline",
     "phone": "94351253",
