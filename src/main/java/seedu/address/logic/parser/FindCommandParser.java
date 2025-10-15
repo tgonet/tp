@@ -37,7 +37,7 @@ public class FindCommandParser implements Parser<FindCommand> {
 
         List<String> name = argMultimap.getValue(PREFIX_NAME)
                 .map(value -> Arrays.asList(value.split(",")))
-                .orElse(Collections.emptyList()); 
+                .orElse(Collections.emptyList());
 
         List<String> role = argMultimap.getValue(PREFIX_ROLE)
                 .map(value -> Arrays.asList(value.split(",")))
