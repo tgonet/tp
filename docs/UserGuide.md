@@ -77,15 +77,14 @@ Format: `help`
 
 Adds a person to the address book.
 
-Format: `add n/NAME p/PHONE_NUMBER a/ADDRESS [t/TAG]…​`
+Format: `add n/NAME p/PHONE_NUMBER a/ADDRESS r/ROLE [t/TAG]…​`
 
-<div markdown="span" class="alert alert-primary">:bulb: **Tip:**
-A person can have any number of tags (including 0)
-</div>
+* A person can have any number of tags (including 0).
+* A person can have one of the two roles: `student` or `parent`
 
 Examples:
-* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
-* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
+* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 r/parent`
+* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 r/student t/criminal `
 
 ### Listing all persons : `list`
 
@@ -142,6 +141,19 @@ Examples:
 * `list` followed by `delete 2` deletes the 2nd person in the address book.
 * `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
 
+### Leaving a remark : `remark`
+
+Leaves a remark about the specified person from the address book.
+
+Format: `remark INDEX rm/REMARK`
+
+* Leaves a remark about the person at the specified `INDEX`.
+* The index refers to the index number shown in the displayer person list.
+* Using `remark` again for the same person **overwrites** previous remark.
+
+Examples:
+* `remark 1 rm/Weak at math` leaves a remark on the 1st person in list.
+
 ### Clearing all entries : `clear`
 
 Clears all entries from the address book.
@@ -191,7 +203,7 @@ _Details coming soon ..._
 
 Action | Format, Examples
 --------|------------------
-**Add** | `add n/NAME p/PHONE_NUMBER a/ADDRESS [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
+**Add** | `add n/NAME p/PHONE_NUMBER a/ADDRESS r/role [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend r/student t/colleague`
 **Clear** | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee`
