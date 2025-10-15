@@ -75,7 +75,7 @@ public class AddressBookParserTest {
     }
 
     @Test
-    public void parseCommand_find() throws Exception {
+    public void parseCommand_find_role_name() throws Exception {
         List<String> keywords = Arrays.asList("foo", "bar", "baz");
         List<String> keywordsForRole = Arrays.asList("student");
         FindCommand command = (FindCommand) parser.parseCommand(
@@ -83,6 +83,14 @@ public class AddressBookParserTest {
                  " " + PREFIX_ROLE + keywordsForRole.stream().collect(Collectors.joining(" ")));
         assertEquals(new FindCommand(new NameContainsKeywordsPredicate(keywords),
         new RoleContainsKeywordsPredicate(keywordsForRole)), command);
+    }
+
+    @Test
+    public void parseCommand_find_name() throws Exception {
+        List<String> keywords = Arrays.asList("foo", "bar", "baz");
+        FindCommand command = (FindCommand) parser.parseCommand(
+                FindCommand.COMMAND_WORD + " " + PREFIX_NAME + keywords.stream().collect(Collectors.joining(" ")));
+        assertEquals(new FindCommand(new NameContainsKeywordsPredicate(keywords), null), command);
     }
 
     @Test
