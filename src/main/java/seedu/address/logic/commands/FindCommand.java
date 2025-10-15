@@ -43,7 +43,14 @@ public class FindCommand extends Command {
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
-        Predicate<Person> predicate = namePredicate.and(rolePredicate);
+        Predicate<Person> predicate = person -> true;
+
+        if (this.namePredicate != null) {
+            predicate = predicate.and(this.namePredicate);
+        }
+        if (rolePredicate != null) {
+            predicate = predicate.and(this.rolePredicate);
+        }
         model.updateFilteredPersonList(predicate);
         return new CommandResult(
                 String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()));

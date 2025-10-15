@@ -31,16 +31,19 @@ public class FindCommandParser implements Parser<FindCommand> {
 
         // ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_ROLE, PREFIX_TAG);
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_ROLE);
-
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_ROLE);
 
         List<String> name = argMultimap.getValue(PREFIX_NAME)
                 .map(value -> Arrays.asList(value.split(",")))
                 .orElse(Collections.emptyList());
+        NameContainsKeywordsPredicate namePredicate = name.isEmpty() ? null
+                : new NameContainsKeywordsPredicate(name);
 
         List<String> role = argMultimap.getValue(PREFIX_ROLE)
                 .map(value -> Arrays.asList(value.split(",")))
                 .orElse(Collections.emptyList());
+        RoleContainsKeywordsPredicate rolePredicate = role.isEmpty() ? null
+                : new RoleContainsKeywordsPredicate(role);
 
         // List<String> tagList = argMultimap.getValue(PREFIX_TAG)
         //         .map(value -> Arrays.asList(value.split(",")))
@@ -51,7 +54,7 @@ public class FindCommandParser implements Parser<FindCommand> {
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
 
-        return new FindCommand(new NameContainsKeywordsPredicate(name), new RoleContainsKeywordsPredicate(role));
+        return new FindCommand(namePredicate, rolePredicate);
     }
 
 }
