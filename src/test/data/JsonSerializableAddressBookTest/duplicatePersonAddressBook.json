@@ -4,11 +4,14 @@
     "phone": "94351253",
     "address": "123, Jurong West Ave 6, #08-111",
     "role": "student",
-    "tags": [ "student" ]
+    "remark": " ",
+    "tags": [ "math" ]
   }, {
     "name": "Alice Pauline",
     "phone": "94351253",
     "address": "123, Jurong West Ave 6, #08-111",
-    "role": "student"
+    "role": "student",
+    "remark": " ",
+    "tags": [ "math" ]
   } ]
 }

@@ -8,8 +8,8 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  * Guarantees: immutable; is valid as declared in {@link #isValidRole(String)}
  */
 public class Role {
-    public static final String MESSAGE_CONSTRAINTS = "Role should only contain"
-            + " alphabetic characters and should not be blank";
+    public static final String MESSAGE_CONSTRAINTS = "Role should only be"
+            + " student or parent";
 
     /*
      * Only allow the role to either be student or parent

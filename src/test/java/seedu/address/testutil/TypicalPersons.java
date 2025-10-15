@@ -6,6 +6,8 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_REMARK_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_REMARK_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_SUBJECT;
@@ -25,12 +27,12 @@ public class TypicalPersons {
 
     public static final Person ALICE = new PersonBuilder().withName("Alice Pauline")
             .withAddress("123, Jurong West Ave 6, #08-111")
-            .withPhone("94351253")
+            .withPhone("94351253").withRemark("She likes Math.")
             .withRole("student")
             .withTags("math").build();
     public static final Person BENSON = new PersonBuilder().withName("Benson Meier")
             .withAddress("311, Clementi Ave 2, #02-25")
-            .withPhone("98765432")
+            .withPhone("98765432").withRemark("He likes alcohol.")
             .withRole("student")
             .withTags("science").build();
     public static final Person CARL = new PersonBuilder().withName("Carl Kurz")
@@ -51,9 +53,10 @@ public class TypicalPersons {
             .withAddress("little tokyo, Tanjong Pagar, Singapore")
             .withRole("student").build();
     public static final Person GEORGE = new PersonBuilder().withName("George Best")
-            .withPhone("94824421")
             .withAddress("4th street, Fifth Avenue, Singapore")
-            .withRole("student").build();
+            .withPhone("98765432").withRemark("He likes to drink alcohol.")
+            .withRole("student")
+            .withTags("math").build();
 
     // Manually added
     public static final Person HOON = new PersonBuilder().withName("Hoon Meier")
@@ -67,10 +70,13 @@ public class TypicalPersons {
 
     // Manually added - Person's details found in {@code CommandTestUtil}
     public static final Person AMY = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)
-            .withAddress(VALID_ADDRESS_AMY).withRole(VALID_ROLE_AMY).withTags(VALID_TAG_SUBJECT).build();
+            .withAddress(VALID_ADDRESS_AMY).withRole(VALID_ROLE_AMY)
+            .withRemark((VALID_REMARK_AMY))
+            .withTags(VALID_TAG_SUBJECT).build();
     public static final Person BOB = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
-            .withAddress(VALID_ADDRESS_BOB).withRole(VALID_ROLE_BOB).withTags(VALID_TAG_SUBJECT, VALID_TAG_SUBJECT2)
-            .build();
+            .withAddress(VALID_ADDRESS_BOB).withRole(VALID_ROLE_BOB)
+            .withRemark(VALID_REMARK_BOB)
+            .withTags(VALID_TAG_SUBJECT, VALID_TAG_SUBJECT2).build();
 
     public static final String KEYWORD_MATCHING_MEIER = "Meier"; // A keyword that matches MEIER
 
