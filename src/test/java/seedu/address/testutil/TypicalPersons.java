@@ -55,7 +55,7 @@ public class TypicalPersons {
     public static final Person GEORGE = new PersonBuilder().withName("George Best")
             .withAddress("4th street, Fifth Avenue, Singapore")
             .withPhone("98765432").withRemark("He likes to drink alcohol.")
-            .withRole("student")
+            .withRole("parent")
             .withTags("math").build();
 
     // Manually added

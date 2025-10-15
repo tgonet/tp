@@ -2,13 +2,18 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.function.Predicate;
+
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.model.Model;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.person.Person;
+import seedu.address.model.person.RoleContainsKeywordsPredicate;
 
 /**
- * Finds and lists all persons in address book whose name contains any of the argument keywords.
+ * Finds and lists all persons in address book whose name contains any of the
+ * argument keywords.
  * Keyword matching is case insensitive.
  */
 public class FindCommand extends Command {
@@ -20,15 +25,31 @@ public class FindCommand extends Command {
             + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
             + "Example: " + COMMAND_WORD + " alice bob charlie";
 
-    private final NameContainsKeywordsPredicate predicate;
+    private final NameContainsKeywordsPredicate namePredicate;
+    private final RoleContainsKeywordsPredicate rolePredicate;
 
-    public FindCommand(NameContainsKeywordsPredicate predicate) {
-        this.predicate = predicate;
+    /**
+     * Creates a FindCommand to filter persons by the given name and role predicates.
+     *
+     * @param namePredicate predicate used to filter persons by name
+     * @param rolePredicate predicate used to filter persons by role
+     */
+    public FindCommand(NameContainsKeywordsPredicate namePredicate, RoleContainsKeywordsPredicate rolePredicate) {
+        this.namePredicate = namePredicate;
+        this.rolePredicate = rolePredicate;
     }
 
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
+        Predicate<Person> predicate = person -> true;
+
+        if (this.namePredicate != null) {
+            predicate = predicate.and(this.namePredicate);
+        }
+        if (rolePredicate != null) {
+            predicate = predicate.and(this.rolePredicate);
+        }
         model.updateFilteredPersonList(predicate);
         return new CommandResult(
                 String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()));
@@ -46,13 +67,33 @@ public class FindCommand extends Command {
         }
 
         FindCommand otherFindCommand = (FindCommand) other;
-        return predicate.equals(otherFindCommand.predicate);
+
+        boolean isNameEqual;
+        if (this.namePredicate == null && otherFindCommand.namePredicate == null) {
+            isNameEqual = true;
+        } else if (this.namePredicate == null || otherFindCommand.namePredicate == null) {
+            isNameEqual = false;
+        } else {
+            isNameEqual = this.namePredicate.equals(otherFindCommand.namePredicate);
+        }
+
+        boolean isRoleEqual;
+        if (this.rolePredicate == null && otherFindCommand.rolePredicate == null) {
+            isRoleEqual = true;
+        } else if (this.rolePredicate == null || otherFindCommand.rolePredicate == null) {
+            isRoleEqual = false;
+        } else {
+            isRoleEqual = this.rolePredicate.equals(otherFindCommand.rolePredicate);
+        }
+
+        return isNameEqual && isRoleEqual;
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .add("predicate", predicate)
+                .add("name predicate", this.namePredicate)
+                .add("role predicate", this.rolePredicate)
                 .toString();
     }
 }

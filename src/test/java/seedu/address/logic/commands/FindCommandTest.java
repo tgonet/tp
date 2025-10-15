@@ -8,6 +8,7 @@ import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.testutil.TypicalPersons.CARL;
 import static seedu.address.testutil.TypicalPersons.ELLE;
 import static seedu.address.testutil.TypicalPersons.FIONA;
+import static seedu.address.testutil.TypicalPersons.GEORGE;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import java.util.Arrays;
@@ -19,9 +20,11 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.person.RoleContainsKeywordsPredicate;
 
 /**
- * Contains integration tests (interaction with the Model) for {@code FindCommand}.
+ * Contains integration tests (interaction with the Model) for
+ * {@code FindCommand}.
  */
 public class FindCommandTest {
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
@@ -29,63 +32,106 @@ public class FindCommandTest {
 
     @Test
     public void equals() {
-        NameContainsKeywordsPredicate firstPredicate =
-                new NameContainsKeywordsPredicate(Collections.singletonList("first"));
-        NameContainsKeywordsPredicate secondPredicate =
-                new NameContainsKeywordsPredicate(Collections.singletonList("second"));
+        NameContainsKeywordsPredicate firstPredicate = new NameContainsKeywordsPredicate(
+                Collections.singletonList("first"));
+        NameContainsKeywordsPredicate secondPredicate = new NameContainsKeywordsPredicate(
+                Collections.singletonList("second"));
 
-        FindCommand findFirstCommand = new FindCommand(firstPredicate);
-        FindCommand findSecondCommand = new FindCommand(secondPredicate);
+        RoleContainsKeywordsPredicate firstRolePredicate = new RoleContainsKeywordsPredicate(
+                Collections.singletonList("first"));
+        RoleContainsKeywordsPredicate secondRolePredicate = new RoleContainsKeywordsPredicate(
+                Collections.singletonList("second"));
+
+        FindCommand findFirstNameCommand = new FindCommand(firstPredicate, null);
+        FindCommand findSecondNameCommand = new FindCommand(secondPredicate, null);
+
+        FindCommand findFirstRoleCommand = new FindCommand(null, firstRolePredicate);
+        FindCommand findSecondRoleCommand = new FindCommand(null, secondRolePredicate);
+
+        FindCommand findBothFirstCommand = new FindCommand(firstPredicate, firstRolePredicate);
+        FindCommand findBothSecondCommand = new FindCommand(secondPredicate, secondRolePredicate);
 
         // same object -> returns true
-        assertTrue(findFirstCommand.equals(findFirstCommand));
+        assertTrue(findFirstNameCommand.equals(findFirstNameCommand));
+        assertTrue(findFirstRoleCommand.equals(findFirstRoleCommand));
+        assertTrue(findBothFirstCommand.equals(findBothFirstCommand));
 
         // same values -> returns true
-        FindCommand findFirstCommandCopy = new FindCommand(firstPredicate);
-        assertTrue(findFirstCommand.equals(findFirstCommandCopy));
+        FindCommand findFirstNameCommandCopy = new FindCommand(firstPredicate, null);
+        assertTrue(findFirstNameCommand.equals(findFirstNameCommandCopy));
+
+        FindCommand findFirstRoleCommandCopy = new FindCommand(null, firstRolePredicate);
+        assertTrue(findFirstRoleCommand.equals(findFirstRoleCommandCopy));
+
+        FindCommand findBothFirstCommandCopy = new FindCommand(firstPredicate, firstRolePredicate);
+        assertTrue(findBothFirstCommand.equals(findBothFirstCommandCopy));
 
         // different types -> returns false
-        assertFalse(findFirstCommand.equals(1));
+        assertFalse(findFirstNameCommand.equals(1));
+        assertFalse(findFirstRoleCommand.equals(1));
+        assertFalse(findBothFirstCommand.equals(1));
 
         // null -> returns false
-        assertFalse(findFirstCommand.equals(null));
+        assertFalse(findFirstNameCommand.equals(null));
+        assertFalse(findFirstRoleCommand.equals(null));
+        assertFalse(findBothFirstCommand.equals(null));
 
         // different person -> returns false
-        assertFalse(findFirstCommand.equals(findSecondCommand));
+        assertFalse(findFirstNameCommand.equals(findSecondNameCommand));
+        assertFalse(findFirstRoleCommand.equals(findSecondRoleCommand));
+        assertFalse(findBothFirstCommand.equals(findBothSecondCommand));
     }
 
     @Test
     public void execute_zeroKeywords_noPersonFound() {
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0);
-        NameContainsKeywordsPredicate predicate = preparePredicate(" ");
-        FindCommand command = new FindCommand(predicate);
+        NameContainsKeywordsPredicate predicate = prepareNamePredicate(" ");
+        FindCommand command = new FindCommand(predicate, null);
         expectedModel.updateFilteredPersonList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
         assertEquals(Collections.emptyList(), model.getFilteredPersonList());
     }
 
     @Test
-    public void execute_multipleKeywords_multiplePersonsFound() {
+    public void execute_multipleNameKeywords_multiplePersonsFound() {
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 3);
-        NameContainsKeywordsPredicate predicate = preparePredicate("Kurz Elle Kunz");
-        FindCommand command = new FindCommand(predicate);
+        NameContainsKeywordsPredicate predicate = prepareNamePredicate("Kurz Elle Kunz");
+        FindCommand command = new FindCommand(predicate, null);
         expectedModel.updateFilteredPersonList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
         assertEquals(Arrays.asList(CARL, ELLE, FIONA), model.getFilteredPersonList());
     }
 
     @Test
+    public void execute_multipleRoleKeywords_multiplePersonsFound() {
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
+        RoleContainsKeywordsPredicate predicate = prepareRolePredicate("parent");
+        FindCommand command = new FindCommand(null, predicate);
+        expectedModel.updateFilteredPersonList(predicate);
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        assertEquals(Arrays.asList(GEORGE), model.getFilteredPersonList());
+    }
+
+    @Test
     public void toStringMethod() {
         NameContainsKeywordsPredicate predicate = new NameContainsKeywordsPredicate(Arrays.asList("keyword"));
-        FindCommand findCommand = new FindCommand(predicate);
-        String expected = FindCommand.class.getCanonicalName() + "{predicate=" + predicate + "}";
+        FindCommand findCommand = new FindCommand(predicate, null);
+        String expected = FindCommand.class.getCanonicalName() + "{name predicate=" + predicate
+                + ", role predicate=null}";
         assertEquals(expected, findCommand.toString());
     }
 
     /**
      * Parses {@code userInput} into a {@code NameContainsKeywordsPredicate}.
      */
-    private NameContainsKeywordsPredicate preparePredicate(String userInput) {
+    private NameContainsKeywordsPredicate prepareNamePredicate(String userInput) {
         return new NameContainsKeywordsPredicate(Arrays.asList(userInput.split("\\s+")));
+    }
+
+    /**
+     * Parses {@code userInput} into a {@code RoleContainsKeywordsPredicate}.
+     */
+    private RoleContainsKeywordsPredicate prepareRolePredicate(String userInput) {
+        return new RoleContainsKeywordsPredicate(Arrays.asList(userInput.split("\\s+")));
     }
 }
