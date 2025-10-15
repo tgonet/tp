@@ -46,7 +46,7 @@
     "name" : "George Best",
     "phone" : "98765432",
     "address" : "4th street, Fifth Avenue, Singapore",
-    "role": "student",
+    "role": "parent",
     "remark" : "",
     "tags" : [ "math" ]
   } ]
