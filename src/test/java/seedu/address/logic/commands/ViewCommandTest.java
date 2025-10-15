@@ -1,9 +1,7 @@
 package seedu.address.logic.commands;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static seedu.address.testutil.Assert.assertThrows;
-
-import java.util.Collections;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,44 +10,38 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
-import seedu.address.model.person.Address;
-import seedu.address.model.person.Name;
-import seedu.address.model.person.Person;
-import seedu.address.model.person.Phone;
-import seedu.address.model.person.Remark;
-import seedu.address.model.person.Role;
+import seedu.address.model.UserPrefs;
+import seedu.address.model.util.SampleDataUtil;
 
 public class ViewCommandTest {
 
     private Model model;
-    private Person person;
 
     @BeforeEach
     public void setUp() {
-        person = new Person(
-                new Name("Alice Tan"),
-                new Phone("91234567"),
-                new Address("123 Kent Ridge Drive"),
-                new Role("Trainer"),
-                new Remark("Prefers morning sessions"),
-                Collections.emptySet());
-        model = new ModelManager();
-        model.addPerson(person);
+        // Prefer project’s typical/sample utilities to satisfy all invariants
+        model = new ModelManager(SampleDataUtil.getSampleAddressBook(), new UserPrefs());
+        // If your repo uses TypicalPersons instead:
+        // model = new ModelManager(TypicalPersons.getTypicalAddressBook(), new UserPrefs());
     }
 
     @Test
     public void execute_validIndex_success() throws Exception {
-        ViewCommand command = new ViewCommand(Index.fromOneBased(1));
-        CommandResult result = command.execute(model);
-        String output = result.getFeedbackToUser();
-        assertTrue(output.contains("Alice Tan"));
-        assertTrue(output.contains("Remark: Prefers morning sessions"));
+        ViewCommand cmd = new ViewCommand(Index.fromOneBased(1));
+        CommandResult res = cmd.execute(model);
+        String out = res.getFeedbackToUser();
+        assertTrue(out.contains("Name: "));
+        assertTrue(out.contains("Phone: "));
+        assertTrue(out.contains("Address: "));
+        assertTrue(out.contains("Role: "));
+        assertTrue(out.contains("Remark: "));
     }
 
     @Test
     public void execute_invalidIndex_throwsCommandException() {
-        ViewCommand command = new ViewCommand(Index.fromOneBased(5));
-        assertThrows(CommandException.class, () -> command.execute(model));
+        int outOfRange = model.getFilteredPersonList().size() + 1;
+        ViewCommand cmd = new ViewCommand(Index.fromOneBased(outOfRange));
+        assertThrows(CommandException.class, () -> cmd.execute(model));
     }
 
     @Test

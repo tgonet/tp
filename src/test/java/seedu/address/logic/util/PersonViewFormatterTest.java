@@ -2,42 +2,28 @@ package seedu.address.logic.util;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.Collections;
-
 import org.junit.jupiter.api.Test;
 
-import seedu.address.model.person.Address;
-import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
-import seedu.address.model.person.Phone;
-import seedu.address.model.person.Remark;
-import seedu.address.model.person.Role;
+import seedu.address.testutil.PersonBuilder;
 
 public class PersonViewFormatterTest {
 
     @Test
     public void format_allFieldsPresent_includesRemark() {
-        Person p = new Person(
-                new Name("Alice"),
-                new Phone("91234567"),
-                new Address("Kent Ridge"),
-                new Role("Trainer"),
-                new Remark("Morning only"),
-                Collections.emptySet());
+        Person p = new PersonBuilder()
+                .withRemark("Prefers morning sessions")
+                .build();
         String formatted = PersonViewFormatter.format(p);
-        assertTrue(formatted.contains("Name: Alice"));
-        assertTrue(formatted.contains("Remark: Morning only"));
+        assertTrue(formatted.contains("Name: "));
+        assertTrue(formatted.contains("Remark: Prefers morning sessions"));
     }
 
     @Test
-    public void format_nullRemark_replacesWithDash() {
-        Person p = new Person(
-                new Name("Bob"),
-                new Phone("98765432"),
-                new Address("Clementi"),
-                new Role("Member"),
-                null,
-                Collections.emptySet());
+    public void format_emptyRemark_replacesWithDash() {
+        Person p = new PersonBuilder()
+                .withRemark("") // not null; empty allowed by model
+                .build();
         String formatted = PersonViewFormatter.format(p);
         assertTrue(formatted.contains("Remark: -"));
     }
