@@ -51,6 +51,11 @@ public class PersonCard extends UiPart<Region> {
         address.setText(person.getAddress().value);
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
-                .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+                .forEach(tag -> {
+                    Label tagLabel = new Label(tag.tagName);
+                    String styleClass = tag.tagName.toLowerCase();
+                    tagLabel.getStyleClass().add(styleClass);
+                    tags.getChildren().add(tagLabel);
+                });
     }
 }
