@@ -45,10 +45,6 @@ public class FindCommandParser implements Parser<FindCommand> {
         RoleContainsKeywordsPredicate rolePredicate = role.isEmpty() ? null
                 : new RoleContainsKeywordsPredicate(role);
 
-                System.out.println("args: [" + trimmedArgs + "]");
-System.out.println("PREFIX_NAME: [" + PREFIX_NAME.getPrefix() + "]");
-System.out.println("argMultimap.getValue(PREFIX_NAME): " + argMultimap.getValue(PREFIX_NAME));
-
         // List<String> tagList = argMultimap.getValue(PREFIX_TAG)
         //         .map(value -> Arrays.asList(value.split("\\s+")))
         //         .orElse(Collections.emptyList());
