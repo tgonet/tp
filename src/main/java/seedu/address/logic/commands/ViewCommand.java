@@ -26,6 +26,12 @@ public class ViewCommand extends Command {
 
     private final Index targetIndex;
 
+    /**
+     * Creates a {@code ViewCommand} that targets a person by index.
+     *
+     * @param targetIndex Index (1-based) of the person in the current filtered list
+     * @throws NullPointerException if {@code targetIndex} is null
+     */
     public ViewCommand(Index targetIndex) {
         requireNonNull(targetIndex);
         this.targetIndex = targetIndex;
