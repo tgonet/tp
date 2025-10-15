@@ -275,24 +275,24 @@ _{Explain here how the data archiving feature will be implemented}_
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​                                    | I want to …​                     | So that I can…​                                                        |
-| -------- | ------------------------------------------ | ------------------------------ | ---------------------------------------------------------------------- |
-| `* * *`  | user                                       | add student contact with name, address and phone number | build my address book               
-| `* * *`  | user                                       | view all contacts      |     see what is stored  without filtering or sorting                                                                   |
-| `* * *`  | user                                       | delete a contact by index                | remove entries that I no longer need                                   |
-| `* * *`  | user                                       | find a person by name          | locate details of persons without having to go through the entire list |
-| `* *`    | tutor                                      | store both student and parent contact details under the same entry   | reach the right person depending on context                |
-| `*`      | new tutor | see the system populate the address book with sample students           | understand how it works                                                |
-| `*`      | expert tutor | archieve old students           | reduce the number of contacts in my address book                                                |
-| `*`      | tutor | group students according to timeslots/subject           | manage my time more efficiently and avoid confusion       
-| `*`      | tutor | set preferred contact methods           | communicate with them in the way they prefer                                                |
-| `*`      | student | export class times as files that can be imported by scheduling app           | sync tutoring sessions with my digital calendar and avoid scheduling conflicts                                              |
-| `*`      | tutor | what class i have on a specific date           | better prepare for class                                            |
-| `*`      | tutor | filter students according to subject           | know which student belongs to which class                                              |
-| `*`      | tutor | attach notes or comments to each student           | keep track of learning progress and special requests
-| `*`      | tutor | be reminded whenever i have an upcoming session           | plan for it and not be late                                            |
-| `*`      | tutor | display the student's timeslot in a readable format           | easily plan future timeslots for students                                         |
-| `*`      | tutor | flag contacts           | reach them easily
+| Priority | As a …​                                    | I want to …​                                                    | So that I can…​                                                        |
+| -------- | ------------------------------------------ |-----------------------------------------------------------------| ---------------------------------------------------------------------- |
+| `* * *`  | user                                       | add student contact with name, address and phone number         | build my address book               
+| `* * *`  | user                                       | view all contacts                                               |     see what is stored  without filtering or sorting                                                                   |
+| `* * *`  | user                                       | delete a contact by index                                       | remove entries that I no longer need                                   |
+| `* * *`  | user                                       | find a person by name                                           | locate details of persons without having to go through the entire list |
+| `* *`    | tutor                                      | store both student and parent contact details under the same entry | reach the right person depending on context                |
+| `*`      | new tutor | see the system populate the address book with sample students   | understand how it works                                                |
+| `*`      | expert tutor | archieve old students                                           | reduce the number of contacts in my address book                                                |
+| `*`      | tutor | group students according to timeslots/subject                   | manage my time more efficiently and avoid confusion       
+| `*`      | tutor | set preferred contact methods                                   | communicate with them in the way they prefer                                                |
+| `*`      | student | export class times as files that can be imported by scheduling app | sync tutoring sessions with my digital calendar and avoid scheduling conflicts                                              |
+| `*`      | tutor | what class i have on a specific date                            | better prepare for class                                            |
+| `*`      | tutor | filter students according to subject                            | know which student belongs to which class                                              |
+| `*`      | tutor | leave remark about each student                                 | keep track of learning progress and special requests
+| `*`      | tutor | be reminded whenever i have an upcoming session                 | plan for it and not be late                                            |
+| `*`      | tutor | display the student's timeslot in a readable format             | easily plan future timeslots for students                                         |
+| `*`      | tutor | flag contacts                                                   | reach them easily
 *{More to be added}*
 
 ## Use cases
