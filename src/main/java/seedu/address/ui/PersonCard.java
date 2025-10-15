@@ -38,6 +38,8 @@ public class PersonCard extends UiPart<Region> {
     private Label address;
     @FXML
     private FlowPane tags;
+    @FXML
+    private Label role;
 
     /**
      * Creates a {@code PersonCode} with the given {@code Person} and index to display.
@@ -57,5 +59,7 @@ public class PersonCard extends UiPart<Region> {
                     tagLabel.getStyleClass().add(styleClass);
                     tags.getChildren().add(tagLabel);
                 });
+        role.setText(person.getRole().toString());
+        role.getStyleClass().add(person.getRole().toString().toLowerCase());
     }
 }
