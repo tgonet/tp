@@ -36,6 +36,8 @@ public class CommandTestUtil {
     public static final String VALID_ROLE_BOB = "parent";
     public static final String VALID_TAG_SUBJECT = "math";
     public static final String VALID_TAG_SUBJECT2 = "science";
+    public static final String VALID_REMARK_AMY = "Likes Math.";
+    public static final String VALID_REMARK_BOB = "Favourite pastime: Teaching";
     public static final String VALID_TAG_STUDENT = "student";
     public static final String VALID_TAG_PARENT = "parent";
 
@@ -67,10 +69,13 @@ public class CommandTestUtil {
     static {
         DESC_AMY = new EditPersonDescriptorBuilder().withName(VALID_NAME_AMY)
                 .withPhone(VALID_PHONE_AMY).withAddress(VALID_ADDRESS_AMY)
-                .withRole(VALID_ROLE_AMY).withTags(VALID_TAG_STUDENT).build();
+                .withRole(VALID_ROLE_AMY)
+                .withRemark(VALID_REMARK_AMY)
+                .withTags(VALID_TAG_SUBJECT).build();
         DESC_BOB = new EditPersonDescriptorBuilder().withName(VALID_NAME_BOB)
                 .withPhone(VALID_PHONE_BOB).withAddress(VALID_ADDRESS_BOB)
                 .withRole(VALID_ROLE_BOB)
+                .withRemark(VALID_REMARK_BOB)
                 .withTags(VALID_TAG_SUBJECT).build();
     }
 

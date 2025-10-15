@@ -22,18 +22,20 @@ public class Person {
 
     // Data fields
     private final Address address;
+    private final Remark remark;
     private final Role role;
     private final Set<Tag> tags = new HashSet<>();
 
     /**
      * Every field must be present and not null.
      */
-    public Person(Name name, Phone phone, Address address, Role role, Set<Tag> tags) {
+    public Person(Name name, Phone phone, Address address, Role role, Remark remark, Set<Tag> tags) {
         requireAllNonNull(name, phone, address, role, tags);
         this.name = name;
         this.phone = phone;
         this.address = address;
         this.role = role;
+        this.remark = remark;
         this.tags.addAll(tags);
     }
 
@@ -51,6 +53,10 @@ public class Person {
 
     public Role getRole() {
         return role;
+    }
+
+    public Remark getRemark() {
+        return remark;
     }
 
     /**
@@ -100,7 +106,7 @@ public class Person {
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, address, role, tags);
+        return Objects.hash(name, phone, address, role, remark, tags);
     }
 
     @Override
@@ -110,6 +116,7 @@ public class Person {
                 .add("phone", phone)
                 .add("address", address)
                 .add("role", role)
+                .add("remark", remark)
                 .add("tags", tags)
                 .toString();
     }
