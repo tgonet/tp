@@ -53,10 +53,10 @@ public class TypicalPersons {
             .withAddress("little tokyo, Tanjong Pagar, Singapore")
             .withRole("student").build();
     public static final Person GEORGE = new PersonBuilder().withName("George Best")
-            .withPhone("94824421")
             .withAddress("4th street, Fifth Avenue, Singapore")
             .withPhone("98765432").withRemark("He likes to drink alcohol.")
-            .withTags("student").build();
+            .withRole("student")
+            .withTags("math").build();
 
     // Manually added
     public static final Person HOON = new PersonBuilder().withName("Hoon Meier")
