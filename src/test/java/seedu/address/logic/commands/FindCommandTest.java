@@ -57,7 +57,6 @@ public class FindCommandTest {
         // same values -> returns true
         FindCommand findFirstNameCommandCopy = new FindCommand(firstPredicate, null);
         assertTrue(findFirstNameCommand.equals(findFirstNameCommandCopy));
-        
 
         FindCommand findFirstRoleCommandCopy = new FindCommand(null, firstRolePredicate);
         assertTrue(findFirstRoleCommand.equals(findFirstRoleCommandCopy));
