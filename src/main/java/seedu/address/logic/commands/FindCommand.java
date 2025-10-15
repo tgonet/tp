@@ -28,6 +28,13 @@ public class FindCommand extends Command {
     private final NameContainsKeywordsPredicate namePredicate;
     private final RoleContainsKeywordsPredicate rolePredicate;
 
+
+    /**
+     * Creates a FindCommand to filter persons by the given name and role predicates.
+     *
+     * @param namePredicate predicate used to filter persons by name
+     * @param rolePredicate predicate used to filter persons by role
+     */
     public FindCommand(NameContainsKeywordsPredicate namePredicate, RoleContainsKeywordsPredicate rolePredicate) {
         this.namePredicate = namePredicate;
         this.rolePredicate = rolePredicate;
