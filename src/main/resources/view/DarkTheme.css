@@ -354,7 +354,7 @@
     -fx-padding: 1 3 1 3;
     -fx-border-radius: 2;
     -fx-background-radius: 2;
-    -fx-font-size: 13;
+    -fx-font-size: 11;
 }
 
 #tags .math {
@@ -362,7 +362,7 @@
 }
 
 #tags .physics {
-    -fx-background-color: #e94e77;
+    -fx-background-color: #316c31;
 }
 
 #tags .chemistry {
@@ -378,7 +378,7 @@
 }
 
 #tags .geography {
-    -fx-background-color: #e5d392;
+    -fx-background-color: #b09e5b;
 }
 
 #tags .literature {
@@ -387,4 +387,22 @@
 
 #tags .english {
     -fx-background-color: #1853a4;
+}
+
+.student {
+    -fx-text-fill: white;
+    -fx-background-color: #1e323a;
+    -fx-padding: 1 3 1 3;
+    -fx-border-radius: 5;
+    -fx-background-radius: 2;
+    -fx-font-size: 13;
+}
+
+.parent {
+    -fx-text-fill: white;
+    -fx-background-color: #ff8698;
+    -fx-padding: 1 3 1 3;
+    -fx-border-radius: 5;
+    -fx-background-radius: 2;
+    -fx-font-size: 13;
 }
