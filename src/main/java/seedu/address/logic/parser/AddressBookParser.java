@@ -1,10 +1,13 @@
 package seedu.address.logic.parser;
 
-import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
 
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.Command;
@@ -23,33 +26,32 @@ import seedu.address.logic.parser.exceptions.ParseException;
  */
 public class AddressBookParser {
 
-    /**
-     * Used for initial separation of command word and args.
-     */
+    /** Used for initial separation of command word and args. */
     private static final Pattern BASIC_COMMAND_FORMAT =
             Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
+
+    private static final Logger logger = LogsCenter.getLogger(AddressBookParser.class);
 
     /**
      * Parses user input into command for execution.
      *
      * @param userInput full user input string
      * @return the command based on the user input
-     * @throws ParseException if the user input does not conform the expected format
+     * @throws ParseException if the user input does not conform to the expected format
      */
     public Command parseCommand(String userInput) throws ParseException {
-        requireNonNull(userInput);
-
         final Matcher matcher = BASIC_COMMAND_FORMAT.matcher(userInput.trim());
         if (!matcher.matches()) {
-            // Fall back to HelpCommand's usage if available in your codebase; otherwise a generic error.
-            throw new ParseException("Invalid command format.");
+            throw new ParseException(MESSAGE_INVALID_COMMAND_FORMAT.formatted(HelpCommand.MESSAGE_USAGE));
         }
 
         final String commandWord = matcher.group("commandWord");
         final String arguments = matcher.group("arguments");
 
-        switch (commandWord) {
+        // Lower-level log messages can be enabled via config.json.
+        logger.fine("Command word: " + commandWord + "; Arguments: " + arguments);
 
+        switch (commandWord) {
         case AddCommand.COMMAND_WORD:
             return new AddCommandParser().parse(arguments);
 
@@ -65,6 +67,9 @@ public class AddressBookParser {
         case FindCommand.COMMAND_WORD:
             return new FindCommandParser().parse(arguments);
 
+        case RemarkCommand.COMMAND_WORD:
+            return new RemarkCommandParser().parse(arguments);
+
         case ListCommand.COMMAND_WORD:
             return new ListCommand();
 
@@ -74,14 +79,12 @@ public class AddressBookParser {
         case HelpCommand.COMMAND_WORD:
             return new HelpCommand();
 
-        case RemarkCommand.COMMAND_WORD:
-            return new RemarkCommandParser().parse(arguments);
-
         case ViewCommand.COMMAND_WORD:
             return new ViewCommandParser().parse(arguments);
 
         default:
-            throw new ParseException("Unknown command.");
+            logger.finer("This user input caused a ParseException: " + userInput);
+            throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
         }
     }
 }
