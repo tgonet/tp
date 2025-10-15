@@ -28,7 +28,6 @@ public class FindCommand extends Command {
     private final NameContainsKeywordsPredicate namePredicate;
     private final RoleContainsKeywordsPredicate rolePredicate;
 
-
     /**
      * Creates a FindCommand to filter persons by the given name and role predicates.
      *
@@ -68,15 +67,33 @@ public class FindCommand extends Command {
         }
 
         FindCommand otherFindCommand = (FindCommand) other;
-        return rolePredicate.equals(otherFindCommand.rolePredicate)
-                && namePredicate.equals(otherFindCommand.namePredicate);
+
+        boolean isNameEqual;
+        if (this.namePredicate == null && otherFindCommand.namePredicate == null) {
+            isNameEqual = true;
+        } else if (this.namePredicate == null || otherFindCommand.namePredicate == null) {
+            isNameEqual = false;
+        } else {
+            isNameEqual = this.namePredicate.equals(otherFindCommand.namePredicate);
+        }
+
+        boolean isRoleEqual;
+        if (this.rolePredicate == null && otherFindCommand.rolePredicate == null) {
+            isRoleEqual = true;
+        } else if (this.rolePredicate == null || otherFindCommand.rolePredicate == null) {
+            isRoleEqual = false;
+        } else {
+            isRoleEqual = this.rolePredicate.equals(otherFindCommand.rolePredicate);
+        }
+
+        return isNameEqual && isRoleEqual;
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .add("name predicate", namePredicate)
-                .add("role predicate", rolePredicate)
+                .add("name predicate", this.namePredicate)
+                .add("role predicate", this.rolePredicate)
                 .toString();
     }
 }

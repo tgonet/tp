@@ -30,23 +30,27 @@ public class FindCommandParser implements Parser<FindCommand> {
         String trimmedArgs = args.trim();
 
         // ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_ROLE, PREFIX_TAG);
-        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_ROLE);
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(" " + trimmedArgs, PREFIX_NAME, PREFIX_ROLE);
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_ROLE);
 
         List<String> name = argMultimap.getValue(PREFIX_NAME)
-                .map(value -> Arrays.asList(value.split(",")))
+                .map(value -> Arrays.asList(value.split("\\s+")))
                 .orElse(Collections.emptyList());
         NameContainsKeywordsPredicate namePredicate = name.isEmpty() ? null
                 : new NameContainsKeywordsPredicate(name);
 
         List<String> role = argMultimap.getValue(PREFIX_ROLE)
-                .map(value -> Arrays.asList(value.split(",")))
+                .map(value -> Arrays.asList(value.split("\\s+")))
                 .orElse(Collections.emptyList());
         RoleContainsKeywordsPredicate rolePredicate = role.isEmpty() ? null
                 : new RoleContainsKeywordsPredicate(role);
 
+                System.out.println("args: [" + trimmedArgs + "]");
+System.out.println("PREFIX_NAME: [" + PREFIX_NAME.getPrefix() + "]");
+System.out.println("argMultimap.getValue(PREFIX_NAME): " + argMultimap.getValue(PREFIX_NAME));
+
         // List<String> tagList = argMultimap.getValue(PREFIX_TAG)
-        //         .map(value -> Arrays.asList(value.split(",")))
+        //         .map(value -> Arrays.asList(value.split("\\s+")))
         //         .orElse(Collections.emptyList());
 
         if (trimmedArgs.isEmpty()) {
