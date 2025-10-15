@@ -22,7 +22,8 @@ import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.RoleContainsKeywordsPredicate;
 
 /**
- * Contains integration tests (interaction with the Model) for {@code FindCommand}.
+ * Contains integration tests (interaction with the Model) for
+ * {@code FindCommand}.
  */
 public class FindCommandTest {
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
@@ -30,15 +31,15 @@ public class FindCommandTest {
 
     @Test
     public void equals() {
-        NameContainsKeywordsPredicate firstPredicate =
-                new NameContainsKeywordsPredicate(Collections.singletonList("first"));
-        NameContainsKeywordsPredicate secondPredicate =
-                new NameContainsKeywordsPredicate(Collections.singletonList("second"));
+        NameContainsKeywordsPredicate firstPredicate = new NameContainsKeywordsPredicate(
+                Collections.singletonList("first"));
+        NameContainsKeywordsPredicate secondPredicate = new NameContainsKeywordsPredicate(
+                Collections.singletonList("second"));
 
-        RoleContainsKeywordsPredicate firstRolePredicate =
-                new RoleContainsKeywordsPredicate(Collections.singletonList("first"));
-        RoleContainsKeywordsPredicate secondRolePredicate =
-                new RoleContainsKeywordsPredicate(Collections.singletonList("second"));
+        RoleContainsKeywordsPredicate firstRolePredicate = new RoleContainsKeywordsPredicate(
+                Collections.singletonList("first"));
+        RoleContainsKeywordsPredicate secondRolePredicate = new RoleContainsKeywordsPredicate(
+                Collections.singletonList("second"));
 
         FindCommand findFirstNameCommand = new FindCommand(firstPredicate, null);
         FindCommand findSecondNameCommand = new FindCommand(secondPredicate, null);
@@ -104,7 +105,8 @@ public class FindCommandTest {
     public void toStringMethod() {
         NameContainsKeywordsPredicate predicate = new NameContainsKeywordsPredicate(Arrays.asList("keyword"));
         FindCommand findCommand = new FindCommand(predicate, null);
-        String expected = FindCommand.class.getCanonicalName() + "{name predicate=" + predicate + ", role predicate=null}";
+        String expected = FindCommand.class.getCanonicalName() + "{name predicate=" + predicate
+                + ", role predicate=null}";
         assertEquals(expected, findCommand.toString());
     }
 

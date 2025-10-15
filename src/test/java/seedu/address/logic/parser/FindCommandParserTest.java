@@ -30,10 +30,11 @@ public class FindCommandParserTest {
                 new NameContainsKeywordsPredicate(Arrays.asList("Alice", "Bob")),
                 new RoleContainsKeywordsPredicate(Arrays.asList("student")));
 
-        assertParseSuccess(parser, PREFIX_NAME + "Alice Bob" + " " +  PREFIX_ROLE + "student", expectedFindCommand);
+        assertParseSuccess(parser, PREFIX_NAME + "Alice Bob" + " " + PREFIX_ROLE + "student", expectedFindCommand);
 
         // multiple whitespaces between keywords
-        assertParseSuccess(parser, PREFIX_NAME + " \n Alice \n \t Bob  \t" + " " + PREFIX_ROLE + "student", expectedFindCommand);
+        assertParseSuccess(parser, PREFIX_NAME + " \n Alice \n \t Bob  \t" + " " + PREFIX_ROLE + "student",
+                expectedFindCommand);
     }
 
 }

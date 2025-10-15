@@ -75,18 +75,18 @@ public class AddressBookParserTest {
     }
 
     @Test
-    public void parseCommand_find_role_name() throws Exception {
+    public void parseCommandRoleName_find() throws Exception {
         List<String> keywords = Arrays.asList("foo", "bar", "baz");
         List<String> keywordsForRole = Arrays.asList("student");
         FindCommand command = (FindCommand) parser.parseCommand(
-                FindCommand.COMMAND_WORD + " " + PREFIX_NAME + keywords.stream().collect(Collectors.joining(" ")) +
-                 " " + PREFIX_ROLE + keywordsForRole.stream().collect(Collectors.joining(" ")));
+                FindCommand.COMMAND_WORD + " " + PREFIX_NAME + keywords.stream().collect(Collectors.joining(" "))
+                        + " " + PREFIX_ROLE + keywordsForRole.stream().collect(Collectors.joining(" ")));
         assertEquals(new FindCommand(new NameContainsKeywordsPredicate(keywords),
-        new RoleContainsKeywordsPredicate(keywordsForRole)), command);
+                new RoleContainsKeywordsPredicate(keywordsForRole)), command);
     }
 
     @Test
-    public void parseCommand_find_name() throws Exception {
+    public void parseCommandName_find() throws Exception {
         List<String> keywords = Arrays.asList("foo", "bar", "baz");
         FindCommand command = (FindCommand) parser.parseCommand(
                 FindCommand.COMMAND_WORD + " " + PREFIX_NAME + keywords.stream().collect(Collectors.joining(" ")));
@@ -115,8 +115,8 @@ public class AddressBookParserTest {
 
     @Test
     public void parseCommand_unrecognisedInput_throwsParseException() {
-        assertThrows(ParseException.class, String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE), ()
-            -> parser.parseCommand(""));
+        assertThrows(ParseException.class, String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE),
+                () -> parser.parseCommand(""));
     }
 
     @Test
