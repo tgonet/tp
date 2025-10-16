@@ -28,7 +28,7 @@ EduConnect is a desktop application that **helps tutors manage contact informati
 
    * `list` : Lists all contacts.
 
-   * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : Adds a contact named `John Doe` to the Address Book.
+   * `add n/John Doe p/98765432 a/John street, block 123, #01-01` : Adds a contact named `John Doe` to the Address Book.
 
    * `delete 3` : Deletes the 3rd contact shown in the current list.
 
@@ -111,21 +111,23 @@ Examples:
 
 ### Locating persons by name: `find`
 
-Finds persons whose names contain any of the given keywords.
+Finds persons whose information matches/contains given criteria.
 
-Format: `find KEYWORD [MORE_KEYWORDS]`
+Format: `find [n/NAME] [r/ROLE]`
 
-* The search is case-insensitive. e.g `hans` will match `Hans`
-* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
-* Only the name is searched.
-* Only full words will be matched e.g. `Han` will not match `Hans`
-* Persons matching at least one keyword will be returned (i.e. `OR` search).
-  e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
+* The search is case-insensitive. e.g `n/hans` will match `Hans`
+* The order of the keywords does not matter. e.g. `n/Hans Bo` will match `Bo Hans`
+* Only the name or the role can be searched.
+* Only full words will be matched e.g. `n/Han` will not match `Hans`, `r/stu` will not match `student`
+* Persons matching all given parameters will be returned e.g. `find n/Alex r/student` will return all `student` named `Alex`
+* For each parameter, persons matching at least one keyword will be returned (i.e. `OR` search).
+    e.g. `n/Hans Bo` will return `Hans Gruber`, `Bo Yang`
 
 Examples:
-* `find John` returns `john` and `John Doe`
-* `find alex david` returns `Alex Yeoh`, `David Li`<br>
-  ![result for 'find alex david'](images/findAlexDavidResult.png)
+* `find n/John` returns `john` and `John Doe`
+* `find n/alex david` returns `Alex Yeoh`, `David Li`<br>
+![findAlexDavidResult.png](images/findAlexDavidResult.png)
+* `find r/student` returns all persons with role of `student`
 
 ### Deleting a person : `delete`
 
@@ -153,6 +155,16 @@ Format: `remark INDEX rm/REMARK`
 
 Examples:
 * `remark 1 rm/Weak at math` leaves a remark on the 1st person in list.
+
+### View detail of an entry: `view`
+
+View the detail of the specified person from the address book.
+
+Format: `view INDEX`
+
+* The result is displayed in the app as a list.
+![viewResult.png](images/viewResult.png)
+* The index refers to the index number shown in the displayer person list.
 
 ### Clearing all entries : `clear`
 
@@ -209,5 +221,6 @@ Action | Format, Examples
 **Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee`
 **Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
 **Remark** | `remark INDEX rm/REMARK` <br> e.g., `remark 1 rm/hardworking`
+**View** | `view INDEX` <br> e.g., `view 2`
 **List** | `list`
 **Help** | `help`
