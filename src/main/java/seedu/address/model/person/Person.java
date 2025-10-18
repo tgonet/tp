@@ -17,15 +17,29 @@ import seedu.address.model.tag.Tag;
 public class Person {
 
     // Identity fields
-    private final Name name;
-    private final Phone phone;
+    protected final Name name;
+    protected final Phone phone;
 
     // Data fields
-    private final Address address;
-    private final Remark remark;
-    private final Role role;
-    private final Set<Tag> tags = new HashSet<>();
+    protected final Address address;
+    protected final Remark remark;
+    protected final Role role;
+    protected final Set<Tag> tags = new HashSet<>();
 
+    /**
+     * Every field must be present and not null.
+     */
+    public Person(Name name, Phone phone, Address address, Remark remark, Set<Tag> tags) {
+        requireAllNonNull(name, phone, address, tags);
+        this.name = name;
+        this.phone = phone;
+        this.address = address;
+        this.role = new Role("student"); //Remove ltr
+        this.remark = remark;
+        this.tags.addAll(tags);
+    }
+
+//    To be removed
     /**
      * Every field must be present and not null.
      */
