@@ -67,28 +67,6 @@ public abstract class Person {
                 && otherPerson.getName().equals(getName());
     }
 
-    /**
-     * Returns true if both persons have the same identity and data fields.
-     * This defines a stronger notion of equality between two persons.
-     */
-    @Override
-    public boolean equals(Object other) {
-        if (other == this) {
-            return true;
-        }
-
-        // instanceof handles nulls
-        if (!(other instanceof Person)) {
-            return false;
-        }
-
-        Person otherPerson = (Person) other;
-        return name.equals(otherPerson.name)
-                && phone.equals(otherPerson.phone)
-                && address.equals(otherPerson.address)
-                && role.equals(otherPerson.role);
-    }
-
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own

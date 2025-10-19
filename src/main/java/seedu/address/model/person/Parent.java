@@ -18,6 +18,10 @@ public class Parent extends Person {
         super(name, phone, address, new Role("parent"), remark);
     }
 
+    /**
+     * Returns true if both persons have the same identity and data fields.
+     * This defines a stronger notion of equality between two persons.
+     */
     @Override
     public boolean equals(Object other) {
         if (other == this) {
@@ -32,7 +36,6 @@ public class Parent extends Person {
         Parent otherPerson = (Parent) other;
         return name.equals(otherPerson.name)
                 && phone.equals(otherPerson.phone)
-                && address.equals(otherPerson.address)
-                && role.equals(otherPerson.role);
+                && address.equals(otherPerson.address);
     }
 }
