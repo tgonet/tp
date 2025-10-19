@@ -8,6 +8,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Student;
 
 /**
  * An UI component that displays information of a {@code Person}.
@@ -51,14 +52,16 @@ public class PersonCard extends UiPart<Region> {
         name.setText(person.getName().fullName);
         phone.setText(person.getPhone().value);
         address.setText(person.getAddress().value);
-        person.getTags().stream()
-                .sorted(Comparator.comparing(tag -> tag.tagName))
-                .forEach(tag -> {
-                    Label tagLabel = new Label(tag.tagName);
-                    String styleClass = tag.tagName.toLowerCase();
-                    tagLabel.getStyleClass().add(styleClass);
-                    tags.getChildren().add(tagLabel);
-                });
+        if (person instanceof Student student) {
+            student.getTags().stream()
+                    .sorted(Comparator.comparing(tag -> tag.tagName))
+                    .forEach(tag -> {
+                        Label tagLabel = new Label(tag.tagName);
+                        String styleClass = tag.tagName.toLowerCase();
+                        tagLabel.getStyleClass().add(styleClass);
+                        tags.getChildren().add(tagLabel);
+                    });
+        }
         role.setText(person.getRole().toString());
         role.getStyleClass().add(person.getRole().toString().toLowerCase());
     }

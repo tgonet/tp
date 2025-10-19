@@ -1,9 +1,9 @@
 package seedu.address.model.person;
 
-import seedu.address.model.tag.Tag;
-
-import java.util.Set;
-
+/**
+ * Represents a Parent in the address book.
+ * Guarantees: details are present and not null, field values are validated, immutable.
+ */
 public class Parent extends Person {
 
     /**
@@ -13,9 +13,26 @@ public class Parent extends Person {
      * @param phone
      * @param address
      * @param remark
-     * @param tags
      */
-    public Parent(Name name, Phone phone, Address address, Remark remark, Set<Tag> tags) {
-        super(name, phone, address, remark, tags);
+    public Parent(Name name, Phone phone, Address address, Remark remark) {
+        super(name, phone, address, new Role("parent"), remark);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+
+        // instanceof handles nulls
+        if (!(other instanceof Parent)) {
+            return false;
+        }
+
+        Parent otherPerson = (Parent) other;
+        return name.equals(otherPerson.name)
+                && phone.equals(otherPerson.phone)
+                && address.equals(otherPerson.address)
+                && role.equals(otherPerson.role);
     }
 }

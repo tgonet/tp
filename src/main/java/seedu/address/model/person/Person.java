@@ -2,19 +2,15 @@ package seedu.address.model.person;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 import seedu.address.commons.util.ToStringBuilder;
-import seedu.address.model.tag.Tag;
 
 /**
  * Represents a Person in the address book.
  * Guarantees: details are present and not null, field values are validated, immutable.
  */
-public class Person {
+public abstract class Person {
 
     // Identity fields
     protected final Name name;
@@ -24,33 +20,18 @@ public class Person {
     protected final Address address;
     protected final Remark remark;
     protected final Role role;
-    protected final Set<Tag> tags = new HashSet<>();
+    // Role might seem useless but is used for display purposes and storage
 
     /**
      * Every field must be present and not null.
      */
-    public Person(Name name, Phone phone, Address address, Remark remark, Set<Tag> tags) {
-        requireAllNonNull(name, phone, address, tags);
+    public Person(Name name, Phone phone, Address address, Role role, Remark remark) {
+        requireAllNonNull(name, phone, address);
         this.name = name;
         this.phone = phone;
         this.address = address;
-        this.role = new Role("student"); //Remove ltr
+        this.role = role; //Remove ltr
         this.remark = remark;
-        this.tags.addAll(tags);
-    }
-
-//    To be removed
-    /**
-     * Every field must be present and not null.
-     */
-    public Person(Name name, Phone phone, Address address, Role role, Remark remark, Set<Tag> tags) {
-        requireAllNonNull(name, phone, address, role, tags);
-        this.name = name;
-        this.phone = phone;
-        this.address = address;
-        this.role = role;
-        this.remark = remark;
-        this.tags.addAll(tags);
     }
 
     public Name getName() {
@@ -71,14 +52,6 @@ public class Person {
 
     public Remark getRemark() {
         return remark;
-    }
-
-    /**
-     * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
-     * if modification is attempted.
-     */
-    public Set<Tag> getTags() {
-        return Collections.unmodifiableSet(tags);
     }
 
     /**
@@ -113,14 +86,13 @@ public class Person {
         return name.equals(otherPerson.name)
                 && phone.equals(otherPerson.phone)
                 && address.equals(otherPerson.address)
-                && role.equals(otherPerson.role)
-                && tags.equals(otherPerson.tags);
+                && role.equals(otherPerson.role);
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, address, role, remark, tags);
+        return Objects.hash(name, phone, address, role, remark);
     }
 
     @Override
@@ -131,8 +103,6 @@ public class Person {
                 .add("address", address)
                 .add("role", role)
                 .add("remark", remark)
-                .add("tags", tags)
                 .toString();
     }
-
 }

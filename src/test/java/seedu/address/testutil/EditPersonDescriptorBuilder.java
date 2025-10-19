@@ -11,6 +11,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Remark;
 import seedu.address.model.person.Role;
+import seedu.address.model.person.Student;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -37,7 +38,9 @@ public class EditPersonDescriptorBuilder {
         descriptor.setPhone(person.getPhone());
         descriptor.setAddress(person.getAddress());
         descriptor.setRole(person.getRole());
-        descriptor.setTags(person.getTags());
+        if (person instanceof Student student) {
+            descriptor.setTags(student.getTags());
+        }
     }
 
     /**
