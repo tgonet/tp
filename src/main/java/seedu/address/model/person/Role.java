@@ -37,6 +37,20 @@ public class Role {
         return test.matches(VALIDATION_REGEX);
     }
 
+    /**
+     * Returns true if this is a STUDENT role.
+     */
+    public boolean isStudent() {
+        return role.equals("student");
+    }
+
+    /**
+     * Returns true if this is a PARENT role.
+     */
+    public boolean isParent() {
+        return role.equals("parent");
+    }
+
     @Override
     public String toString() {
         return role;

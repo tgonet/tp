@@ -14,10 +14,12 @@ import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Name;
+import seedu.address.model.person.Parent;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Remark;
 import seedu.address.model.person.Role;
+import seedu.address.model.person.Student;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -45,9 +47,19 @@ public class AddCommandParser implements Parser<AddCommand> {
         Address address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
         Role role = ParserUtil.parseRole(argMultimap.getValue(PREFIX_ROLE).get());
         Remark remark = new Remark(""); // add command does not allow adding remarks straight away
-        Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 
-        Person person = new Person(name, phone, address, role, remark, tagList);
+        // Update Logic here to create Person based on role
+        // For now no error message is displayed if tags are entered for a parent,
+        // the tags will just be discarded
+        Person person;
+        if (role.isStudent()) {
+            Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
+            person = new Student(name, phone, address, remark, tagList);
+        } else if (role.isParent()) {
+            person = new Parent(name, phone, address, remark);
+        } else {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+        }
 
         return new AddCommand(person);
     }
