@@ -16,7 +16,7 @@ public class Session {
      */
     public Session(Day day, Time time) {
         assert day != null;
-        assert  time != null;
+        assert time != null;
         this.day = day;
         this.time = time;
     }
