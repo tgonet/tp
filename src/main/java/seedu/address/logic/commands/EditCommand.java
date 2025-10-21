@@ -20,12 +20,7 @@ import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
-import seedu.address.model.person.Address;
-import seedu.address.model.person.Name;
-import seedu.address.model.person.Person;
-import seedu.address.model.person.Phone;
-import seedu.address.model.person.Remark;
-import seedu.address.model.person.Role;
+import seedu.address.model.person.*;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -99,8 +94,10 @@ public class EditCommand extends Command {
         Role updatedRole = editPersonDescriptor.getRole().orElse(personToEdit.getRole());
         Remark updatedRemark = personToEdit.getRemark(); // edit command does not allow editing remarks
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
+        Set<Session> updatedSessions = editPersonDescriptor.getSessions().orElse(personToEdit.getSessions());
 
-        return new Person(updatedName, updatedPhone, updatedAddress, updatedRole, updatedRemark, updatedTags);
+        return new Person(updatedName, updatedPhone, updatedAddress, updatedRole, updatedRemark,
+                updatedTags, updatedSessions);
     }
 
     @Override
@@ -138,6 +135,7 @@ public class EditCommand extends Command {
         private Role role;
         private Remark remark;
         private Set<Tag> tags;
+        private Set<Session> sessions;
 
         public EditPersonDescriptor() {}
 
@@ -218,6 +216,23 @@ public class EditCommand extends Command {
             return (tags != null) ? Optional.of(Collections.unmodifiableSet(tags)) : Optional.empty();
         }
 
+        /**
+         * Sets {@code tags} to this object's {@code tags}.
+         * A defensive copy of {@code tags} is used internally.
+         */
+        public void setSessions(Set<Session> Sessions) {
+            this.sessions = (sessions != null) ? new HashSet<>(sessions) : null;
+        }
+
+        /**
+         * Returns an unmodifiable tag set, which throws {@code UnsupportedOperationException}
+         * if modification is attempted.
+         * Returns {@code Optional#empty()} if {@code tags} is null.
+         */
+        public Optional<Set<Session>> getSessions() {
+            return (this.sessions != null) ? Optional.of(Collections.unmodifiableSet(sessions)) : Optional.empty();
+        }
+
         @Override
         public boolean equals(Object other) {
             if (other == this) {
@@ -235,7 +250,8 @@ public class EditCommand extends Command {
                     && Objects.equals(address, otherEditPersonDescriptor.address)
                     && Objects.equals(role, otherEditPersonDescriptor.role)
                     && Objects.equals(remark, otherEditPersonDescriptor.remark)
-                    && Objects.equals(tags, otherEditPersonDescriptor.tags);
+                    && Objects.equals(tags, otherEditPersonDescriptor.tags)
+                    && Objects.equals(sessions, otherEditPersonDescriptor.sessions);
         }
 
         @Override
@@ -247,6 +263,7 @@ public class EditCommand extends Command {
                     .add("role", role)
                     .add("remark", remark)
                     .add("tags", tags)
+                    .add("sessions", sessions)
                     .toString();
         }
     }

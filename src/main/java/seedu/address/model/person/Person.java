@@ -25,8 +25,10 @@ public class Person {
     private final Remark remark;
     private final Role role;
     private final Set<Tag> tags = new HashSet<>();
+    private final Set<Session> sessions;
 
     /**
+     * Used during create new Person object during add command
      * Every field must be present and not null.
      */
     public Person(Name name, Phone phone, Address address, Role role, Remark remark, Set<Tag> tags) {
@@ -37,6 +39,22 @@ public class Person {
         this.role = role;
         this.remark = remark;
         this.tags.addAll(tags);
+        this.sessions = new HashSet<>();
+    }
+
+    /**
+     * Used during edit or add session command
+     * Every field must be present and not null.
+     */
+    public Person(Name name, Phone phone, Address address, Role role, Remark remark, Set<Tag> tags, Set<Session> sessions) {
+        requireAllNonNull(name, phone, address, role, tags, sessions);
+        this.name = name;
+        this.phone = phone;
+        this.address = address;
+        this.role = role;
+        this.remark = remark;
+        this.tags.addAll(tags);
+        this.sessions = sessions;
     }
 
     public Name getName() {
@@ -65,6 +83,14 @@ public class Person {
      */
     public Set<Tag> getTags() {
         return Collections.unmodifiableSet(tags);
+    }
+
+    /**
+     * Returns an immutable session set, which throws {@code UnsupportedOperationException}
+     * if modification is attempted.
+     */
+    public Set<Session> getSessions() {
+        return Collections.unmodifiableSet(sessions);
     }
 
     /**
