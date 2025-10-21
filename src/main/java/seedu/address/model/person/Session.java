@@ -4,8 +4,8 @@ package seedu.address.model.person;
  * Represents a Person's session in the address book.
  */
 public class Session {
-    Day day;
-    Time time;
+    private Day day;
+    private Time time;
 
     /**
      * Constructs a {@code Session}.
@@ -19,14 +19,30 @@ public class Session {
         this.time = time;
     }
 
+    /**
+     * Returns the day of this session.
+     *
+     * @return the {@link Day} object representing the day of the session
+     */
     public Day getDay() {
         return day;
     }
 
+    /**
+     * Returns the time of this session.
+     *
+     * @return the {@link Time} object representing the time of the session
+     */
     public Time getTime() {
         return time;
     }
 
+    /**
+     * Returns a string representation of this session.
+     * The format is: DAY-[TIME], e.g., "Mon-[3pm-5pm]".
+     *
+     * @return a string representing the day and time of the session
+     */
     @Override
     public String toString() {
         return day.toString() + "-" + "[" + time.toString() + "]";

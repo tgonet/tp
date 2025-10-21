@@ -24,6 +24,11 @@ public class Time {
         this.value = time;
     }
 
+    /**
+     * Returns the string value of this object.
+     *
+     * @return the underlying string value
+     */
     public String getValue() {
         return value;
     }

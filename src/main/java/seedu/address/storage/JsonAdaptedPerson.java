@@ -17,8 +17,8 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Remark;
 import seedu.address.model.person.Role;
-import seedu.address.model.person.Student;
 import seedu.address.model.person.Session;
+import seedu.address.model.person.Student;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -131,7 +131,7 @@ class JsonAdaptedPerson {
 
         if (role.equals("student")) {
             final Set<Session> modelSessions = new HashSet<>(personSessions);
-        return new Student(modelName, modelPhone, modelAddress, modelRemark, modelTags, modelSessions);
+            return new Student(modelName, modelPhone, modelAddress, modelRemark, modelTags, modelSessions);
         } else {
             return new Parent(modelName, modelPhone, modelAddress, modelRemark);
         }
