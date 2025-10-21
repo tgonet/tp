@@ -261,8 +261,7 @@ public class EditCommand extends Command {
                     && Objects.equals(address, otherEditPersonDescriptor.address)
                     && Objects.equals(role, otherEditPersonDescriptor.role)
                     && Objects.equals(remark, otherEditPersonDescriptor.remark)
-                    && Objects.equals(tags, otherEditPersonDescriptor.tags)
-                    && Objects.equals(sessions, otherEditPersonDescriptor.sessions);
+                    && Objects.equals(tags, otherEditPersonDescriptor.tags);
         }
 
         @Override
@@ -274,7 +273,6 @@ public class EditCommand extends Command {
                     .add("role", role)
                     .add("remark", remark)
                     .add("tags", tags)
-                    .add("sessions", sessions)
                     .toString();
         }
     }

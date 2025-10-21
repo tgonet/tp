@@ -15,14 +15,14 @@ public class TimeTest {
 
     @Test
     public void constructor_invalidTime_throwsIllegalArgumentException() {
-        String invalidTime = "25:00AM-26:00PM"; // invalid hours
-        assertThrows(IllegalArgumentException.class, () -> new Time(invalidTime));
+        String invalidTime1 = "25:00AM-26:00PM";
+        assertThrows(IllegalArgumentException.class, () -> new Time(invalidTime1));
 
-        invalidTime = "3pm5pm"; // missing dash
-        assertThrows(IllegalArgumentException.class, () -> new Time(invalidTime));
+        String invalidTime2 = "3pm5pm";
+        assertThrows(IllegalArgumentException.class, () -> new Time(invalidTime2));
 
-        invalidTime = "13pm-2pm"; // invalid 12-hour format
-        assertThrows(IllegalArgumentException.class, () -> new Time(invalidTime));
+        String invalidTime3 = "13pm-2pm";
+        assertThrows(IllegalArgumentException.class, () -> new Time(invalidTime3));
     }
 
     @Test

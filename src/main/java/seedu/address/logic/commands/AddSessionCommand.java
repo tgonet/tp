@@ -35,7 +35,7 @@ public class AddSessionCommand extends Command {
             + "Example: " + COMMAND_WORD + " "
             + "1 "
             + PREFIX_DAY + "Mon "
-            + PREFIX_TIME + "12:00 ";
+            + PREFIX_TIME + "12pm-1pm ";
 
     public static final String MESSAGE_SUCCESS = "New session added for %1$s";
     public static final String MESSAGE_DUPLICATE_SESSION = "This session already exists for the person";
@@ -76,7 +76,10 @@ public class AddSessionCommand extends Command {
         }
 
         Person personToEdit = lastShownList.get(index.getZeroBased());
-        if (personToEdit instanceof Student) {
+        if (personToEdit instanceof Student student) {
+            if (student.hasSession(new Session(day, time))) {
+                throw new CommandException(MESSAGE_DUPLICATE_SESSION);
+            }
             Person personUpdated = toCopy((Student) personToEdit, day, time);
             model.setPerson(personToEdit, personUpdated);
             model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
@@ -130,7 +133,7 @@ public class AddSessionCommand extends Command {
         }
 
         AddSessionCommand otherAddSessionCommand = (AddSessionCommand) other;
-        return this.day.equals(otherAddSessionCommand.day)
+        return this.index.equals(otherAddSessionCommand.index) && this.day.equals(otherAddSessionCommand.day)
                 && this.time.equals(otherAddSessionCommand.time);
     }
 

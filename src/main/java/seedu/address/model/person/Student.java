@@ -63,6 +63,10 @@ public class Student extends Person {
         return Collections.unmodifiableSet(sessions);
     }
 
+    public boolean hasSession(Session session) {
+        return this.sessions.contains(session);
+    }
+
     /**
      * Returns true if both persons have the same identity and data fields.
      * This defines a stronger notion of equality between two persons.
