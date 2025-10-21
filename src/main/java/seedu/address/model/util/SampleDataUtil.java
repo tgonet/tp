@@ -7,12 +7,15 @@ import java.util.stream.Collectors;
 import seedu.address.model.AddressBook;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.person.Address;
+import seedu.address.model.person.Day;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Remark;
 import seedu.address.model.person.Role;
+import seedu.address.model.person.Session;
 import seedu.address.model.tag.Tag;
+import seedu.address.model.person.Time;
 
 /**
  * Contains utility methods for populating {@code AddressBook} with sample data.
@@ -24,22 +27,22 @@ public class SampleDataUtil {
         return new Person[] {
             new Person(new Name("Alex Yeoh"), new Phone("87438807"),
                 new Address("Blk 30 Geylang Street 29, #06-40"), new Role("student"), EMPTY_REMARK,
-                getTagSet("math")),
+                getTagSet("math"), getSessionSet(new Session(new Day("Mon"), new Time("2pm-4pm")))),
             new Person(new Name("Bernice Yu"), new Phone("99272758"),
                 new Address("Blk 30 Lorong 3 Serangoon Gardens, #07-18"), new Role("student"), EMPTY_REMARK,
-                getTagSet("math")),
+                getTagSet("math"), getSessionSet(new Session(new Day("Mon"), new Time("2pm-4pm")))),
             new Person(new Name("Charlotte Oliveiro"), new Phone("93210283"),
                 new Address("Blk 11 Ang Mo Kio Street 74, #11-04"), new Role("student"), EMPTY_REMARK,
-                getTagSet("math")),
+                getTagSet("math"), getSessionSet(new Session(new Day("Mon"), new Time("2pm-4pm")))),
             new Person(new Name("David Li"), new Phone("91031282"),
                 new Address("Blk 436 Serangoon Gardens Street 26, #16-43"), new Role("student"), EMPTY_REMARK,
-                getTagSet("math")),
+                getTagSet("math"), getSessionSet(new Session(new Day("Mon"), new Time("2pm-4pm")))),
             new Person(new Name("Irfan Ibrahim"), new Phone("92492021"),
                 new Address("Blk 47 Tampines Street 20, #17-35"), new Role("student"), EMPTY_REMARK,
-                getTagSet("math")),
+                getTagSet("math"), getSessionSet(new Session(new Day("Mon"), new Time("2pm-4pm")))),
             new Person(new Name("Roy Balakrishnan"), new Phone("92624417"),
                 new Address("Blk 45 Aljunied Street 85, #11-31"), new Role("student"), EMPTY_REMARK,
-                getTagSet("math"))
+                getTagSet("math"), getSessionSet(new Session(new Day("Mon"), new Time("2pm-4pm"))))
         };
     }
 
@@ -57,6 +60,15 @@ public class SampleDataUtil {
     public static Set<Tag> getTagSet(String... strings) {
         return Arrays.stream(strings)
                 .map(Tag::new)
+                .collect(Collectors.toSet());
+    }
+
+    /**
+     * Returns a session set containing the list of strings given.
+     */
+    public static Set<Session> getSessionSet(Session... session) {
+        return Arrays.stream(session)
+                .map(s -> new Session(new Day(s.getDay().getValue()), new Time(s.getTime().getValue())))
                 .collect(Collectors.toSet());
     }
 
