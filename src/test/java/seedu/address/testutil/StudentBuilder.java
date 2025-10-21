@@ -46,8 +46,8 @@ public class StudentBuilder extends PersonBuilder<StudentBuilder> {
     }
 
      /**
-     * Parses the {@code tags} into a {@code Set<Tag>} and set it to the {@code Student} that we are building.
-     */
+      * Parses the {@code tags} into a {@code Set<Tag>} and set it to the {@code Student} that we are building.
+      */
     public StudentBuilder withSessions(Session ... sessions) {
         this.sessions = SampleDataUtil.getSessionSet(sessions);
         return this;
