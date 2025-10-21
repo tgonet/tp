@@ -28,7 +28,6 @@ public class JsonAdaptedPersonTest {
     private static final String INVALID_TAG = "#friend";
     private static final String INVALID_DAY = "Funday";
     private static final String INVALID_TIME = "25:00-26:00";
-    private static final Session INVALID_SESSION = new Session(new Day(INVALID_DAY), new Time(INVALID_TIME));
 
     private static final String VALID_NAME = BENSON.getName().toString();
     private static final String VALID_PHONE = BENSON.getPhone().toString();
