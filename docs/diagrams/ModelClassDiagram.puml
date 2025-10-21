@@ -19,6 +19,7 @@ Class Parent
 Class Address
 Class Name
 Class Phone
+Class Role
 Class Tag
 
 Class I #FFFFFF
