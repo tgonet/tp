@@ -381,6 +381,32 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 2. System persists preferences, releases resources, and terminates.  
    Use case ends.
 
+### UC08 — Add remarks to contact
+**Goal**: Add remarks for each contact to keep track of their learning progress and special requests.  
+**Precondition**: At least one contact exists.  
+**MSS**
+1. User enters `remark INDEX rm/REMARK`.
+2. System adds remark to referenced contact.
+3. System confirms addition of remark and updates the list.
+Use case ends.
+
+    **Extensions**
+* 1a. `INDEX` is not a valid visible index (≤0 or > list size, or non-integer).
+    * 1a1. System shows error and keeps list unchanged. Use case ends.
+
+### UC09 — Delete remarks for contact
+**Goal**: Delete remarks for each contact to remove clutter.  
+**Precondition**: At least one contact exists. 
+**MSS**
+1. User enters `remark INDEX`.
+2. System deletes remark (if any) to referenced contact.
+3. System confirms deletion of remark and updates the list.
+   Use case ends.
+
+    **Extensions**
+* 1a. `INDEX` is not a valid visible index (≤0 or > list size, or non-integer).
+    * 1a1. System shows error and keeps list unchanged. Use case ends.
+
 ### Non-Functional Requirements
 #### Portability
 1. Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
