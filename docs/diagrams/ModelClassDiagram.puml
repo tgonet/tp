@@ -36,8 +36,8 @@ ModelManager -left-> "1" AddressBook
 ModelManager -right-> "1" UserPrefs
 UserPrefs .up.|> ReadOnlyUserPrefs
 
-Parent <|--left-- Person
-Student <|-right- Person
+Person <|--right-- Parent
+Person <|-left- Student
 
 AddressBook *--> "1" UniquePersonList
 UniquePersonList --> "~* all" Person

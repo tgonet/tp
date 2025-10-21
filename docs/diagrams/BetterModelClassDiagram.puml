@@ -12,8 +12,8 @@ UniqueTagList -[hidden]down- UniquePersonList
 UniqueTagList -right-> "*" Tag
 UniquePersonList -right-> Person
 
-Parent <|--left-- Person
-Student <|-down- Person
+Person <|--right-- Parent
+Person <|-up- Student
 
 Person *--> Name
 Person *--> Phone
