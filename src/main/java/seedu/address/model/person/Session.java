@@ -27,7 +27,7 @@ public class Session {
      *
      * @param day A valid day.
      * @param time A valid time/
-     * 
+     *
      */
     public Session(String day, String time) {
         requireNonNull(day, time);
