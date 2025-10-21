@@ -43,5 +43,4 @@ public class AddSessionCommandParser implements Parser<AddSessionCommand> {
 
         return new AddSessionCommand(index, day, time);
     }
-    
 }

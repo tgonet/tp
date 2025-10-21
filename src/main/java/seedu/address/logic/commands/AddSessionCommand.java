@@ -20,7 +20,6 @@ import seedu.address.model.person.*;
  * Adds a session to an existing person in the address book.
  */
 public class AddSessionCommand extends Command {
-    
     public static final String COMMAND_WORD = "addsession";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a tuition session to a person. "
