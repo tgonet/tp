@@ -12,10 +12,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Name;
+import seedu.address.model.person.Parent;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Remark;
 import seedu.address.model.person.Role;
+import seedu.address.model.person.Student;
 import seedu.address.model.person.Session;
 import seedu.address.model.tag.Tag;
 
@@ -65,9 +67,11 @@ class JsonAdaptedPerson {
         address = source.getAddress().value;
         role = source.getRole().role;
         remark = source.getRemark().value;
-        tags.addAll(source.getTags().stream()
-                .map(JsonAdaptedTag::new)
-                .collect(Collectors.toList()));
+        if (source instanceof Student s) {
+            tags.addAll(s.getTags().stream()
+                    .map(JsonAdaptedTag::new)
+                    .collect(Collectors.toList()));
+        }
         sessions.addAll(source.getSessions().stream()
                 .map(JsonAdaptedSession::new)
                 .collect(Collectors.toList()));
@@ -119,13 +123,17 @@ class JsonAdaptedPerson {
         if (!Role.isValidRole(role)) {
             throw new IllegalValueException(Role.MESSAGE_CONSTRAINTS);
         }
-        final Role modelRole = new Role(role);
 
         final Remark modelRemark = new Remark(remark);
 
         final Set<Tag> modelTags = new HashSet<>(personTags);
-        final Set<Session> modelSessions = new HashSet<>(personSessions);
-        return new Person(modelName, modelPhone, modelAddress, modelRole, modelRemark, modelTags, modelSessions);
+
+        if (role.equals("student")) {
+            final Set<Session> modelSessions = new HashSet<>(personSessions);
+        return new Student(modelName, modelPhone, modelAddress, modelRemark, modelTags, modelSessions);
+        } else {
+            return new Parent(modelName, modelPhone, modelAddress, modelRemark);
+        }
     }
 
 }

@@ -356,3 +356,53 @@
     -fx-background-radius: 2;
     -fx-font-size: 11;
 }
+
+#tags .math {
+    -fx-background-color: #76a4db;
+}
+
+#tags .physics {
+    -fx-background-color: #316c31;
+}
+
+#tags .chemistry {
+    -fx-background-color: #f5a623;
+}
+
+#tags .biology {
+    -fx-background-color: #7ed321;
+}
+
+#tags .history {
+    -fx-background-color: #9b59b6;
+}
+
+#tags .geography {
+    -fx-background-color: #b09e5b;
+}
+
+#tags .literature {
+    -fx-background-color: #b95555;
+}
+
+#tags .english {
+    -fx-background-color: #1853a4;
+}
+
+.student {
+    -fx-text-fill: white;
+    -fx-background-color: #1e323a;
+    -fx-padding: 1 3 1 3;
+    -fx-border-radius: 5;
+    -fx-background-radius: 2;
+    -fx-font-size: 13;
+}
+
+.parent {
+    -fx-text-fill: white;
+    -fx-background-color: #ff8698;
+    -fx-padding: 1 3 1 3;
+    -fx-border-radius: 5;
+    -fx-background-radius: 2;
+    -fx-font-size: 13;
+}

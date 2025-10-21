@@ -20,7 +20,14 @@ import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
-import seedu.address.model.person.*;
+import seedu.address.model.person.Address;
+import seedu.address.model.person.Name;
+import seedu.address.model.person.Parent;
+import seedu.address.model.person.Person;
+import seedu.address.model.person.Phone;
+import seedu.address.model.person.Remark;
+import seedu.address.model.person.Role;
+import seedu.address.model.person.Student;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -91,13 +98,16 @@ public class EditCommand extends Command {
         Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
         Phone updatedPhone = editPersonDescriptor.getPhone().orElse(personToEdit.getPhone());
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
-        Role updatedRole = editPersonDescriptor.getRole().orElse(personToEdit.getRole());
         Remark updatedRemark = personToEdit.getRemark(); // edit command does not allow editing remarks
-        Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
-        Set<Session> updatedSessions = editPersonDescriptor.getSessions().orElse(personToEdit.getSessions());
+        // Do not allow updating of Role
 
-        return new Person(updatedName, updatedPhone, updatedAddress, updatedRole, updatedRemark,
-                updatedTags, updatedSessions);
+        if (personToEdit instanceof Student studentToEdit) {
+            Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(studentToEdit.getTags());
+            Set<Session> updatedSessions = editPersonDescriptor.getSessions().orElse(personToEdit.getSessions());
+            return new Student(updatedName, updatedPhone, updatedAddress, updatedRemark, updatedTags, updatedSessions);
+        } else {
+            return new Parent(updatedName, updatedPhone, updatedAddress, updatedRemark);
+        }
     }
 
     @Override

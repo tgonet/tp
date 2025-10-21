@@ -39,14 +39,14 @@
     "name" : "Fiona Kunz",
     "phone" : "94824276",
     "address" : "little tokyo, Tanjong Pagar, Singapore",
-    "role": "student",
+    "role": "parent",
     "remark" : "She likes Math.",
     "tags" : [  ]
   }, {
     "name" : "George Best",
     "phone" : "98765432",
     "address" : "4th street, Fifth Avenue, Singapore",
-    "role": "student",
+    "role": "parent",
     "remark" : "",
     "tags" : [ "math" ]
   } ]

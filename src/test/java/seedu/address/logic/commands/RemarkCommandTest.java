@@ -19,9 +19,12 @@ import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.person.Parent;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Remark;
-import seedu.address.testutil.PersonBuilder;
+import seedu.address.model.person.Student;
+import seedu.address.testutil.ParentBuilder;
+import seedu.address.testutil.StudentBuilder;
 
 /**
  * Contains integration tests (interaction with the Model) and unit tests for RemarkCommand.
@@ -35,7 +38,18 @@ public class RemarkCommandTest {
     @Test
     public void execute_addRemarkUnfilteredList_success() {
         Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-        Person editedPerson = new PersonBuilder(firstPerson).withRemark(REMARK_STUB).build();
+        Person editedPerson;
+        if (firstPerson instanceof Student) {
+            editedPerson = new StudentBuilder((Student) firstPerson)
+                    .withRemark(REMARK_STUB)
+                    .build();
+        } else if (firstPerson instanceof Parent) {
+            editedPerson = new ParentBuilder((Parent) firstPerson)
+                    .withRemark(REMARK_STUB)
+                    .build();
+        } else {
+            throw new AssertionError("Unexpected Person subtype: " + firstPerson.getClass());
+        }
 
         RemarkCommand remarkCommand = new RemarkCommand(INDEX_FIRST_PERSON, new Remark(editedPerson.getRemark().value));
 
@@ -50,7 +64,18 @@ public class RemarkCommandTest {
     @Test
     public void execute_deleteRemarkUnfilteredList_success() {
         Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-        Person editedPerson = new PersonBuilder(firstPerson).withRemark("").build();
+        Person editedPerson;
+        if (firstPerson instanceof Student) {
+            editedPerson = new StudentBuilder((Student) firstPerson)
+                    .withRemark("")
+                    .build();
+        } else if (firstPerson instanceof Parent) {
+            editedPerson = new ParentBuilder((Parent) firstPerson)
+                    .withRemark("")
+                    .build();
+        } else {
+            throw new AssertionError("Unexpected Person subtype: " + firstPerson.getClass());
+        }
 
         RemarkCommand remarkCommand = new RemarkCommand(INDEX_FIRST_PERSON,
                 new Remark(editedPerson.getRemark().toString()));
@@ -68,8 +93,18 @@ public class RemarkCommandTest {
         showPersonAtIndex(model, INDEX_FIRST_PERSON);
 
         Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-        Person editedPerson = new PersonBuilder(model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()))
-                .withRemark(REMARK_STUB).build();
+        Person editedPerson;
+        if (firstPerson instanceof Student) {
+            editedPerson = new StudentBuilder((Student) firstPerson)
+                    .withRemark(REMARK_STUB)
+                    .build();
+        } else if (firstPerson instanceof Parent) {
+            editedPerson = new ParentBuilder((Parent) firstPerson)
+                    .withRemark(REMARK_STUB)
+                    .build();
+        } else {
+            throw new AssertionError("Unexpected Person subtype: " + firstPerson.getClass());
+        }
 
         RemarkCommand remarkCommand = new RemarkCommand(INDEX_FIRST_PERSON, new Remark(editedPerson.getRemark().value));
 

@@ -42,14 +42,14 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
-import seedu.address.testutil.PersonBuilder;
+import seedu.address.testutil.StudentBuilder;
 
 public class AddCommandParserTest {
     private AddCommandParser parser = new AddCommandParser();
 
     @Test
     public void parse_allFieldsPresent_success() {
-        Person expectedPerson = new PersonBuilder(BOB).withTags(VALID_TAG_SUBJECT).build();
+        Person expectedPerson = new StudentBuilder(BOB).withTags(VALID_TAG_SUBJECT).build();
 
         // whitespace only preamble
         assertParseSuccess(parser, PREAMBLE_WHITESPACE + NAME_DESC_BOB + PHONE_DESC_BOB
@@ -57,7 +57,7 @@ public class AddCommandParserTest {
 
 
         // multiple tags - all accepted
-        Person expectedPersonMultipleTags = new PersonBuilder(BOB).withTags(VALID_TAG_SUBJECT, VALID_TAG_SUBJECT2)
+        Person expectedPersonMultipleTags = new StudentBuilder(BOB).withTags(VALID_TAG_SUBJECT, VALID_TAG_SUBJECT2)
                 .build();
         assertParseSuccess(parser,
                 NAME_DESC_BOB + PHONE_DESC_BOB + ADDRESS_DESC_BOB + ROLE_DESC_BOB
@@ -132,7 +132,7 @@ public class AddCommandParserTest {
     @Test
     public void parse_optionalFieldsMissing_success() {
         // zero tags
-        Person expectedPerson = new PersonBuilder(AMY).withTags().build();
+        Person expectedPerson = new StudentBuilder(AMY).withTags().build();
         assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + ADDRESS_DESC_AMY + ROLE_DESC_AMY,
                 new AddCommand(expectedPerson));
     }

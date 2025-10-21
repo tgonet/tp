@@ -26,8 +26,12 @@
           </minWidth>
         </Label>
         <Label fx:id="name" text="\$first" styleClass="cell_big_label" />
+        <Region minWidth="2"/>
+        <Label fx:id="role" text="\$role "/>
       </HBox>
+      <Region minHeight="2"/>
       <FlowPane fx:id="tags" />
+      <Region minHeight="2"/>
       <Label fx:id="phone" styleClass="cell_small_label" text="\$phone" />
       <Label fx:id="address" styleClass="cell_small_label" text="\$address" />
     </VBox>

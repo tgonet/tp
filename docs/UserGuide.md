@@ -3,7 +3,7 @@ layout: page
 title: User Guide
 ---
 
-AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, AB3 can get your contact management tasks done faster than traditional GUI apps.
+EduConnect is a desktop application that **helps tutors manage contact information for students and parents, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, EduConnect can get your contact management tasks done faster than traditional GUI apps.
 
 * Table of Contents
 {:toc}
@@ -28,7 +28,7 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 
    * `list` : Lists all contacts.
 
-   * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : Adds a contact named `John Doe` to the Address Book.
+   * `add n/John Doe p/98765432 a/John street, block 123, #01-01` : Adds a contact named `John Doe` to the Address Book.
 
    * `delete 3` : Deletes the 3rd contact shown in the current list.
 
@@ -68,7 +68,7 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 
 Shows a message explaining how to access the help page.
 
-![help message](images/helpMessage.png)
+![helpMessage.png](images/helpMessage.png)
 
 Format: `help`
 
@@ -77,15 +77,14 @@ Format: `help`
 
 Adds a person to the address book.
 
-Format: `add n/NAME p/PHONE_NUMBER a/ADDRESS [t/TAG]…​`
+Format: `add n/NAME p/PHONE_NUMBER a/ADDRESS r/ROLE [t/TAG]…​`
 
-<div markdown="span" class="alert alert-primary">:bulb: **Tip:**
-A person can have any number of tags (including 0)
-</div>
+* A person can have any number of tags (including 0).
+* A person can have one of the two roles: `student` or `parent`
 
 Examples:
-* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
-* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
+* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 r/parent`
+* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 r/student t/criminal `
 
 ### Listing all persons : `list`
 
@@ -112,21 +111,23 @@ Examples:
 
 ### Locating persons by name: `find`
 
-Finds persons whose names contain any of the given keywords.
+Finds persons whose information matches/contains given criteria.
 
-Format: `find KEYWORD [MORE_KEYWORDS]`
+Format: `find [n/NAME] [r/ROLE]`
 
-* The search is case-insensitive. e.g `hans` will match `Hans`
-* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
-* Only the name is searched.
-* Only full words will be matched e.g. `Han` will not match `Hans`
-* Persons matching at least one keyword will be returned (i.e. `OR` search).
-  e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
+* The search is case-insensitive. e.g `n/hans` will match `Hans`
+* The order of the keywords does not matter. e.g. `n/Hans Bo` will match `Bo Hans`
+* Only the name or the role can be searched.
+* Only full words will be matched e.g. `n/Han` will not match `Hans`, `r/stu` will not match `student`
+* Persons matching all given parameters will be returned e.g. `find n/Alex r/student` will return all `student` named `Alex`
+* For each parameter, persons matching at least one keyword will be returned (i.e. `OR` search).
+    e.g. `n/Hans Bo` will return `Hans Gruber`, `Bo Yang`
 
 Examples:
-* `find John` returns `john` and `John Doe`
-* `find alex david` returns `Alex Yeoh`, `David Li`<br>
-  ![result for 'find alex david'](images/findAlexDavidResult.png)
+* `find n/John` returns `john` and `John Doe`
+* `find n/alex david` returns `Alex Yeoh`, `David Li`<br>
+![findAlexDavidResult.png](images/findAlexDavidResult.png)
+* `find r/student` returns all persons with role of `student`
 
 ### Deleting a person : `delete`
 
@@ -141,6 +142,29 @@ Format: `delete INDEX`
 Examples:
 * `list` followed by `delete 2` deletes the 2nd person in the address book.
 * `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+
+### Leaving a remark : `remark`
+
+Leaves a remark about the specified person from the address book.
+
+Format: `remark INDEX rm/REMARK`
+
+* Leaves a remark about the person at the specified `INDEX`.
+* The index refers to the index number shown in the displayer person list.
+* Using `remark` again for the same person **overwrites** previous remark.
+
+Examples:
+* `remark 1 rm/Weak at math` leaves a remark on the 1st person in list.
+
+### View detail of an entry: `view`
+
+View the detail of the specified person from the address book.
+
+Format: `view INDEX`
+
+* The result is displayed in the app as a list.
+![viewResult.png](images/viewResult.png)
+* The index refers to the index number shown in the displayer person list.
 
 ### Clearing all entries : `clear`
 
@@ -191,10 +215,12 @@ _Details coming soon ..._
 
 Action | Format, Examples
 --------|------------------
-**Add** | `add n/NAME p/PHONE_NUMBER a/ADDRESS [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
+**Add** | `add n/NAME p/PHONE_NUMBER a/ADDRESS r/role [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend r/student t/colleague`
 **Clear** | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee`
 **Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
+**Remark** | `remark INDEX rm/REMARK` <br> e.g., `remark 1 rm/hardworking`
+**View** | `view INDEX` <br> e.g., `view 2`
 **List** | `list`
 **Help** | `help`

@@ -9,10 +9,11 @@ import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Day;
 import seedu.address.model.person.Name;
+import seedu.address.model.person.Parent;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Remark;
-import seedu.address.model.person.Role;
+import seedu.address.model.person.Student;
 import seedu.address.model.person.Session;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.person.Time;
@@ -25,24 +26,26 @@ public class SampleDataUtil {
 
     public static Person[] getSamplePersons() {
         return new Person[] {
-            new Person(new Name("Alex Yeoh"), new Phone("87438807"),
-                new Address("Blk 30 Geylang Street 29, #06-40"), new Role("student"), EMPTY_REMARK,
+            new Student(new Name("Alex Yeoh"), new Phone("87438807"),
+                new Address("Blk 30 Geylang Street 29, #06-40"), EMPTY_REMARK,
                 getTagSet("math"), getSessionSet(new Session(new Day("Mon"), new Time("2pm-4pm")))),
-            new Person(new Name("Bernice Yu"), new Phone("99272758"),
-                new Address("Blk 30 Lorong 3 Serangoon Gardens, #07-18"), new Role("student"), EMPTY_REMARK,
+            new Student(new Name("Bernice Yu"), new Phone("99272758"),
+                new Address("Blk 30 Lorong 3 Serangoon Gardens, #07-18"), EMPTY_REMARK,
+                getTagSet("science"), getSessionSet(new Session(new Day("Mon"), new Time("2pm-4pm")))),
+            new Student(new Name("Charlotte Oliveiro"), new Phone("93210283"),
+                new Address("Blk 11 Ang Mo Kio Street 74, #11-04"), EMPTY_REMARK,
+                getTagSet("english"), getSessionSet(new Session(new Day("Mon"), new Time("2pm-4pm")))),
+            new Student(new Name("David Chew"), new Phone("91031282"),
+                new Address("Blk 436 Serangoon Gardens Street 26, #16-43"), EMPTY_REMARK,
+                getTagSet("chinese"), getSessionSet(new Session(new Day("Mon"), new Time("2pm-4pm")))),
+            new Student(new Name("Irfan Ibrahim"), new Phone("92492021"),
+                new Address("Blk 47 Tampines Street 20, #17-35"), EMPTY_REMARK,
                 getTagSet("math"), getSessionSet(new Session(new Day("Mon"), new Time("2pm-4pm")))),
-            new Person(new Name("Charlotte Oliveiro"), new Phone("93210283"),
-                new Address("Blk 11 Ang Mo Kio Street 74, #11-04"), new Role("student"), EMPTY_REMARK,
+            new Student(new Name("Roy Balakrishnan"), new Phone("92624417"),
+                new Address("Blk 45 Aljunied Street 85, #11-31"), EMPTY_REMARK,
                 getTagSet("math"), getSessionSet(new Session(new Day("Mon"), new Time("2pm-4pm")))),
-            new Person(new Name("David Li"), new Phone("91031282"),
-                new Address("Blk 436 Serangoon Gardens Street 26, #16-43"), new Role("student"), EMPTY_REMARK,
-                getTagSet("math"), getSessionSet(new Session(new Day("Mon"), new Time("2pm-4pm")))),
-            new Person(new Name("Irfan Ibrahim"), new Phone("92492021"),
-                new Address("Blk 47 Tampines Street 20, #17-35"), new Role("student"), EMPTY_REMARK,
-                getTagSet("math"), getSessionSet(new Session(new Day("Mon"), new Time("2pm-4pm")))),
-            new Person(new Name("Roy Balakrishnan"), new Phone("92624417"),
-                new Address("Blk 45 Aljunied Street 85, #11-31"), new Role("student"), EMPTY_REMARK,
-                getTagSet("math"), getSessionSet(new Session(new Day("Mon"), new Time("2pm-4pm"))))
+            new Parent(new Name("Robin Banks"), new Phone("96767679"),
+                    new Address("Blk 67 My Grandfathers Road 67, #67-67"), EMPTY_REMARK)
         };
     }
 
