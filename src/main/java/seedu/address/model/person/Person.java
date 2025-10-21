@@ -21,7 +21,6 @@ public abstract class Person {
     protected final Remark remark;
     protected final Role role;
     // Role might seem useless but is used for display purposes and storage
-    protected final Set<Session> sessions;
 
     /**
      * Used during create new Person object during add command
@@ -34,23 +33,6 @@ public abstract class Person {
         this.address = address;
         this.role = role; //Remove ltr
         this.remark = remark;
-        this.tags.addAll(tags);
-        this.sessions = new HashSet<>();
-    }
-
-    /**
-     * Used during edit or add session command
-     * Every field must be present and not null.
-     */
-    public Person(Name name, Phone phone, Address address, Role role, Remark remark, Set<Tag> tags, Set<Session> sessions) {
-        requireAllNonNull(name, phone, address, role, tags, sessions);
-        this.name = name;
-        this.phone = phone;
-        this.address = address;
-        this.role = role;
-        this.remark = remark;
-        this.tags.addAll(tags);
-        this.sessions = sessions;
     }
 
     public Name getName() {
@@ -71,22 +53,6 @@ public abstract class Person {
 
     public Remark getRemark() {
         return remark;
-    }
-
-    /**
-     * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
-     * if modification is attempted.
-     */
-    public Set<Tag> getTags() {
-        return Collections.unmodifiableSet(tags);
-    }
-
-    /**
-     * Returns an immutable session set, which throws {@code UnsupportedOperationException}
-     * if modification is attempted.
-     */
-    public Set<Session> getSessions() {
-        return Collections.unmodifiableSet(sessions);
     }
 
     /**

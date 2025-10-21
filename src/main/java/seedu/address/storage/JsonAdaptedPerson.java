@@ -71,10 +71,11 @@ class JsonAdaptedPerson {
             tags.addAll(s.getTags().stream()
                     .map(JsonAdaptedTag::new)
                     .collect(Collectors.toList()));
+            sessions.addAll(s.getSessions().stream()
+                    .map(JsonAdaptedSession::new)
+                    .collect(Collectors.toList()));
         }
-        sessions.addAll(source.getSessions().stream()
-                .map(JsonAdaptedSession::new)
-                .collect(Collectors.toList()));
+
     }
 
     /**

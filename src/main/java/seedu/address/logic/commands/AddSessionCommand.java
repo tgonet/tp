@@ -14,10 +14,7 @@ import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
-import seedu.address.model.person.Day;
-import seedu.address.model.person.Person;
-import seedu.address.model.person.Session;
-import seedu.address.model.person.Time;
+import seedu.address.model.person.*;
 
 /**
  * Adds a session to an existing person in the address book.
@@ -64,15 +61,18 @@ public class AddSessionCommand extends Command {
         }
 
         Person personToEdit = lastShownList.get(index.getZeroBased());
-        Person personUpdated = toCopy(personToEdit, day, time);
-
-        model.setPerson(personToEdit, personUpdated);
-        model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
-
-        return new CommandResult(String.format(MESSAGE_SUCCESS, personToEdit.getName()));
+        if (personToEdit instanceof Student) {
+            Person personUpdated = toCopy((Student) personToEdit, day, time);
+            model.setPerson(personToEdit, personUpdated);
+            model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+            return new CommandResult(String.format(MESSAGE_SUCCESS, personToEdit.getName()));
+        }
+        else {
+            throw new CommandException(Messages.MESSAGE_ONLY_STUDENT_COMMAND);
+        }
     }
 
-    public Person toCopy(Person personToEdit, Day day, Time time) throws CommandException {
+    public Person toCopy(Student personToEdit, Day day, Time time) throws CommandException {
         assert personToEdit != null;
 
         // create new session
@@ -85,11 +85,10 @@ public class AddSessionCommand extends Command {
         }
         updatedSessions.add(newSession);
 
-        return new Person(
+        return new Student(
                 personToEdit.getName(),
                 personToEdit.getPhone(),
                 personToEdit.getAddress(),
-                personToEdit.getRole(),
                 personToEdit.getRemark(),
                 personToEdit.getTags(),
                 updatedSessions

@@ -14,6 +14,7 @@ import seedu.address.model.tag.Tag;
  */
 public class Student extends Person {
     private final Set<Tag> tags = new HashSet<>();
+    protected final Set<Session> sessions;
 
     /**
      * Every field must be present and not null.
@@ -27,6 +28,23 @@ public class Student extends Person {
     public Student(Name name, Phone phone, Address address, Remark remark, Set<Tag> tags) {
         super(name, phone, address, new Role("student"), remark);
         this.tags.addAll(tags);
+        this.sessions = new HashSet<>();
+    }
+
+    /**
+     * This is the constructor for edit command and add session command as when add command no need to add session
+     * Every field must be present and not null.
+     *
+     * @param name
+     * @param phone
+     * @param address
+     * @param remark
+     * @param tags
+     */
+    public Student(Name name, Phone phone, Address address, Remark remark, Set<Tag> tags, Set<Session> sessions) {
+        super(name, phone, address, new Role("student"), remark);
+        this.tags.addAll(tags);
+        this.sessions = sessions;
     }
 
     /**
@@ -35,6 +53,14 @@ public class Student extends Person {
      */
     public Set<Tag> getTags() {
         return Collections.unmodifiableSet(tags);
+    }
+
+    /**
+     * Returns an immutable session set, which throws {@code UnsupportedOperationException}
+     * if modification is attempted.
+     */
+    public Set<Session> getSessions() {
+        return Collections.unmodifiableSet(sessions);
     }
 
     /**

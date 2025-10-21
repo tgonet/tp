@@ -20,14 +20,8 @@ import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
-import seedu.address.model.person.Address;
-import seedu.address.model.person.Name;
-import seedu.address.model.person.Parent;
-import seedu.address.model.person.Person;
-import seedu.address.model.person.Phone;
+import seedu.address.model.person.*;
 import seedu.address.model.person.Remark;
-import seedu.address.model.person.Role;
-import seedu.address.model.person.Student;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -103,7 +97,7 @@ public class EditCommand extends Command {
 
         if (personToEdit instanceof Student studentToEdit) {
             Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(studentToEdit.getTags());
-            Set<Session> updatedSessions = editPersonDescriptor.getSessions().orElse(personToEdit.getSessions());
+            Set<Session> updatedSessions = editPersonDescriptor.getSessions().orElse( studentToEdit.getSessions());
             return new Student(updatedName, updatedPhone, updatedAddress, updatedRemark, updatedTags, updatedSessions);
         } else {
             return new Parent(updatedName, updatedPhone, updatedAddress, updatedRemark);
