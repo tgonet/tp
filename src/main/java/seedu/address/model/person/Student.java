@@ -13,8 +13,8 @@ import seedu.address.model.tag.Tag;
  * Guarantees: details are present and not null, field values are validated, immutable.
  */
 public class Student extends Person {
-    private final Set<Tag> tags = new HashSet<>();
     protected final Set<Session> sessions;
+    private final Set<Tag> tags = new HashSet<>();
 
     /**
      * Every field must be present and not null.

@@ -104,7 +104,7 @@ public class EditCommand extends Command {
 
         if (personToEdit instanceof Student studentToEdit) {
             Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(studentToEdit.getTags());
-            Set<Session> updatedSessions = editPersonDescriptor.getSessions().orElse( studentToEdit.getSessions());
+            Set<Session> updatedSessions = editPersonDescriptor.getSessions().orElse(studentToEdit.getSessions());
             return new Student(updatedName, updatedPhone, updatedAddress, updatedRemark, updatedTags, updatedSessions);
         } else {
             return new Parent(updatedName, updatedPhone, updatedAddress, updatedRemark);
@@ -231,7 +231,7 @@ public class EditCommand extends Command {
          * Sets {@code tags} to this object's {@code tags}.
          * A defensive copy of {@code tags} is used internally.
          */
-        public void setSessions(Set<Session> Sessions) {
+        public void setSessions(Set<Session> sessions) {
             this.sessions = (sessions != null) ? new HashSet<>(sessions) : null;
         }
 
