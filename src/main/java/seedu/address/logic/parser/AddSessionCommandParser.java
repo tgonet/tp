@@ -37,7 +37,6 @@ public class AddSessionCommandParser implements Parser<AddSessionCommand> {
         Day day = ParserUtil.parseDay(argMultimap.getValue(PREFIX_DAY)
                 .orElseThrow(() -> new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                         AddSessionCommand.MESSAGE_USAGE))));
-        
         Time time = ParserUtil.parseTime(argMultimap.getValue(PREFIX_TIME)
                 .orElseThrow(() -> new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                         AddSessionCommand.MESSAGE_USAGE))));
