@@ -29,7 +29,7 @@ public class Session {
 
     @Override
     public String toString() {
-        return day.toString() + " " + time.toString();
+        return day.toString() + "-" + "[" + time.toString() + "]";
     }
 
     @Override
