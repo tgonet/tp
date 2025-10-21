@@ -3,7 +3,13 @@ package seedu.address.model.person;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.AppUtil.checkArgument;
 
-
+/**
+ * Represents a time in 12-hour format with an optional minute component and AM/PM.
+ * <p>
+ * The time must follow the format {@code HH:MMam-HH:MMpm} (or AM/PM),
+ * e.g., "3pm-5pm" or "09:30AM-11:45AM".
+ * </p>
+ */
 public class Time {
     public static final String MESSAGE_CONSTRAINTS =
             "Time should be in the format HH:MM in 24-hour format";

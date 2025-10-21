@@ -13,7 +13,6 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
-
 import seedu.address.model.Model;
 import seedu.address.model.person.Day;
 import seedu.address.model.person.Person;
@@ -46,7 +45,11 @@ public class AddSessionCommand extends Command {
     private final Time time;
 
     /**
-     * Creates an AddCommand to add the specified {@code Person}
+     * Creates an AddSessionCommand to add a session to a specific person in the list.
+     *
+     * @param index the index of the person in the filtered list
+     * @param day   the day of the new session
+     * @param time  the time of the new session
      */
     public AddSessionCommand(Index index, Day day, Time time) {
         requireNonNull(day.toString(), time.toString());
@@ -55,6 +58,14 @@ public class AddSessionCommand extends Command {
         this.time = time;
     }
 
+    /**
+     * Executes the command to add a session to the person at the given index.
+     *
+     * @param model the model containing the list of persons
+     * @return a CommandResult containing a success message
+     * @throws CommandException if the index is invalid, the person is not a student,
+     *                          or the session already exists
+     */
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
@@ -70,12 +81,20 @@ public class AddSessionCommand extends Command {
             model.setPerson(personToEdit, personUpdated);
             model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
             return new CommandResult(String.format(MESSAGE_SUCCESS, personToEdit.getName()));
-        }
-        else {
+        } else {
             throw new CommandException(Messages.MESSAGE_ONLY_STUDENT_COMMAND);
         }
     }
 
+    /**
+     * Returns a copy of the given Student with the new session added.
+     *
+     * @param personToEdit the student to copy and add the session to
+     * @param day          the day of the new session
+     * @param time         the time of the new session
+     * @return a new Student object with the updated sessions
+     * @throws CommandException if the session already exists in the student's sessions
+     */
     public Person toCopy(Student personToEdit, Day day, Time time) throws CommandException {
         assert personToEdit != null;
 
@@ -118,7 +137,7 @@ public class AddSessionCommand extends Command {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .add("day time",day + " " + time)
+                .add("day time", day + " " + time)
                 .toString();
     }
 }

@@ -13,10 +13,10 @@ import seedu.address.model.person.Parent;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Remark;
-import seedu.address.model.person.Student;
 import seedu.address.model.person.Session;
-import seedu.address.model.tag.Tag;
+import seedu.address.model.person.Student;
 import seedu.address.model.person.Time;
+import seedu.address.model.tag.Tag;
 
 /**
  * Contains utility methods for populating {@code AddressBook} with sample data.

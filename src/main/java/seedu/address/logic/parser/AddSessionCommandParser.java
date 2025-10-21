@@ -11,6 +11,19 @@ import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Day;
 import seedu.address.model.person.Time;
 
+/**
+ * Parses input arguments and creates a new {@link AddSessionCommand} object.
+ * <p>
+ * This parser expects arguments in the format:
+ * {@code <index> d/DAY ti/TIME}, where:
+ * <ul>
+ *     <li>{@code <index>} is the index of the person in the list</li>
+ *     <li>{@code d/DAY} specifies the day of the session</li>
+ *     <li>{@code ti/TIME} specifies the time of the session</li>
+ * </ul>
+ * Example: {@code 1 d/Mon ti/3pm-5pm}
+ * </p>
+ */
 public class AddSessionCommandParser implements Parser<AddSessionCommand> {
 
     /**
