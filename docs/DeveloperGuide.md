@@ -324,11 +324,11 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 * 2a. Address book is empty.
     * 2a1. System displays “no contacts” placeholder. Use case ends.
 
-### UC03 — Find contacts by name
-**Goal**: Locate contacts by case-insensitive name matching.  
+### UC03 — Find contacts by name/role
+**Goal**: Locate contacts by case-insensitive name matching or role.  
 **Precondition**: At least one contact exists.  
 **MSS**
-1. User enters `find KEYWORD…`.
+1. User enters `find NAME` or `find student/parent`.
 2. System filters contacts whose names contain all provided keywords.
 3. System displays the filtered list with new indices.  
    Use case ends.  
@@ -385,26 +385,26 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 **Goal**: Add remarks for each contact to keep track of their learning progress and special requests.  
 **Precondition**: At least one contact exists.  
 **MSS**
-1. User enters `remark INDEX rm/REMARK`.
+1. User enters `remark I rm/REMARK` where `I` is a 1-based index in the current list.
 2. System adds remark to referenced contact.
 3. System confirms addition of remark and updates the list.
 Use case ends.
 
     **Extensions**
-* 1a. `INDEX` is not a valid visible index (≤0 or > list size, or non-integer).
+* 1a. `I` is not a valid visible index (≤0 or > list size, or non-integer).
     * 1a1. System shows error and keeps list unchanged. Use case ends.
 
 ### UC09 — Delete remarks for contact
 **Goal**: Delete remarks for each contact to remove clutter.  
 **Precondition**: At least one contact exists. 
 **MSS**
-1. User enters `remark INDEX`.
+1. User enters `remark I` where `I` is a 1-based index in the current list.
 2. System deletes remark (if any) to referenced contact.
 3. System confirms deletion of remark and updates the list.
    Use case ends.
 
     **Extensions**
-* 1a. `INDEX` is not a valid visible index (≤0 or > list size, or non-integer).
+* 1a. `I` is not a valid visible index (≤0 or > list size, or non-integer).
     * 1a1. System shows error and keeps list unchanged. Use case ends.
 
 ### Non-Functional Requirements
