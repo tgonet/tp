@@ -81,10 +81,12 @@ Format: `add n/NAME p/PHONE_NUMBER a/ADDRESS r/ROLE [t/TAG]…​`
 
 * A person can have any number of tags (including 0).
 * A person can have one of the two roles: `student` or `parent`
+* A person that has the `student` role can have `[TAGS]`
+* A person that has the `parent` role **cannot** have `[TAGS]`
 
 Examples:
-* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 r/parent`
-* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 r/student t/criminal `
+* `add n/John Doe p/98765432 a/902 East Coast Parkway, #01-26, Singapore r/parent`
+* `add n/Betsy Crowe p/87654321 a/742 Ang Mo Kio Avenue 5 12-30, Singapore r/student t/math`
 
 ### Listing all persons : `list`
 
