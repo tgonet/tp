@@ -24,15 +24,15 @@ public class AddSessionCommandParserTest {
     @Test
     public void parse_missingParts_failure() {
         // no index specified
-        assertParseFailure(parser, PREFIX_DAY + "Mon " + PREFIX_TIME + "12pm-1pm", 
+        assertParseFailure(parser, PREFIX_DAY + "Mon " + PREFIX_TIME + "12pm-1pm",
                 MESSAGE_INVALID_FORMAT);
 
         // no day specified
-        assertParseFailure(parser, "1 " + PREFIX_TIME + "12pm-1pm", 
+        assertParseFailure(parser, "1 " + PREFIX_TIME + "12pm-1pm",
                 MESSAGE_INVALID_FORMAT);
 
         // no time specified
-        assertParseFailure(parser, "1 " + PREFIX_DAY + "Mon", 
+        assertParseFailure(parser, "1 " + PREFIX_DAY + "Mon",
                 MESSAGE_INVALID_FORMAT);
 
         // no fields specified
@@ -79,21 +79,21 @@ public class AddSessionCommandParserTest {
         Index targetIndex = INDEX_FIRST_PERSON;
 
         // basic test with all fields present
-        String userInput = targetIndex.getOneBased() + " " + PREFIX_DAY + "Mon " 
+        String userInput = targetIndex.getOneBased() + " " + PREFIX_DAY + "Mon "
                 + PREFIX_TIME + "12pm-1pm";
         AddSessionCommand expectedCommand = new AddSessionCommand(targetIndex,
                 new Day("Mon"), new Time("12pm-1pm"));
         assertParseSuccess(parser, userInput, expectedCommand);
 
         // different valid day
-        userInput = targetIndex.getOneBased() + " " + PREFIX_DAY + "Tue " 
+        userInput = targetIndex.getOneBased() + " " + PREFIX_DAY + "Tue "
                 + PREFIX_TIME + "12pm-1pm";
         expectedCommand = new AddSessionCommand(targetIndex,
                 new Day("Tue"), new Time("12pm-1pm"));
         assertParseSuccess(parser, userInput, expectedCommand);
 
         // different valid time
-        userInput = targetIndex.getOneBased() + " " + PREFIX_DAY + "Mon " 
+        userInput = targetIndex.getOneBased() + " " + PREFIX_DAY + "Mon "
                 + PREFIX_TIME + "3pm-4pm";
         expectedCommand = new AddSessionCommand(targetIndex,
                 new Day("Mon"), new Time("3pm-4pm"));
