@@ -9,8 +9,8 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  */
 public class Day {
     public static final String MESSAGE_CONSTRAINTS =
-            "Day should be one of the following: Mon, Tue, Wed, Thur, Fri, Sat, Sun, or their full forms " +
-                    "(e.g., Monday, Friday)";
+            "Day should be one of the following: Mon, Tue, Wed, Thur, Fri, Sat, Sun, or their full forms "
+                    + "(e.g., Monday, Friday)";
     public static final String VALIDATION_REGEX =
             "^(?i)(mon(day)?|tue(sday)?|wed(nesday)?|thur(sday)?|fri(day)?|sat(urday)?|sun(day)?)$";
 
