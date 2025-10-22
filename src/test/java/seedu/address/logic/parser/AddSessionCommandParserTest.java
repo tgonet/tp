@@ -62,7 +62,7 @@ public class AddSessionCommandParserTest {
     @Test
     public void parse_invalidValue_failure() {
         // invalid day
-        assertParseFailure(parser, "1 " + PREFIX_DAY + "Monday " + PREFIX_TIME + "12pm-1pm",
+        assertParseFailure(parser, "1 " + PREFIX_DAY + "Mondayss " + PREFIX_TIME + "12pm-1pm",
                 Day.MESSAGE_CONSTRAINTS);
 
         // invalid time
@@ -70,8 +70,8 @@ public class AddSessionCommandParserTest {
                 Time.MESSAGE_CONSTRAINTS);
 
         // multiple invalid values, but only first invalid value is captured
-        assertParseFailure(parser, "1 " + PREFIX_DAY + "Monday " + PREFIX_TIME + "25:00",
-                Day.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, "1 " + PREFIX_DAY + "Monday " + PREFIX_TIME + "25pm-01am",
+                Time.MESSAGE_CONSTRAINTS);
     }
 
     @Test

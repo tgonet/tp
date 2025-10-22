@@ -201,7 +201,7 @@ public class ParserUtilTest {
 
     @Test
     public void parseDay_invalidValue_throwsParseException() {
-        ParseException e = assertThrows(ParseException.class, () -> ParserUtil.parseDay("Monday"));
+        ParseException e = assertThrows(ParseException.class, () -> ParserUtil.parseDay("Mondayzz"));
         assertEquals(Day.MESSAGE_CONSTRAINTS, e.getMessage());
 
         e = assertThrows(ParseException.class, () -> ParserUtil.parseDay(""));

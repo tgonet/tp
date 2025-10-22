@@ -13,10 +13,10 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  */
 public class Time {
     public static final String MESSAGE_CONSTRAINTS =
-        "Time should be in 12-hour format, e.g., 3pm-5pm or 09:30AM-11:45AM";
+        "Time should be in 12-hour format without leading zeros, e.g., 3pm-5pm or 9:30AM-11:45AM";
 
     public static final String VALIDATION_REGEX =
-            "^(0?[1-9]|1[0-2])(:[0-5][0-9])?(am|pm|AM|PM)-(0?[1-9]|1[0-2])(:[0-5][0-9])?(am|pm|AM|PM)$";
+            "^([1-9]|1[0-2])(:[0-5][0-9])?(am|pm|AM|PM)-([1-9]|1[0-2])(:[0-5][0-9])?(am|pm|AM|PM)$";
 
 
     private final String value;

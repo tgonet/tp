@@ -15,7 +15,7 @@ public class DayTest {
 
     @Test
     public void constructor_invalidDay_throwsIllegalArgumentException() {
-        String invalidDay = "Monday"; // not matching "Mon", "Tue", etc.
+        String invalidDay = "Funday"; // not matching "Mon", "Tue", etc.
         assertThrows(IllegalArgumentException.class, () -> new Day(invalidDay));
     }
 
@@ -25,14 +25,12 @@ public class DayTest {
         assertThrows(NullPointerException.class, () -> Day.isValidDay(null));
 
         // invalid days
-        assertFalse(Day.isValidDay("Monday")); // full name
-        assertFalse(Day.isValidDay("mon")); // lowercase
         assertFalse(Day.isValidDay("Frii")); // typo
         assertFalse(Day.isValidDay("")); // empty string
         assertFalse(Day.isValidDay(" ")); // spaces only
-        assertFalse(Day.isValidDay("MonDay")); // invalid concatenation
+        assertFalse(Day.isValidDay("Funday")); // not a real day
 
-        // valid days
+        // valid days (short forms)
         assertTrue(Day.isValidDay("Mon"));
         assertTrue(Day.isValidDay("Tue"));
         assertTrue(Day.isValidDay("Wed"));
@@ -40,6 +38,20 @@ public class DayTest {
         assertTrue(Day.isValidDay("Fri"));
         assertTrue(Day.isValidDay("Sat"));
         assertTrue(Day.isValidDay("Sun"));
+
+        // valid days (full forms)
+        assertTrue(Day.isValidDay("Monday"));
+        assertTrue(Day.isValidDay("Tuesday"));
+        assertTrue(Day.isValidDay("Wednesday"));
+        assertTrue(Day.isValidDay("Thursday"));
+        assertTrue(Day.isValidDay("Friday"));
+        assertTrue(Day.isValidDay("Saturday"));
+        assertTrue(Day.isValidDay("Sunday"));
+
+        // valid days (case-insensitive)
+        assertTrue(Day.isValidDay("monday"));
+        assertTrue(Day.isValidDay("fri"));
+        assertTrue(Day.isValidDay("SuN"));
     }
 
     @Test
@@ -48,6 +60,9 @@ public class DayTest {
 
         // same values -> returns true
         assertTrue(day.equals(new Day("Mon")));
+
+        // equivalent full form -> should normalize to same short form
+        assertTrue(day.equals(new Day("Monday")));
 
         // same object -> returns true
         assertTrue(day.equals(day));

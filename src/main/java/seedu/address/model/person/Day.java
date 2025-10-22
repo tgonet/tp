@@ -9,8 +9,10 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  */
 public class Day {
     public static final String MESSAGE_CONSTRAINTS =
-            "Day should be one of the following: Mon, Tue, Wed, Thur, Fri, Sat, Sun";
-    public static final String VALIDATION_REGEX = "^(Mon|Tue|Wed|Thur|Fri|Sat|Sun)$";
+            "Day should be one of the following: Mon, Tue, Wed, Thur, Fri, Sat, Sun, or their full forms " +
+                    "(e.g., Monday, Friday)";
+    public static final String VALIDATION_REGEX =
+            "^(?i)(mon(day)?|tue(sday)?|wed(nesday)?|thur(sday)?|fri(day)?|sat(urday)?|sun(day)?)$";
 
     private final String value;
 
@@ -18,12 +20,44 @@ public class Day {
      * Constructs a {@code Day}.
      *
      * @param day A valid day.
-     *
      */
     public Day(String day) {
         requireNonNull(day);
-        checkArgument(isValidDay(day), MESSAGE_CONSTRAINTS);
-        this.value = day;
+        String normalizedDay = day.trim();
+        checkArgument(isValidDay(normalizedDay), MESSAGE_CONSTRAINTS);
+
+        switch (normalizedDay.toLowerCase()) {
+        case "monday":
+        case "mon":
+            this.value = "Mon";
+            break;
+        case "tuesday":
+        case "tue":
+            this.value = "Tue";
+            break;
+        case "wednesday":
+        case "wed":
+            this.value = "Wed";
+            break;
+        case "thursday":
+        case "thur":
+            this.value = "Thur";
+            break;
+        case "friday":
+        case "fri":
+            this.value = "Fri";
+            break;
+        case "saturday":
+        case "sat":
+            this.value = "Sat";
+            break;
+        case "sunday":
+        case "sun":
+            this.value = "Sun";
+            break;
+        default:
+            throw new IllegalArgumentException(MESSAGE_CONSTRAINTS);
+        }
     }
 
     public String getValue() {

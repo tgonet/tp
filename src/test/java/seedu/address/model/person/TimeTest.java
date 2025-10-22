@@ -36,13 +36,16 @@ public class TimeTest {
         assertFalse(Time.isValidTime("3pm5pm")); // missing dash
         assertFalse(Time.isValidTime("13am-2pm")); // invalid hour
         assertFalse(Time.isValidTime("0:00am-1:00pm")); // invalid hour
+        assertFalse(Time.isValidTime("01am-2am")); // leading zero not allowed
+        assertFalse(Time.isValidTime("09:00AM-11:15AM")); // leading zero not allowed
+        assertFalse(Time.isValidTime("00am-1am")); // invalid hour
 
         // valid times
         assertTrue(Time.isValidTime("3pm-5pm"));
         assertTrue(Time.isValidTime("12am-1pm"));
         assertTrue(Time.isValidTime("1:30pm-2:45pm"));
-        assertTrue(Time.isValidTime("09:00AM-11:15AM"));
         assertTrue(Time.isValidTime("10:00am-12:00pm"));
+        assertTrue(Time.isValidTime("9am-11am"));
     }
 
     @Test
