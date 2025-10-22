@@ -132,6 +132,35 @@
     -fx-text-fill: #010504;
 }
 
+.session-box {
+    -fx-padding: 2 8 2 8;           /* top/right/bottom/left */
+    -fx-background-radius: 6;       /* rounded corners */
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-font-size: 11px;
+}
+
+/* Optional: different colors by day */
+.mon {
+    -fx-background-color: #4CAF50;  /* green */
+}
+
+.tue {
+    -fx-background-color: #2196F3;  /* blue */
+}
+
+.wed {
+    -fx-background-color: #FFC107;  /* amber */
+}
+
+.thu {
+    -fx-background-color: #FF5722;  /* orange */
+}
+
+.fri {
+    -fx-background-color: #9C27B0;  /* purple */
+}
+
 .stack-pane {
      -fx-background-color: derive(#1d1d1d, 20%);
 }

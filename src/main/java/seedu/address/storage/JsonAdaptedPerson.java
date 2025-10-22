@@ -17,6 +17,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Remark;
 import seedu.address.model.person.Role;
+import seedu.address.model.person.Session;
 import seedu.address.model.person.Student;
 import seedu.address.model.tag.Tag;
 
@@ -33,6 +34,7 @@ class JsonAdaptedPerson {
     private final String role;
     private final String remark;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
+    private final List<JsonAdaptedSession> sessions = new ArrayList<>();
 
     /**
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
@@ -41,7 +43,8 @@ class JsonAdaptedPerson {
     public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
             @JsonProperty("address") String address,
             @JsonProperty("role") String role,
-            @JsonProperty("remark") String remark, @JsonProperty("tags") List<JsonAdaptedTag> tags) {
+            @JsonProperty("remark") String remark, @JsonProperty("tags") List<JsonAdaptedTag> tags,
+            @JsonProperty("sessions") List<JsonAdaptedSession> sessions) {
         this.name = name;
         this.phone = phone;
         this.address = address;
@@ -49,6 +52,9 @@ class JsonAdaptedPerson {
         this.remark = remark;
         if (tags != null) {
             this.tags.addAll(tags);
+        }
+        if (sessions != null) {
+            this.sessions.addAll(sessions);
         }
     }
 
@@ -65,7 +71,11 @@ class JsonAdaptedPerson {
             tags.addAll(s.getTags().stream()
                     .map(JsonAdaptedTag::new)
                     .collect(Collectors.toList()));
+            sessions.addAll(s.getSessions().stream()
+                    .map(JsonAdaptedSession::new)
+                    .collect(Collectors.toList()));
         }
+
     }
 
     /**
@@ -77,6 +87,11 @@ class JsonAdaptedPerson {
         final List<Tag> personTags = new ArrayList<>();
         for (JsonAdaptedTag tag : tags) {
             personTags.add(tag.toModelType());
+        }
+
+        final List<Session> personSessions = new ArrayList<>();
+        for (JsonAdaptedSession session : sessions) {
+            personSessions.add(session.toModelType());
         }
 
         if (name == null) {
@@ -115,7 +130,8 @@ class JsonAdaptedPerson {
         final Set<Tag> modelTags = new HashSet<>(personTags);
 
         if (role.equals("student")) {
-            return new Student(modelName, modelPhone, modelAddress, modelRemark, modelTags);
+            final Set<Session> modelSessions = new HashSet<>(personSessions);
+            return new Student(modelName, modelPhone, modelAddress, modelRemark, modelTags, modelSessions);
         } else {
             return new Parent(modelName, modelPhone, modelAddress, modelRemark);
         }

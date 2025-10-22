@@ -17,8 +17,11 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
+import seedu.address.model.person.Day;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Session;
+import seedu.address.model.person.Time;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
 
 /**
@@ -44,6 +47,9 @@ public class CommandTestUtil {
     public static final String VALID_REMARK_CHARLES = "I love my children.";
     public static final String VALID_TAG_STUDENT = "student";
     public static final String VALID_TAG_PARENT = "parent";
+    public static final String VALID_DAY = "Mon";
+    public static final String VALID_TIME = "12pm-1pm";
+    public static final Session VALID_SESSION = new Session(new Day(VALID_DAY), new Time(VALID_TIME));
 
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
     public static final String NAME_DESC_BOB = " " + PREFIX_NAME + VALID_NAME_BOB;
