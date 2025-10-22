@@ -3,6 +3,7 @@ package seedu.address.testutil;
 import java.util.HashSet;
 import java.util.Set;
 
+import seedu.address.model.person.Session;
 import seedu.address.model.person.Student;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.util.SampleDataUtil;
@@ -13,6 +14,7 @@ import seedu.address.model.util.SampleDataUtil;
 public class StudentBuilder extends PersonBuilder<StudentBuilder> {
 
     private Set<Tag> tags;
+    private Set<Session> sessions;
 
     /**
      * Creates a {@code StudentBuilder} with the default details.
@@ -20,6 +22,7 @@ public class StudentBuilder extends PersonBuilder<StudentBuilder> {
     public StudentBuilder() {
         super();
         tags = new HashSet<>();
+        sessions = new HashSet<>();
     }
 
     /**
@@ -31,6 +34,7 @@ public class StudentBuilder extends PersonBuilder<StudentBuilder> {
         address = studentToCopy.getAddress();
         remark = studentToCopy.getRemark();
         tags = new HashSet<>(studentToCopy.getTags());
+        sessions = new HashSet<>(studentToCopy.getSessions());
     }
 
     /**
@@ -41,6 +45,14 @@ public class StudentBuilder extends PersonBuilder<StudentBuilder> {
         return this;
     }
 
+    /**
+     * Parses the {@code tags} into a {@code Set<Tag>} and set it to the {@code Student} that we are building.
+     */
+    public StudentBuilder withSessions(Session ... sessions) {
+        this.sessions = SampleDataUtil.getSessionSet(sessions);
+        return this;
+    }
+
     @Override
     protected StudentBuilder self() {
         return this;
@@ -48,7 +60,7 @@ public class StudentBuilder extends PersonBuilder<StudentBuilder> {
 
     @Override
     public Student build() {
-        return new Student(name, phone, address, remark, tags);
+        return new Student(name, phone, address, remark, tags, sessions);
     }
 
 }

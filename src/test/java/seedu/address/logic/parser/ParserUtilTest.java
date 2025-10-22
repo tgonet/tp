@@ -1,6 +1,7 @@
 package seedu.address.logic.parser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.parser.ParserUtil.MESSAGE_INVALID_INDEX;
 import static seedu.address.testutil.Assert.assertThrows;
@@ -15,8 +16,10 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Address;
+import seedu.address.model.person.Day;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Time;
 import seedu.address.model.tag.Tag;
 
 public class ParserUtilTest {
@@ -166,5 +169,47 @@ public class ParserUtilTest {
         Set<Tag> expectedTagSet = new HashSet<Tag>(Arrays.asList(new Tag(VALID_TAG_1), new Tag(VALID_TAG_2)));
 
         assertEquals(expectedTagSet, actualTagSet);
+    }
+
+    @Test
+    public void parseTime_validValue_success() throws Exception {
+        assertEquals(new Time("12pm-1pm"), ParserUtil.parseTime("12pm-1pm"));
+        // whitespace trimmed
+        assertEquals(new Time("12pm-1pm"), ParserUtil.parseTime("  12pm-1pm  "));
+    }
+
+    @Test
+    public void parseTime_invalidValue_throwsParseException() {
+        ParseException e = assertThrows(ParseException.class, () -> ParserUtil.parseTime("25:00"));
+        assertEquals(Time.MESSAGE_CONSTRAINTS, e.getMessage());
+
+        e = assertThrows(ParseException.class, () -> ParserUtil.parseTime(""));
+        assertEquals(Time.MESSAGE_CONSTRAINTS, e.getMessage());
+    }
+
+    @Test
+    public void parseTime_null_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> ParserUtil.parseTime(null));
+    }
+
+    @Test
+    public void parseDay_validValue_success() throws Exception {
+        assertEquals(new Day("Mon"), ParserUtil.parseDay("Mon"));
+        // whitespace trimmed
+        assertEquals(new Day("Mon"), ParserUtil.parseDay("  Mon  "));
+    }
+
+    @Test
+    public void parseDay_invalidValue_throwsParseException() {
+        ParseException e = assertThrows(ParseException.class, () -> ParserUtil.parseDay("Mondayzz"));
+        assertEquals(Day.MESSAGE_CONSTRAINTS, e.getMessage());
+
+        e = assertThrows(ParseException.class, () -> ParserUtil.parseDay(""));
+        assertEquals(Day.MESSAGE_CONSTRAINTS, e.getMessage());
+    }
+
+    @Test
+    public void parseDay_null_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> ParserUtil.parseDay(null));
     }
 }
