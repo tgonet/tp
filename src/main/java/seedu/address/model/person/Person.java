@@ -23,6 +23,7 @@ public abstract class Person {
     // Role might seem useless but is used for display purposes and storage
 
     /**
+     * Used during create new Person object during add command
      * Every field must be present and not null.
      */
     public Person(Name name, Phone phone, Address address, Role role, Remark remark) {

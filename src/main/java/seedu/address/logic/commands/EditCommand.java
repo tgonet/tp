@@ -27,6 +27,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Remark;
 import seedu.address.model.person.Role;
+import seedu.address.model.person.Session;
 import seedu.address.model.person.Student;
 import seedu.address.model.tag.Tag;
 
@@ -103,7 +104,8 @@ public class EditCommand extends Command {
 
         if (personToEdit instanceof Student studentToEdit) {
             Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(studentToEdit.getTags());
-            return new Student(updatedName, updatedPhone, updatedAddress, updatedRemark, updatedTags);
+            Set<Session> updatedSessions = editPersonDescriptor.getSessions().orElse(studentToEdit.getSessions());
+            return new Student(updatedName, updatedPhone, updatedAddress, updatedRemark, updatedTags, updatedSessions);
         } else {
             return new Parent(updatedName, updatedPhone, updatedAddress, updatedRemark);
         }
@@ -144,6 +146,7 @@ public class EditCommand extends Command {
         private Role role;
         private Remark remark;
         private Set<Tag> tags;
+        private Set<Session> sessions;
 
         public EditPersonDescriptor() {}
 
@@ -222,6 +225,23 @@ public class EditCommand extends Command {
          */
         public Optional<Set<Tag>> getTags() {
             return (tags != null) ? Optional.of(Collections.unmodifiableSet(tags)) : Optional.empty();
+        }
+
+        /**
+         * Sets {@code tags} to this object's {@code tags}.
+         * A defensive copy of {@code tags} is used internally.
+         */
+        public void setSessions(Set<Session> sessions) {
+            this.sessions = (sessions != null) ? new HashSet<>(sessions) : null;
+        }
+
+        /**
+         * Returns an unmodifiable tag set, which throws {@code UnsupportedOperationException}
+         * if modification is attempted.
+         * Returns {@code Optional#empty()} if {@code tags} is null.
+         */
+        public Optional<Set<Session>> getSessions() {
+            return (this.sessions != null) ? Optional.of(Collections.unmodifiableSet(sessions)) : Optional.empty();
         }
 
         @Override

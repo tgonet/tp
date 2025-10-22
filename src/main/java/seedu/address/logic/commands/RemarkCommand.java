@@ -58,7 +58,7 @@ public class RemarkCommand extends Command {
         Person editedPerson;
         if (personToEdit instanceof Student studentToEdit) {
             editedPerson = new Student(studentToEdit.getName(), studentToEdit.getPhone(),
-                    studentToEdit.getAddress(), remark, studentToEdit.getTags());
+                    studentToEdit.getAddress(), remark, studentToEdit.getTags(), studentToEdit.getSessions());
         } else {
             editedPerson = new Parent(personToEdit.getName(), personToEdit.getPhone(),
                 personToEdit.getAddress(), remark);

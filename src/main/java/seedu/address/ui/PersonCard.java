@@ -3,6 +3,7 @@ package seedu.address.ui;
 import java.util.Comparator;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -41,6 +42,8 @@ public class PersonCard extends UiPart<Region> {
     private FlowPane tags;
     @FXML
     private Label role;
+    @FXML
+    private FlowPane sessions;
 
     /**
      * Creates a {@code PersonCode} with the given {@code Person} and index to display.
@@ -60,6 +63,16 @@ public class PersonCard extends UiPart<Region> {
                         String styleClass = tag.tagName.toLowerCase();
                         tagLabel.getStyleClass().add(styleClass);
                         tags.getChildren().add(tagLabel);
+                    });
+            student.getSessions().stream()
+                    .forEach(s -> {
+                        Label sessionLabel = new Label(s.toString());
+                        sessionLabel.getStyleClass().add("session-box");
+                        // Optional: add specific style based on day
+                        sessionLabel.getStyleClass().add(s.getDay().getValue().toLowerCase());
+                        // Add right margin (or any side)
+                        FlowPane.setMargin(sessionLabel, new Insets(0, 6, 0, 0)); // top, right, bottom, left
+                        sessions.getChildren().add(sessionLabel);
                     });
         }
         role.setText(person.getRole().toString());
