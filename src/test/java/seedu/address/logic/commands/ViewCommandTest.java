@@ -21,8 +21,6 @@ public class ViewCommandTest {
     public void setUp() {
         // Prefer project’s typical/sample utilities to satisfy all invariants
         model = new ModelManager(SampleDataUtil.getSampleAddressBook(), new UserPrefs());
-        // If your repo uses TypicalPersons instead:
-        // model = new ModelManager(TypicalPersons.getTypicalAddressBook(), new UserPrefs());
     }
 
     @Test
