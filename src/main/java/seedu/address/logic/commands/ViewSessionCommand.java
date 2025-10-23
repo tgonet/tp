@@ -90,7 +90,7 @@ public class ViewSessionCommand extends Command {
         return new CommandResult(message);
     }
 
-    // ---- matching helpers (unchanged) ----
+    // ---- matching helpers ----
 
     /**
      * Returns true if the person has a typed {@link SessionSlot} equal to the target slot.
