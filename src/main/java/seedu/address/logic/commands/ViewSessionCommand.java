@@ -43,10 +43,26 @@ public class ViewSessionCommand extends Command {
 
     private final SessionSlot slot;
 
+    /**
+     * Constructs a {@code ViewSessionCommand} for the specified {@link SessionSlot}.
+     *
+     * @param slot the weekly session slot to search for; must be non-null.
+     */
     public ViewSessionCommand(SessionSlot slot) {
         this.slot = requireNonNull(slot);
     }
 
+    /**
+     * Executes the command against the provided {@link Model}, searching for persons
+     * whose stored data indicate a session exactly matching the target slot.
+     * Matching considers typed fields, label/tag-like collections via reflection,
+     * and a fallback string search.
+     *
+     * @param model the model providing access to the filtered person list; must be non-null.
+     * @return a {@link CommandResult} containing either a formatted listing of matches
+     *         or a message indicating that no session exists at the specified slot.
+     * @throws CommandException if execution fails for implementation-specific reasons.
+     */
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
@@ -55,13 +71,11 @@ public class ViewSessionCommand extends Command {
         final String userLike = slot.toUserFormat(); // e.g. Mon-[5pm-6pm]
         final String userLikeLower = userLike.toLowerCase(Locale.ROOT);
 
-        // --- MATCHING: unchanged from the version that worked for you ---
         List<Person> matches = model.getFilteredPersonList().stream()
                 .filter(p -> hasTypedSession(p)
                         || hasLabeledSession(p, normalized, userLikeLower)
                         || hasStringSession(p, normalized, userLikeLower))
                 .collect(Collectors.toList());
-        // ----------------------------------------------------------------
 
         if (matches.isEmpty()) {
             return new CommandResult(MESSAGE_NO_SESSION);
@@ -77,10 +91,27 @@ public class ViewSessionCommand extends Command {
     }
 
     // ---- matching helpers (unchanged) ----
+
+    /**
+     * Returns true if the person has a typed {@link SessionSlot} equal to the target slot.
+     *
+     * @param p the person to inspect.
+     * @return true if {@code p.getSessionSlot()} is present and equals {@code slot}; false otherwise.
+     */
     private boolean hasTypedSession(Person p) {
         return p.getSessionSlot().isPresent() && p.getSessionSlot().get().equals(slot);
     }
 
+    /**
+     * Returns true if any label/tag-like iterable on the person contains or equals the target slot,
+     * checked against both the normalized representation and a lower-cased user-facing form.
+     * Accessors are probed reflectively using a best-effort set of common method names.
+     *
+     * @param p the person to inspect.
+     * @param normalized the normalized slot string (e.g., {@code Mon-[17:00-18:00]}).
+     * @param userLikeLower the user-facing slot string lower-cased (e.g., {@code mon-[5pm-6pm]}).
+     * @return true if a matching element is found; false otherwise.
+     */
     private boolean hasLabeledSession(Person p, String normalized, String userLikeLower) {
         // Probe common collection-style accessors without a compile-time dependency.
         final String[] candidates = new String[] {
@@ -111,6 +142,15 @@ public class ViewSessionCommand extends Command {
         return false;
     }
 
+    /**
+     * Returns true if the person's {@code toString()} contains the normalized slot or
+     * the lower-cased user-facing form.
+     *
+     * @param p the person to inspect.
+     * @param normalized the normalized slot string (e.g., {@code Mon-[17:00-18:00]}).
+     * @param userLikeLower the user-facing slot string lower-cased (e.g., {@code mon-[5pm-6pm]}).
+     * @return true if the string representation contains either form; false otherwise.
+     */
     private boolean hasStringSession(Person p, String normalized, String userLikeLower) {
         String s = p.toString();
         return s.contains(normalized) || s.toLowerCase(Locale.ROOT).contains(userLikeLower);
@@ -149,6 +189,13 @@ public class ViewSessionCommand extends Command {
         return List.of();
     }
 
+    /**
+     * Converts an {@link Iterable} of arbitrary elements to a {@link List} of their string representations
+     * using {@link String#valueOf(Object)}.
+     *
+     * @param it the iterable to convert.
+     * @return a list of stringified elements in iteration order.
+     */
     private static List<String> toStrings(Iterable<?> it) {
         List<String> out = new ArrayList<>();
         for (Object o : it) {
@@ -157,6 +204,12 @@ public class ViewSessionCommand extends Command {
         return out;
     }
 
+    /**
+     * Equality is based on the target {@link SessionSlot}.
+     *
+     * @param o the other object.
+     * @return true if {@code o} is a {@code ViewSessionCommand} with an equal slot; false otherwise.
+     */
     @Override
     public boolean equals(Object o) {
         return o == this
