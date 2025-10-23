@@ -14,4 +14,6 @@ public class CliSyntax {
     public static final Prefix PREFIX_ROLE = new Prefix("r/");
     public static final Prefix PREFIX_DAY = new Prefix("d/");
     public static final Prefix PREFIX_TIME = new Prefix("ti/");
+    public static final Prefix PREFIX_NEW_DAY = new Prefix("nd/");
+    public static final Prefix PREFIX_NEW_TIME = new Prefix("nti/");
 }
