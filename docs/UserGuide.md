@@ -247,12 +247,14 @@ _Details coming soon ..._
 
 Action | Format, Examples
 --------|------------------
-**Add** | `add n/NAME p/PHONE_NUMBER a/ADDRESS r/role [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend r/student t/colleague`
+**Add** | `add n/NAME p/PHONE_NUMBER a/ADDRESS r/role [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 r/student t/math`
 **Clear** | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee`
 **Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
 **Remark** | `remark INDEX rm/REMARK` <br> e.g., `remark 1 rm/hardworking`
 **View** | `view INDEX` <br> e.g., `view 2`
+**Add Session** | `addsession INDEX d/DAY ti/TIME` <br> e.g., `addsession 2 d/Mon ti/9am-5pm`
+**Delete Session** | `deletesession INDEX d/DAY ti/TIME` <br> e.g., `deletesession 2 ti/9am-5pm`
 **List** | `list`
 **Help** | `help`
