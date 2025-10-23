@@ -35,7 +35,7 @@ public class ViewSessionCommandTest {
     }
 
     @Test
-    public void parse_24hFormatAccepted_roundTrips() throws Exception {
+    public void parse_format24H_acceptedRoundTrips() throws Exception {
         ViewSessionCommandParser p = new ViewSessionCommandParser();
 
         ViewSessionCommand first = p.parse(" Tue-[15:00-16:30]");
@@ -50,12 +50,12 @@ public class ViewSessionCommandTest {
         ViewSessionCommandParser p = new ViewSessionCommandParser();
 
         assertThrows(ParseException.class, () -> p.parse(" Grog-[5pm-6pm]")); // bad day
-        assertThrows(ParseException.class, () -> p.parse(" Mon-5pm-6pm"));    // missing brackets
-        assertThrows(ParseException.class, () -> p.parse(" Mon-[BLAH]"));     // bad time
+        assertThrows(ParseException.class, () -> p.parse(" Mon-5pm-6pm")); // missing brackets
+        assertThrows(ParseException.class, () -> p.parse(" Mon-[BLAH]")); // bad time
     }
 
     @Test
-    public void addressBookParser_routes_toViewSession_forBothCasings() throws Exception {
+    public void addressBookParser_routesToViewSessionForBothCasings() throws Exception {
         AddressBookParser top = new AddressBookParser();
 
         Command a = top.parseCommand("viewsession Wed-[1pm-2pm]");
@@ -76,7 +76,7 @@ public class ViewSessionCommandTest {
 
         ViewSessionCommand x1 = (ViewSessionCommand) top.parseCommand("viewsession Thu-[3pm-4pm]");
         ViewSessionCommand x2 = (ViewSessionCommand) top.parseCommand("viewSession Thu-[3pm-4pm]");
-        ViewSessionCommand y  = (ViewSessionCommand) top.parseCommand("viewsession Thu-[4pm-5pm]");
+        ViewSessionCommand y = (ViewSessionCommand) top.parseCommand("viewsession Thu-[4pm-5pm]");
 
         assertEquals(x1, x2);
         assertNotEquals(x1, y);
