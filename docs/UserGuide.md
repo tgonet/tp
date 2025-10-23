@@ -198,6 +198,18 @@ Examples:
 * `deletesession 1 d/Mon ti/3pm-5pm`
 * `deletesession 1 d/Thurs ti/9:30AM-11:45AM`
 
+### View session: `viewsession`
+
+View the session(s) of the specified day and time from the address book.
+
+Format: `viewsession DAY-[TIME]`
+
+* The result is displayed in the app as a list.
+  ![viewSession.png](images/viewSession.png)
+
+Examples:
+* `viewsession Mon-[9am-5pm]`
+
 ### Clearing all entries : `clear`
 
 Clears all entries from the address book.
@@ -256,5 +268,6 @@ Action | Format, Examples
 **View** | `view INDEX` <br> e.g., `view 2`
 **Add Session** | `addsession INDEX d/DAY ti/TIME` <br> e.g., `addsession 2 d/Mon ti/9am-5pm`
 **Delete Session** | `deletesession INDEX d/DAY ti/TIME` <br> e.g., `deletesession 2 ti/9am-5pm`
+**View Session** | `viewsession DAY-[TIME]` <br> e.g., `viewsession Mon-[9am-5pm]`
 **List** | `list`
 **Help** | `help`
