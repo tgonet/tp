@@ -20,7 +20,7 @@ Person *--> Phone
 Person *--> Address
 Person *--> Role
 Person *--> "*" Remark
-Person *--> "*" Session
 
+Student *-right-> "*" Session
 Student *-left-> Tag
 @enduml
