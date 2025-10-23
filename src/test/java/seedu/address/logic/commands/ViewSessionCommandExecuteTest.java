@@ -33,7 +33,6 @@ import seedu.address.model.session.SessionSlot.Day;
 import seedu.address.model.session.SessionSlot.TimeRange;
 import seedu.address.testutil.TypicalPersons;
 
-
 /**
  * Execution coverage for {@link ViewSessionCommand}.
  * Uses a focused Model stub and tolerant reflective construction so
