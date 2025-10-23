@@ -19,6 +19,8 @@ Person *--> Name
 Person *--> Phone
 Person *--> Address
 Person *--> Role
+Person *--> "*" Remark
+Person *--> "*" Session
 
 Student *-left-> Tag
 @enduml

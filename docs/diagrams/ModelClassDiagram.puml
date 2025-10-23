@@ -21,6 +21,8 @@ Class Name
 Class Phone
 Class Role
 Class Tag
+Class Remark
+Class Session
 
 Class I #FFFFFF
 }
@@ -46,6 +48,8 @@ Person *--> Name
 Person *--> Phone
 Person *--> Address
 Person *--> Role
+Person *--> "*" Remark
+Person *--> "*" Session
 Student *--> "*" Tag
 
 Person -[hidden]up--> I

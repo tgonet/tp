@@ -80,9 +80,9 @@ Adds a person to the address book.
 Format: `add n/NAME p/PHONE_NUMBER a/ADDRESS r/ROLE [t/TAG]…​`
 
 * A person can have any number of tags (including 0).
-* A person can have one of the two roles: `student` or `parent`
-* A person that has the `student` role can have `[TAGS]`
-* A person that has the `parent` role **cannot** have `[TAGS]`
+* A person can have one of the two roles: `student` or `parent`.
+* A person that has the `student` role can have `[TAGS]`.
+* A person that has the `parent` role **cannot** have `[TAGS]`.
 
 Examples:
 * `add n/John Doe p/98765432 a/902 East Coast Parkway, #01-26, Singapore r/parent`
@@ -167,6 +167,20 @@ Format: `view INDEX`
 * The result is displayed in the app as a list.
 ![viewResult.png](images/viewResult.png)
 * The index refers to the index number shown in the displayer person list.
+
+### Add session: `addsession`
+
+Adds a session of the specified person from the address book.
+
+Format: `addsession INDEX d/DAY ti/TIME`
+
+* Leaves a session about the person at the specified `INDEX`.
+* A person can have any number of sessions (including 0).
+* The index refers to the index number shown in the displayer person list.
+
+Examples:
+* `addsession 1 d/Mon ti/3pm-5pm`
+* `addsession 1 d/Thurs ti/9:30AM-11:45AM`
 
 ### Clearing all entries : `clear`
 
