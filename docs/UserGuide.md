@@ -87,6 +87,7 @@ Format: `add n/NAME p/PHONE_NUMBER a/ADDRESS r/ROLE [t/TAG]…​`
 Examples:
 * `add n/John Doe p/98765432 a/902 East Coast Parkway, #01-26, Singapore r/parent`
 * `add n/Betsy Crowe p/87654321 a/742 Ang Mo Kio Avenue 5 12-30, Singapore r/student t/math`
+* `add n/Lorem Ipsum p/97531864 a/6001 Beach Road 02-37 Golden Mile Tower, Singapore r/student`
 
 ### Listing all persons : `list`
 
@@ -174,13 +175,28 @@ Adds a session of the specified person from the address book.
 
 Format: `addsession INDEX d/DAY ti/TIME`
 
-* Leaves a session about the person at the specified `INDEX`.
+* Adds a session about the person at the specified `INDEX`.
 * A person can have any number of sessions (including 0).
-* The index refers to the index number shown in the displayer person list.
+* The index refers to the index number shown in the displayed person list.
+* The index **must be a positive integer** 1, 2, 3, …​
 
 Examples:
 * `addsession 1 d/Mon ti/3pm-5pm`
 * `addsession 1 d/Thurs ti/9:30AM-11:45AM`
+
+### Delete session: `deletesession`
+
+Deletes a session of the specified person from the address book.
+
+Format: `deletesession INDEX d/DAY ti/TIME`
+
+* Deletes a session about the person at the specified `INDEX`.
+* The index refers to the index number shown in the displayed person list.
+* The index **must be a positive integer** 1, 2, 3, …​
+
+Examples:
+* `deletesession 1 d/Mon ti/3pm-5pm`
+* `deletesession 1 d/Thurs ti/9:30AM-11:45AM`
 
 ### Clearing all entries : `clear`
 
