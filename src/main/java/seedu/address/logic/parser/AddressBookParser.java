@@ -87,7 +87,7 @@ public class AddressBookParser {
 
         case EditSessionCommand.COMMAND_WORD:
             return new EditSessionCommandParser().parse(arguments);
-            
+
         case DeleteSessionCommand.COMMAND_WORD:
             return new DeleteSessionCommandParser().parse(arguments);
 
