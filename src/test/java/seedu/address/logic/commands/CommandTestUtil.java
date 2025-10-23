@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DAY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_NEW_DAY;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_NEW_TIME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
@@ -53,7 +55,12 @@ public class CommandTestUtil {
     public static final String VALID_TIME = "12pm-1pm";
     public static final String VALID_DAY_EXTRA = "Tue";
     public static final String VALID_TIME_EXTRA = "9am-1pm";
+    public static final String VALID_DAY_MON = "Monday";
+    public static final String VALID_TIME_1PM = "1pm-2pm";
+    public static final String VALID_DAY_TUE = "Tuesday";
+    public static final String VALID_TIME_2PM = "2pm-3pm";
     public static final Session VALID_SESSION = new Session(new Day(VALID_DAY), new Time(VALID_TIME));
+
 
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
     public static final String NAME_DESC_BOB = " " + PREFIX_NAME + VALID_NAME_BOB;
@@ -81,7 +88,9 @@ public class CommandTestUtil {
     public static final String INVALID_ROLE_DESC = " " + PREFIX_ROLE + "friend"; // 'hubby' not allowed in tags
     public static final String INVALID_TAG_DESC = " " + PREFIX_TAG + "p@rent"; // 'hubby' not allowed in tags
     public static final String INVALID_DAY_DESC = " " + PREFIX_DAY + "Mondayy";
+    public static final String INVALID_NEW_DAY_DESC = " " + PREFIX_NEW_DAY + "Mondayy";
     public static final String INVALID_TIME_DESC = " " + PREFIX_TIME + "1200";
+    public static final String INVALID_NEW_TIME_DESC = " " + PREFIX_NEW_TIME + "1200";
 
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";
     public static final String PREAMBLE_NON_EMPTY = "NonEmptyPreamble";

@@ -47,13 +47,14 @@ public class EditSessionCommand extends Command {
             + PREFIX_TIME + "12pm-1pm "
             + PREFIX_NEW_DAY + "Tue "
             + PREFIX_NEW_TIME + "1pm-2pm";
+    public static final String MESSAGE_SUCCESS = "Edited session of %s.";
+    public static final String MESSAGE_SESSION_NOT_FOUND = "Session not found.";
+
     private final Index targetIndex;
     private final Day oldDay;
     private final Time oldTime;
     private final Day newDay;
     private final Time newTime;
-    private final String messageSuccess = "Edited session of %s.";
-    private final String messageSessionNotFound = "Session not found.";
 
     /**
      * Creates an EditSessionCommand to edit a session of a specific person in the list.
@@ -84,12 +85,12 @@ public class EditSessionCommand extends Command {
         Person personToEdit = lastShownList.get(targetIndex.getZeroBased());
         if (personToEdit instanceof Student student) {
             if (!student.hasSession(new Session(oldDay, oldTime))) {
-                throw new CommandException(messageSessionNotFound);
+                throw new CommandException(MESSAGE_SESSION_NOT_FOUND);
             }
             Person personUpdated = toCopy((Student) personToEdit, oldDay, oldTime, newDay, newTime);
             model.setPerson(personToEdit, personUpdated);
             model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
-            return new CommandResult(String.format(messageSuccess, personToEdit.getName()));
+            return new CommandResult(String.format(MESSAGE_SUCCESS, personToEdit.getName()));
         } else {
             throw new CommandException(Messages.MESSAGE_ONLY_STUDENT_COMMAND);
         }
