@@ -3,10 +3,12 @@ package seedu.address.logic.commands;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_DAY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TIME;
 import static seedu.address.testutil.Assert.assertThrows;
 
 import java.util.ArrayList;
@@ -49,6 +51,8 @@ public class CommandTestUtil {
     public static final String VALID_TAG_PARENT = "parent";
     public static final String VALID_DAY = "Mon";
     public static final String VALID_TIME = "12pm-1pm";
+    public static final String VALID_DAY_EXTRA = "Tue";
+    public static final String VALID_TIME_EXTRA = "9am-1pm";
     public static final Session VALID_SESSION = new Session(new Day(VALID_DAY), new Time(VALID_TIME));
 
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
@@ -66,12 +70,18 @@ public class CommandTestUtil {
     public static final String TAG_DESC_PARENT = " " + PREFIX_TAG + VALID_TAG_PARENT;
     public static final String TAG_DESC_SUBJECT = " " + PREFIX_TAG + VALID_TAG_SUBJECT;
     public static final String TAG_DESC_SUBJECT2 = " " + PREFIX_TAG + VALID_TAG_SUBJECT2;
+    public static final String DAY_DESC = " " + PREFIX_DAY + VALID_DAY;
+    public static final String TIME_DESC = " " + PREFIX_TIME + VALID_TIME;
+    public static final String DAY_DESC_EXTRA = " " + PREFIX_DAY + VALID_DAY_EXTRA;
+    public static final String TIME_DESC_EXTRA = " " + PREFIX_TIME + VALID_TIME_EXTRA;
 
     public static final String INVALID_NAME_DESC = " " + PREFIX_NAME + "James&"; // '&' not allowed in names
     public static final String INVALID_PHONE_DESC = " " + PREFIX_PHONE + "911a"; // 'a' not allowed in phones
     public static final String INVALID_ADDRESS_DESC = " " + PREFIX_ADDRESS; // empty string not allowed for addresses
     public static final String INVALID_ROLE_DESC = " " + PREFIX_ROLE + "friend"; // 'hubby' not allowed in tags
     public static final String INVALID_TAG_DESC = " " + PREFIX_TAG + "p@rent"; // 'hubby' not allowed in tags
+    public static final String INVALID_DAY_DESC = " " + PREFIX_DAY + "Mondayy";
+    public static final String INVALID_TIME_DESC = " " + PREFIX_TIME + "1200";
 
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";
     public static final String PREAMBLE_NON_EMPTY = "NonEmptyPreamble";
