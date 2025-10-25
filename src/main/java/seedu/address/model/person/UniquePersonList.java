@@ -5,6 +5,7 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -66,6 +67,26 @@ public class UniquePersonList implements Iterable<Person> {
         }
 
         internalList.set(index, editedPerson);
+    }
+
+    public void resolveParentLink(Student student) {
+        if (!student.hasParent()) {
+            return;
+        }
+        Name parentName = student.getParentName();
+        internalList.stream()
+                .filter(p -> p instanceof Parent)
+                .filter(p -> p.getName().equals(parentName))
+                .findFirst()
+                .ifPresent(parent -> student.setParent((Parent) parent));
+    }
+
+    public void resolveAllParentLinks() {
+        internalList.stream()
+                .filter(p -> p instanceof Student)
+                .map(p -> (Student) p)
+                .filter(Student::hasParent)
+                .forEach(this::resolveParentLink);
     }
 
     /**

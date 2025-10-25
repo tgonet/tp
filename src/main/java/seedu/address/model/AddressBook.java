@@ -3,10 +3,12 @@ package seedu.address.model;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
+import java.util.Optional;
 
 import javafx.collections.ObservableList;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Student;
 import seedu.address.model.person.UniquePersonList;
 
 /**
@@ -92,6 +94,16 @@ public class AddressBook implements ReadOnlyAddressBook {
      */
     public void removePerson(Person key) {
         persons.remove(key);
+    }
+
+    public void linkParent(Student student) {
+        requireNonNull(student);
+
+        persons.resolveParentLink(student);
+    }
+
+    public void linkAllParents() {
+        persons.resolveAllParentLinks();
     }
 
     //// util methods

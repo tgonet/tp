@@ -11,7 +11,11 @@ import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.ReadOnlyAddressBook;
+import seedu.address.model.person.Name;
+import seedu.address.model.person.Parent;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Student;
 
 /**
  * Adds a person to the address book.
@@ -36,6 +40,7 @@ public class AddCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "New person added: %1$s";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book";
+    public static final String MESSAGE_INVALID_PARENT = "This parent does not exist in the address book";
 
     private final Person toAdd;
 
@@ -53,6 +58,16 @@ public class AddCommand extends Command {
 
         if (model.hasPerson(toAdd)) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+        }
+
+        // link the parent if specified for student
+        if (toAdd instanceof Student student && student.hasParent() && !student.hasLinkedParent()) {
+            Name parentName = student.getParentName();
+            // Check if parent exists before linking
+            if (!model.hasPerson(new Parent(parentName))) {
+                throw new CommandException(MESSAGE_INVALID_PARENT);
+            }
+            model.linkParent(student);
         }
 
         model.addPerson(toAdd);

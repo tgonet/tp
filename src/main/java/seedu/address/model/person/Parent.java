@@ -15,7 +15,16 @@ public class Parent extends Person {
      * @param remark
      */
     public Parent(Name name, Phone phone, Address address, Remark remark) {
-        super(name, phone, address, new Role("parent"), remark);
+        super(name, phone, address, Role.parentRole, remark);
+    }
+
+    /**
+     * Creates dummy Parent object for filtering
+     *
+     * @param name
+     */
+    public Parent(Name name) {
+        super(name, Role.parentRole);
     }
 
     /**
