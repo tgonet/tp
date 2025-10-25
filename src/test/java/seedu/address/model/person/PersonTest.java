@@ -131,12 +131,14 @@ public class PersonTest {
     public void toStringMethod() {
         String expected = Student.class.getCanonicalName() + "{name=" + ALICE.getName() + ", phone=" + ALICE.getPhone()
                 + ", address=" + ALICE.getAddress() + ", role=" + ALICE.getRole()
-                + ", remark=" + ALICE.getRemark() + ", tags=" + ALICE.getTags() + "}";
+                + ", remark=" + ALICE.getRemark() + ", tags=" + ALICE.getTags()
+                + ", parent=" + ALICE.getParentName() + "}";
         assertEquals(expected, ALICE.toString());
 
         expected = Parent.class.getCanonicalName() + "{name=" + CHARLES.getName() + ", phone=" + CHARLES.getPhone()
                 + ", address=" + CHARLES.getAddress() + ", role=" + CHARLES.getRole()
-                + ", remark=" + CHARLES.getRemark() + "}";
+                + ", remark=" + CHARLES.getRemark()
+                + ", children=" + CHARLES.getChildren() + "}";
         assertEquals(expected, CHARLES.toString());
     }
 }

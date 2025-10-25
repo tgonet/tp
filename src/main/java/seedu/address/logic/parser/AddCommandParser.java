@@ -8,7 +8,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -56,12 +55,10 @@ public class AddCommandParser implements Parser<AddCommand> {
         Person person;
         if (role.isStudent()) {
             Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
-            Optional<String> parentValue = argMultimap.getValue(PREFIX_PARENT);
-            if (parentValue.isPresent()) {
-                Name parentName = ParserUtil.parseName(argMultimap.getValue(PREFIX_PARENT).get());
-                person = new Student(name, phone, address, remark, tagList, parentName);
-            } else {
-                person = new Student(name, phone, address, remark, tagList);
+            person = new Student(name, phone, address, remark, tagList);
+            if (argMultimap.getValue(PREFIX_PARENT).isPresent()) {
+                Student student = (Student) person;
+                student.setParentName(ParserUtil.parseName(argMultimap.getValue(PREFIX_PARENT).get()));
             }
         } else if (role.isParent()) {
             person = new Parent(name, phone, address, remark);

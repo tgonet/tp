@@ -3,6 +3,8 @@ package seedu.address.model.person;
 import java.util.HashSet;
 import java.util.Set;
 
+import seedu.address.commons.util.ToStringBuilder;
+
 /**
  * Represents a Parent in the address book.
  * Guarantees: details are present and not null, field values are validated, immutable.
@@ -43,6 +45,24 @@ public class Parent extends Person {
     }
 
     /**
+     * Unlinks a given Student from this Parent
+     *
+     * @param student
+     */
+    public void removeChild(Student student) {
+        if (children.isEmpty() || !children.contains(student)) {
+            return;
+        }
+
+        children.remove(student);
+        childrenNames.remove(student.getName());
+    }
+
+    public Set<Student> getChildren() {
+        return Set.copyOf(children);
+    }
+
+    /**
      * Returns true if both persons have the same identity and data fields.
      * This defines a stronger notion of equality between two persons.
      */
@@ -61,5 +81,17 @@ public class Parent extends Person {
         return name.equals(otherPerson.name)
                 && phone.equals(otherPerson.phone)
                 && address.equals(otherPerson.address);
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .add("name", name)
+                .add("phone", phone)
+                .add("address", address)
+                .add("role", role)
+                .add("remark", remark)
+                .add("children", childrenNames)
+                .toString();
     }
 }

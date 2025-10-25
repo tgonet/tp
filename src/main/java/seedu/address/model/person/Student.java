@@ -36,23 +36,6 @@ public class Student extends Person {
     }
 
     /**
-     * This constructor is used when we want to create student who needs to be linked to its parent.
-     *
-     * @param name
-     * @param phone
-     * @param address
-     * @param remark
-     * @param tags
-     * @param parentName
-     */
-    public Student(Name name, Phone phone, Address address, Remark remark, Set<Tag> tags, Name parentName) {
-        super(name, phone, address, Role.STUDENT_ROLE, remark);
-        this.tags.addAll(tags);
-        this.sessions = new HashSet<>();
-        this.parentName = parentName;
-    }
-
-    /**
      * This is the constructor for edit command and add session command as when add command no need to add session
      * Every field must be present and not null.
      *
@@ -131,6 +114,10 @@ public class Student extends Person {
         return this.parentName;
     }
 
+    public void setParentName(Name parentName) {
+        this.parentName = parentName;
+    }
+
     public void setParent(Parent parent) {
         myParent = parent;
     }
@@ -170,6 +157,7 @@ public class Student extends Person {
                 .add("role", role)
                 .add("remark", remark)
                 .add("tags", tags)
+                .add("parent", parentName)
                 .toString();
     }
 }
