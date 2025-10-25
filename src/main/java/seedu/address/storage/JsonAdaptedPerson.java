@@ -139,7 +139,8 @@ class JsonAdaptedPerson {
             final Set<Session> modelSessions = new HashSet<>(personSessions);
             if (parentName != null) {
                 final Name modelParentName = new Name(parentName);
-                return new Student(modelName, modelPhone, modelAddress, modelRemark, modelTags, modelSessions, modelParentName);
+                return new Student(modelName, modelPhone, modelAddress, modelRemark,
+                        modelTags, modelSessions, modelParentName);
             } else {
                 return new Student(modelName, modelPhone, modelAddress, modelRemark, modelTags, modelSessions);
             }

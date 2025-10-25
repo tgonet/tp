@@ -1,6 +1,5 @@
 package seedu.address.model.person;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,7 +20,7 @@ public class Parent extends Person {
      * @param remark
      */
     public Parent(Name name, Phone phone, Address address, Remark remark) {
-        super(name, phone, address, Role.parentRole, remark);
+        super(name, phone, address, Role.PARENT_ROLE, remark);
     }
 
     /**
@@ -30,42 +29,18 @@ public class Parent extends Person {
      * @param name
      */
     public Parent(Name name) {
-        super(name, Role.parentRole);
+        super(name, Role.PARENT_ROLE);
     }
 
-    // Children related functions
-
-    public boolean hasChildren() {
-        return !childrenNames.isEmpty();
-    }
-
-    public void addChildName(Name name) {
-        childrenNames.add(name);
-    }
-
-    public void removeChildName(Name name) {
-        childrenNames.remove(name);
-    }
-
+    /**
+     * Links a given Student to this Parent.
+     *
+     * @param student
+     */
     public void addChild(Student student) {
         children.add(student);
         childrenNames.add(student.getName());
     }
-
-    public void removeChild(Student student) {
-        children.remove(student);
-        childrenNames.remove(student.getName());
-    }
-
-    public Set<Student> getChildren() {
-        return Collections.unmodifiableSet(children);
-    }
-
-    public Set<Name> getChildrenNames() {
-        return Collections.unmodifiableSet(childrenNames);
-    }
-
-    // ---------------------
 
     /**
      * Returns true if both persons have the same identity and data fields.

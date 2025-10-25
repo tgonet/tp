@@ -5,7 +5,6 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -69,6 +68,11 @@ public class UniquePersonList implements Iterable<Person> {
         internalList.set(index, editedPerson);
     }
 
+    /**
+     * Links a given Student to its specified Parent in the list.
+     *
+     * @param student
+     */
     public void resolveParentLink(Student student) {
         if (!student.hasParent()) {
             return;
@@ -85,6 +89,10 @@ public class UniquePersonList implements Iterable<Person> {
                 });
     }
 
+    /**
+     * Links all Parents and Students in the list together.
+     * Used when loading data from the JSON file.
+     */
     public void resolveAllParentLinks() {
         internalList.stream()
                 .filter(p -> p instanceof Student)

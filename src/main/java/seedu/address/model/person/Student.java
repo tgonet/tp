@@ -30,7 +30,7 @@ public class Student extends Person {
      * @param tags
      */
     public Student(Name name, Phone phone, Address address, Remark remark, Set<Tag> tags) {
-        super(name, phone, address, Role.studentRole, remark);
+        super(name, phone, address, Role.STUDENT_ROLE, remark);
         this.tags.addAll(tags);
         this.sessions = new HashSet<>();
     }
@@ -46,7 +46,7 @@ public class Student extends Person {
      * @param parentName
      */
     public Student(Name name, Phone phone, Address address, Remark remark, Set<Tag> tags, Name parentName) {
-        super(name, phone, address, Role.studentRole, remark);
+        super(name, phone, address, Role.STUDENT_ROLE, remark);
         this.tags.addAll(tags);
         this.sessions = new HashSet<>();
         this.parentName = parentName;
@@ -64,7 +64,7 @@ public class Student extends Person {
      * @param sessions
      */
     public Student(Name name, Phone phone, Address address, Remark remark, Set<Tag> tags, Set<Session> sessions) {
-        super(name, phone, address, Role.studentRole, remark);
+        super(name, phone, address, Role.STUDENT_ROLE, remark);
         this.tags.addAll(tags);
         this.sessions = sessions;
     }
@@ -81,8 +81,9 @@ public class Student extends Person {
      * @param sessions
      * @param parentName
      */
-    public Student(Name name, Phone phone, Address address, Remark remark, Set<Tag> tags, Set<Session> sessions, Name parentName) {
-        super(name, phone, address, Role.studentRole, remark);
+    public Student(Name name, Phone phone, Address address, Remark remark, Set<Tag> tags,
+            Set<Session> sessions, Name parentName) {
+        super(name, phone, address, Role.STUDENT_ROLE, remark);
         this.tags.addAll(tags);
         this.sessions = sessions;
         this.parentName = parentName;
@@ -94,7 +95,7 @@ public class Student extends Person {
      * @param name
      */
     public Student(Name name) {
-        super(name, Role.studentRole);
+        super(name, Role.STUDENT_ROLE);
         this.sessions = new HashSet<>();
     }
 
