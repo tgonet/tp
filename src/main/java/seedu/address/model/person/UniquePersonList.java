@@ -78,7 +78,11 @@ public class UniquePersonList implements Iterable<Person> {
                 .filter(p -> p instanceof Parent)
                 .filter(p -> p.getName().equals(parentName))
                 .findFirst()
-                .ifPresent(parent -> student.setParent((Parent) parent));
+                .ifPresent(p -> {
+                    Parent parent = (Parent) p;
+                    student.setParent(parent);
+                    parent.addChild(student);
+                });
     }
 
     public void resolveAllParentLinks() {
