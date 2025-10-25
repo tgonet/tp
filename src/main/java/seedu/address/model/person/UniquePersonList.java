@@ -92,6 +92,7 @@ public class UniquePersonList implements Iterable<Person> {
      * @param student
      */
     public void resolveParentLink(Student student) {
+        requireNonNull(student);
         if (!student.hasParent()) {
             return;
         }
@@ -113,6 +114,7 @@ public class UniquePersonList implements Iterable<Person> {
      * @param student
      */
     public void destroyParentLink(Student student) {
+        requireNonNull(student);
         if (!student.hasParent()) {
             return;
         }

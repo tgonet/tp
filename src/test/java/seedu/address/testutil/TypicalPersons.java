@@ -6,6 +6,7 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_CHARLES
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_CHARLES;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_JAMES;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_CHARLES;
@@ -100,6 +101,14 @@ public class TypicalPersons {
             .withPhone(VALID_PHONE_BOB)
             .withAddress(VALID_ADDRESS_BOB)
             .withRemark(VALID_REMARK_BOB).build();
+    public static final Student JAMES = new StudentBuilder()
+            .withName(VALID_NAME_JAMES)
+            .withPhone(VALID_PHONE_BOB)
+            .withAddress(VALID_ADDRESS_BOB)
+            .withRemark(VALID_REMARK_BOB)
+            .withTags(VALID_TAG_SUBJECT, VALID_TAG_SUBJECT2)
+            .withParentName(VALID_NAME_CHARLES)
+            .build();
 
     public static final String KEYWORD_MATCHING_MEIER = "Meier"; // A keyword that matches MEIER
 
