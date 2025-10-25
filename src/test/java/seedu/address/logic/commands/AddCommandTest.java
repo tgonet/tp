@@ -55,6 +55,16 @@ public class AddCommandTest {
     }
 
     @Test
+    public void execute_invalidParent_throwsCommandException() {
+        Person validPerson = new StudentBuilder().build();
+        Person validPerson2 = new StudentBuilder().withName("BOB").withParentName("Tom").build();
+        AddCommand addCommand = new AddCommand(validPerson2);
+        ModelStub modelStub = new ModelStubWithPerson(validPerson);
+
+        assertThrows(CommandException.class, AddCommand.MESSAGE_INVALID_PARENT, () -> addCommand.execute(modelStub));
+    }
+
+    @Test
     public void equals() {
         Person alice = new StudentBuilder().withName("Alice").build();
         Person bob = new StudentBuilder().withName("Bob").build();

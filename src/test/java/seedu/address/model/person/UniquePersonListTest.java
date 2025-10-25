@@ -112,10 +112,11 @@ public class UniquePersonListTest {
     }
 
     @Test
-    public void resolveParentLink_StudentAndExistingParent_parentChildrenUpdated() {
+    public void resolveParentLink_studentAndExistingParent_parentChildrenUpdated() {
         uniquePersonList.add(CHARLES);
         uniquePersonList.resolveParentLink(JAMES);
-        assertTrue(CHARLES.getChildren().contains(JAMES));
+        assertTrue(CHARLES.hasChild(JAMES));
+        assertTrue(CHARLES.hasChildName(JAMES.getName()));
     }
 
     @Test
@@ -124,33 +125,39 @@ public class UniquePersonListTest {
     }
 
     @Test
-    public void resolveParentLink_StudentAndWithNoParent_nothingHappens() {
+    public void resolveParentLink_studentAndWithNoParent_nothingHappens() {
         uniquePersonList.add(CHARLES);
         uniquePersonList.resolveParentLink(ALICE);
-        assertFalse(CHARLES.getChildren().contains(ALICE));
+        assertFalse(CHARLES.hasChild(ALICE));
+        assertFalse(CHARLES.hasChildName(ALICE.getName()));
     }
 
     @Test
     public void destroyParentLink_existingStudentAndExistingParent_parentChildrenRemoved() {
         uniquePersonList.add(CHARLES);
         uniquePersonList.resolveParentLink(JAMES);
-        assertTrue(CHARLES.getChildren().contains(JAMES));
+        assertTrue(CHARLES.hasChild(JAMES));
+        assertTrue(CHARLES.hasChildName(JAMES.getName()));
 
         uniquePersonList.destroyParentLink(JAMES);
-        assertFalse(CHARLES.getChildren().contains(JAMES));
+        assertFalse(CHARLES.hasChild(JAMES));
+        assertFalse(CHARLES.hasChildName(JAMES.getName()));
     }
 
     @Test
-    public void destroyParentLink_StudentAndWithNoParent_nothingHappens() {
+    public void destroyParentLink_studentAndWithNoParent_nothingHappens() {
         uniquePersonList.add(CHARLES);
         uniquePersonList.resolveParentLink(JAMES);
-        assertTrue(CHARLES.getChildren().contains(JAMES));
+        assertTrue(CHARLES.hasChild(JAMES));
+        assertTrue(CHARLES.hasChildName(JAMES.getName()));
 
         uniquePersonList.destroyParentLink(ALICE);
-        assertTrue(CHARLES.getChildren().contains(JAMES));
+        assertTrue(CHARLES.hasChild(JAMES));
+        assertTrue(CHARLES.hasChildName(JAMES.getName()));
 
         uniquePersonList.destroyParentLink(JAMES);
-        assertFalse(CHARLES.getChildren().contains(JAMES));
+        assertFalse(CHARLES.hasChild(JAMES));
+        assertFalse(CHARLES.hasChildName(JAMES.getName()));
     }
 
     @Test
@@ -163,7 +170,8 @@ public class UniquePersonListTest {
         uniquePersonList.add(CHARLES);
         uniquePersonList.add(JAMES);
         uniquePersonList.resolveAllParentLinks();
-        assertTrue(CHARLES.getChildren().contains(JAMES));
+        assertTrue(CHARLES.hasChild(JAMES));
+        assertTrue(CHARLES.hasChildName(JAMES.getName()));
     }
 
     @Test

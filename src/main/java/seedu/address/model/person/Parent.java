@@ -34,6 +34,14 @@ public class Parent extends Person {
         super(name, Role.PARENT_ROLE);
     }
 
+    public boolean hasChild(Student student) {
+        return children.contains(student);
+    }
+
+    public boolean hasChildName(Name name) {
+        return childrenNames.contains(name);
+    }
+
     /**
      * Links a given Student to this Parent.
      *
