@@ -1,6 +1,8 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.Messages.MESSAGE_NO_PARENT_FOR_PARENT;
+import static seedu.address.logic.Messages.MESSAGE_NO_TAGS_FOR_PARENT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PARENT;
@@ -48,19 +50,28 @@ public class AddCommandParser implements Parser<AddCommand> {
         Address address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
         Role role = ParserUtil.parseRole(argMultimap.getValue(PREFIX_ROLE).get());
         Remark remark = new Remark(""); // add command does not allow adding remarks straight away
+        Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
+        Name parentName = argMultimap.getValue(PREFIX_PARENT).isPresent()
+                ? ParserUtil.parseName(argMultimap.getValue(PREFIX_PARENT).get())
+                : null;
 
         // Update Logic here to create Person based on role
         // For now no error message is displayed if tags are entered for a parent,
         // the tags will just be discarded
         Person person;
         if (role.isStudent()) {
-            Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
             person = new Student(name, phone, address, remark, tagList);
             if (argMultimap.getValue(PREFIX_PARENT).isPresent()) {
                 Student student = (Student) person;
                 student.setParentName(ParserUtil.parseName(argMultimap.getValue(PREFIX_PARENT).get()));
             }
         } else if (role.isParent()) {
+            if (!tagList.isEmpty()) {
+                throw new ParseException(String.format(MESSAGE_NO_TAGS_FOR_PARENT, AddCommand.MESSAGE_USAGE));
+            } else if (parentName != null) {
+                throw new ParseException(String.format(MESSAGE_NO_PARENT_FOR_PARENT, AddCommand.MESSAGE_USAGE));
+            }
+
             person = new Parent(name, phone, address, remark);
         } else {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
