@@ -77,17 +77,21 @@ Format: `help`
 
 Adds a person to the address book.
 
-Format: `add n/NAME p/PHONE_NUMBER a/ADDRESS r/ROLE [t/TAG]…​`
+Format: `add n/NAME p/PHONE_NUMBER a/ADDRESS r/ROLE [par/PARENT_NAME] [t/TAG]…`
 
 * A person can have any number of tags (including 0).
 * A person can have one of the two roles: `student` or `parent`.
 * A person that has the `student` role can have `[TAGS]`.
 * A person that has the `parent` role **cannot** have `[TAGS]`.
+* You may specify a parent for a student using the `par/` prefix.
+  * The specified parent **must already exist** in the address book.
+  * Only students can have a `par/` field — parents cannot have one.
 
 Examples:
 * `add n/John Doe p/98765432 a/902 East Coast Parkway, #01-26, Singapore r/parent`
 * `add n/Betsy Crowe p/87654321 a/742 Ang Mo Kio Avenue 5 12-30, Singapore r/student t/math`
 * `add n/Lorem Ipsum p/97531864 a/6001 Beach Road 02-37 Golden Mile Tower, Singapore r/student`
+* `add n/Onion Lee p/99274628 a/1 HarbourFront Walk, Singapore 098585 r/student par/Keith`
 
 ### Listing all persons : `list`
 
@@ -99,19 +103,22 @@ Format: `list`
 
 Edits an existing person in the address book.
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]…​`
+Format: `edit INDEX [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]…`
 
 * Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
 * When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
-* You can remove all the person’s tags by typing `t/` without
-    specifying any tags after it.
+* You can remove all the person’s tags by typing `t/` without specifying any tags after it.
+* You may specify or change a student’s parent using the `par/` prefix.
+  * The specified parent **must already exist** in the address book.
+  * Only students can have a parent; specifying `par/` for a parent will result in an error.
+* A parent’s children (Student) **cannot be edited directly**. Relationships are updated automatically when their corresponding student entries are modified.
 
 Examples:
 *  `edit 1 p/91234567` Edits the phone number of the 1st person to be `91234567`.
 *  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
-
+*  `edit 3 n/Alex Yeo par/Keith` Edits the name and parent of the 3rd person to be `Alex Yeo` and their parent to be `Keith`. (Assuming `Keith` is a Parent that already exists in the address book)
 ### Locating persons by name: `find`
 
 Finds persons whose information matches/contains given criteria.
