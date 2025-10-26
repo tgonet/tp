@@ -16,6 +16,9 @@ public class Role {
      */
     public static final String VALIDATION_REGEX = "^(student|parent)$";
 
+    public static final Role PARENT_ROLE = new Role("parent");
+    public static final Role STUDENT_ROLE = new Role("student");
+
     public final String role;
 
     /**

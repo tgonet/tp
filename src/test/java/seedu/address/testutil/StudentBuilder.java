@@ -3,6 +3,7 @@ package seedu.address.testutil;
 import java.util.HashSet;
 import java.util.Set;
 
+import seedu.address.model.person.Name;
 import seedu.address.model.person.Session;
 import seedu.address.model.person.Student;
 import seedu.address.model.tag.Tag;
@@ -15,6 +16,7 @@ public class StudentBuilder extends PersonBuilder<StudentBuilder> {
 
     private Set<Tag> tags;
     private Set<Session> sessions;
+    private Name parentName;
 
     /**
      * Creates a {@code StudentBuilder} with the default details.
@@ -35,6 +37,7 @@ public class StudentBuilder extends PersonBuilder<StudentBuilder> {
         remark = studentToCopy.getRemark();
         tags = new HashSet<>(studentToCopy.getTags());
         sessions = new HashSet<>(studentToCopy.getSessions());
+        parentName = studentToCopy.getParentName();
     }
 
     /**
@@ -53,6 +56,14 @@ public class StudentBuilder extends PersonBuilder<StudentBuilder> {
         return this;
     }
 
+    /**
+     * Sets the {@code ParentName} of the {@code Student} that we are building.
+     */
+    public StudentBuilder withParentName(String parentName) {
+        this.parentName = new Name(parentName);
+        return this;
+    }
+
     @Override
     protected StudentBuilder self() {
         return this;
@@ -60,7 +71,7 @@ public class StudentBuilder extends PersonBuilder<StudentBuilder> {
 
     @Override
     public Student build() {
-        return new Student(name, phone, address, remark, tags, sessions);
+        return new Student(name, phone, address, remark, tags, sessions, parentName);
     }
 
 }

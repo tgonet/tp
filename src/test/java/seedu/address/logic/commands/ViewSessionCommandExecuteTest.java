@@ -105,6 +105,11 @@ public class ViewSessionCommandExecuteTest {
             throw u();
         }
 
+        @Override
+        public void linkParent(Student student) {
+            throw u();
+        }
+
         @Override public void updateFilteredPersonList(Predicate<Person> predicate) {
             throw u();
         }

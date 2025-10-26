@@ -54,6 +54,7 @@ public class EditCommand extends Command {
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book.";
+    public static final String MESSAGE_INVALID_PARENT = "This parent does not exist in the address book";
 
     private final Index index;
     private final EditPersonDescriptor editPersonDescriptor;
@@ -86,7 +87,9 @@ public class EditCommand extends Command {
         if (personToEdit instanceof Student studentToEdit) {
             Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(studentToEdit.getTags());
             Set<Session> updatedSessions = editPersonDescriptor.getSessions().orElse(studentToEdit.getSessions());
-            return new Student(updatedName, updatedPhone, updatedAddress, updatedRemark, updatedTags, updatedSessions);
+            Name updatedParentName = editPersonDescriptor.getParentName().orElse(studentToEdit.getParentName());
+            return new Student(updatedName, updatedPhone, updatedAddress, updatedRemark,
+                    updatedTags, updatedSessions, updatedParentName);
         } else {
             return new Parent(updatedName, updatedPhone, updatedAddress, updatedRemark);
         }
@@ -106,6 +109,17 @@ public class EditCommand extends Command {
 
         if (!personToEdit.isSamePerson(editedPerson) && model.hasPerson(editedPerson)) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+        }
+
+        // If updating parent, check if that new parent exists
+        if (personToEdit instanceof Student student) {
+            Student editedStudent = (Student) editedPerson;
+            // Check if parent names are different
+            if (student.getParentName() != null
+                    && !student.getParentName().equals(editedStudent.getParentName())
+                    && !model.hasPerson(new Parent(editedStudent.getParentName()))) {
+                throw new CommandException(MESSAGE_INVALID_PARENT);
+            }
         }
 
         model.setPerson(personToEdit, editedPerson);
@@ -149,6 +163,7 @@ public class EditCommand extends Command {
         private Remark remark;
         private Set<Tag> tags;
         private Set<Session> sessions;
+        private Name parentName;
 
         public EditPersonDescriptor() {
         }
@@ -165,13 +180,14 @@ public class EditCommand extends Command {
             setRemark(toCopy.remark);
             setTags(toCopy.tags);
             setSessions(toCopy.sessions);
+            setParentName(toCopy.parentName);
         }
 
         /**
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, address, tags, remark);
+            return CollectionUtil.isAnyNonNull(name, phone, address, tags, remark, parentName);
         }
 
         public Optional<Name> getName() {
@@ -212,6 +228,14 @@ public class EditCommand extends Command {
 
         public void setRemark(Remark remark) {
             this.remark = remark;
+        }
+
+        public Optional<Name> getParentName() {
+            return Optional.ofNullable(parentName);
+        }
+
+        public void setParentName(Name parentName) {
+            this.parentName = parentName;
         }
 
         /**
@@ -265,6 +289,7 @@ public class EditCommand extends Command {
                     && Objects.equals(address, otherEditPersonDescriptor.address)
                     && Objects.equals(role, otherEditPersonDescriptor.role)
                     && Objects.equals(remark, otherEditPersonDescriptor.remark)
+                    && Objects.equals(parentName, otherEditPersonDescriptor.parentName)
                     && Objects.equals(tags, otherEditPersonDescriptor.tags);
         }
 
@@ -277,6 +302,7 @@ public class EditCommand extends Command {
                     .add("role", role)
                     .add("remark", remark)
                     .add("tags", tags)
+                    .add("parent", parentName)
                     .toString();
         }
     }
