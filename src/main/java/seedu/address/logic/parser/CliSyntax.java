@@ -16,4 +16,5 @@ public class CliSyntax {
     public static final Prefix PREFIX_TIME = new Prefix("ti/");
     public static final Prefix PREFIX_NEW_DAY = new Prefix("nd/");
     public static final Prefix PREFIX_NEW_TIME = new Prefix("nti/");
+    public static final Prefix PREFIX_PARENT = new Prefix("par/");
 }

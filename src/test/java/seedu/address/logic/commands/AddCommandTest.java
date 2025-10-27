@@ -23,6 +23,7 @@ import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Student;
 import seedu.address.testutil.StudentBuilder;
 
 public class AddCommandTest {
@@ -51,6 +52,16 @@ public class AddCommandTest {
         ModelStub modelStub = new ModelStubWithPerson(validPerson);
 
         assertThrows(CommandException.class, AddCommand.MESSAGE_DUPLICATE_PERSON, () -> addCommand.execute(modelStub));
+    }
+
+    @Test
+    public void execute_invalidParent_throwsCommandException() {
+        Person validPerson = new StudentBuilder().build();
+        Person validPerson2 = new StudentBuilder().withName("BOB").withParentName("Tom").build();
+        AddCommand addCommand = new AddCommand(validPerson2);
+        ModelStub modelStub = new ModelStubWithPerson(validPerson);
+
+        assertThrows(CommandException.class, AddCommand.MESSAGE_INVALID_PARENT, () -> addCommand.execute(modelStub));
     }
 
     @Test
@@ -145,6 +156,11 @@ public class AddCommandTest {
 
         @Override
         public void setPerson(Person target, Person editedPerson) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void linkParent(Student student) {
             throw new AssertionError("This method should not be called.");
         }
 

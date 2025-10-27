@@ -36,7 +36,7 @@ public abstract class Person {
         this.name = name;
         this.phone = phone;
         this.address = address;
-        this.role = role; //Remove ltr
+        this.role = role;
         this.remark = remark;
         this.sessionSlot = sessionSlot == null ? Optional.empty() : sessionSlot;
     }
@@ -44,6 +44,18 @@ public abstract class Person {
     // OVERLOADED CONSTRUCTOR to maintain old call sites:
     public Person(Name name, Phone phone, Address address, Role role, Remark remark) {
         this(name, phone, address, role, remark, Optional.empty());
+    }
+
+    /**
+     * Used during create new Person object for filtering in the address book
+     */
+    protected Person(Name name, Role role) {
+        this.name = name;
+        this.phone = null;
+        this.address = null;
+        this.role = role;
+        this.remark = null;
+        this.sessionSlot = Optional.empty();
     }
 
     public Name getName() {
@@ -80,7 +92,8 @@ public abstract class Person {
         }
 
         return otherPerson != null
-                && otherPerson.getName().equals(getName());
+                && otherPerson.getName().equals(getName())
+                && otherPerson.getRole().equals(getRole());
     }
 
     @Override

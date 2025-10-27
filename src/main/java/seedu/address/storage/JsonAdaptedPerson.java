@@ -35,6 +35,7 @@ class JsonAdaptedPerson {
     private final String remark;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
     private final List<JsonAdaptedSession> sessions = new ArrayList<>();
+    private final String parentName;
 
     /**
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
@@ -43,7 +44,9 @@ class JsonAdaptedPerson {
     public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
             @JsonProperty("address") String address,
             @JsonProperty("role") String role,
-            @JsonProperty("remark") String remark, @JsonProperty("tags") List<JsonAdaptedTag> tags,
+            @JsonProperty("remark") String remark,
+            @JsonProperty("parentName") String parentName,
+            @JsonProperty("tags") List<JsonAdaptedTag> tags,
             @JsonProperty("sessions") List<JsonAdaptedSession> sessions) {
         this.name = name;
         this.phone = phone;
@@ -56,6 +59,7 @@ class JsonAdaptedPerson {
         if (sessions != null) {
             this.sessions.addAll(sessions);
         }
+        this.parentName = parentName;
     }
 
     /**
@@ -74,6 +78,9 @@ class JsonAdaptedPerson {
             sessions.addAll(s.getSessions().stream()
                     .map(JsonAdaptedSession::new)
                     .collect(Collectors.toList()));
+            parentName = s.getParentName() != null ? s.getParentName().fullName : null;
+        } else {
+            parentName = null;
         }
 
     }
@@ -127,11 +134,16 @@ class JsonAdaptedPerson {
 
         final Remark modelRemark = new Remark(remark);
 
-        final Set<Tag> modelTags = new HashSet<>(personTags);
-
         if (role.equals("student")) {
+            final Set<Tag> modelTags = new HashSet<>(personTags);
             final Set<Session> modelSessions = new HashSet<>(personSessions);
-            return new Student(modelName, modelPhone, modelAddress, modelRemark, modelTags, modelSessions);
+            if (parentName != null) {
+                final Name modelParentName = new Name(parentName);
+                return new Student(modelName, modelPhone, modelAddress, modelRemark,
+                        modelTags, modelSessions, modelParentName);
+            } else {
+                return new Student(modelName, modelPhone, modelAddress, modelRemark, modelTags, modelSessions);
+            }
         } else {
             return new Parent(modelName, modelPhone, modelAddress, modelRemark);
         }

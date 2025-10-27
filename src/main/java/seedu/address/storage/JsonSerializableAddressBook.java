@@ -54,6 +54,10 @@ class JsonSerializableAddressBook {
             }
             addressBook.addPerson(person);
         }
+
+        // Link parents and students
+        addressBook.linkAllParents();
+
         return addressBook;
     }
 

@@ -8,6 +8,8 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_PARENT;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.BOB;
+import static seedu.address.testutil.TypicalPersons.CHARLES;
+import static seedu.address.testutil.TypicalPersons.JAMES;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -107,6 +109,69 @@ public class UniquePersonListTest {
         uniquePersonList.add(ALICE);
         uniquePersonList.add(BOB);
         assertThrows(DuplicatePersonException.class, () -> uniquePersonList.setPerson(ALICE, BOB));
+    }
+
+    @Test
+    public void resolveParentLink_studentAndExistingParent_parentChildrenUpdated() {
+        uniquePersonList.add(CHARLES);
+        uniquePersonList.resolveParentLink(JAMES);
+        assertTrue(CHARLES.hasChild(JAMES));
+        assertTrue(CHARLES.hasChildName(JAMES.getName()));
+    }
+
+    @Test
+    public void resolveParentLink_nullPerson_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> uniquePersonList.resolveParentLink(null));
+    }
+
+    @Test
+    public void resolveParentLink_studentAndWithNoParent_nothingHappens() {
+        uniquePersonList.add(CHARLES);
+        uniquePersonList.resolveParentLink(ALICE);
+        assertFalse(CHARLES.hasChild(ALICE));
+        assertFalse(CHARLES.hasChildName(ALICE.getName()));
+    }
+
+    @Test
+    public void destroyParentLink_existingStudentAndExistingParent_parentChildrenRemoved() {
+        uniquePersonList.add(CHARLES);
+        uniquePersonList.resolveParentLink(JAMES);
+        assertTrue(CHARLES.hasChild(JAMES));
+        assertTrue(CHARLES.hasChildName(JAMES.getName()));
+
+        uniquePersonList.destroyParentLink(JAMES);
+        assertFalse(CHARLES.hasChild(JAMES));
+        assertFalse(CHARLES.hasChildName(JAMES.getName()));
+    }
+
+    @Test
+    public void destroyParentLink_studentAndWithNoParent_nothingHappens() {
+        uniquePersonList.add(CHARLES);
+        uniquePersonList.resolveParentLink(JAMES);
+        assertTrue(CHARLES.hasChild(JAMES));
+        assertTrue(CHARLES.hasChildName(JAMES.getName()));
+
+        uniquePersonList.destroyParentLink(ALICE);
+        assertTrue(CHARLES.hasChild(JAMES));
+        assertTrue(CHARLES.hasChildName(JAMES.getName()));
+
+        uniquePersonList.destroyParentLink(JAMES);
+        assertFalse(CHARLES.hasChild(JAMES));
+        assertFalse(CHARLES.hasChildName(JAMES.getName()));
+    }
+
+    @Test
+    public void destroyParentLink_nullPerson_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> uniquePersonList.destroyParentLink(null));
+    }
+
+    @Test
+    public void resolveAllParentLinks_existingStudentAndExistingParent_allStudentsAndParentsUpdated() {
+        uniquePersonList.add(CHARLES);
+        uniquePersonList.add(JAMES);
+        uniquePersonList.resolveAllParentLinks();
+        assertTrue(CHARLES.hasChild(JAMES));
+        assertTrue(CHARLES.hasChildName(JAMES.getName()));
     }
 
     @Test

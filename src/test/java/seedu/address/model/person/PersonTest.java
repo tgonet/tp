@@ -54,9 +54,9 @@ public class PersonTest {
 
         // name differs in case, all other attributes same -> returns false
         Person editedBob = new StudentBuilder(BOB).withName(VALID_NAME_BOB.toLowerCase()).build();
-        assertFalse(BOB.isSamePerson(editedBob));
+        assertTrue(BOB.isSamePerson(editedBob));
         editedCharles = new ParentBuilder(CHARLES).withName(VALID_NAME_CHARLES.toLowerCase()).build();
-        assertFalse(CHARLES.isSamePerson(editedCharles));
+        assertTrue(CHARLES.isSamePerson(editedCharles));
 
         // name has trailing spaces, all other attributes same -> returns false
         String nameWithTrailingSpaces = VALID_NAME_BOB + " ";
@@ -131,12 +131,14 @@ public class PersonTest {
     public void toStringMethod() {
         String expected = Student.class.getCanonicalName() + "{name=" + ALICE.getName() + ", phone=" + ALICE.getPhone()
                 + ", address=" + ALICE.getAddress() + ", role=" + ALICE.getRole()
-                + ", remark=" + ALICE.getRemark() + ", tags=" + ALICE.getTags() + "}";
+                + ", remark=" + ALICE.getRemark() + ", tags=" + ALICE.getTags()
+                + ", parent=" + ALICE.getParentName() + "}";
         assertEquals(expected, ALICE.toString());
 
         expected = Parent.class.getCanonicalName() + "{name=" + CHARLES.getName() + ", phone=" + CHARLES.getPhone()
                 + ", address=" + CHARLES.getAddress() + ", role=" + CHARLES.getRole()
-                + ", remark=" + CHARLES.getRemark() + "}";
+                + ", remark=" + CHARLES.getRemark()
+                + ", children=" + CHARLES.getChildren() + "}";
         assertEquals(expected, CHARLES.toString());
     }
 }

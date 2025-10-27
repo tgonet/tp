@@ -7,6 +7,7 @@ import java.util.List;
 import javafx.collections.ObservableList;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Student;
 import seedu.address.model.person.UniquePersonList;
 
 /**
@@ -92,6 +93,25 @@ public class AddressBook implements ReadOnlyAddressBook {
      */
     public void removePerson(Person key) {
         persons.remove(key);
+    }
+
+    /**
+     * Links a given Student together with its specified Parent.
+     *
+     * @param student
+     */
+    public void linkParent(Student student) {
+        requireNonNull(student);
+
+        persons.resolveParentLink(student);
+    }
+
+    /**
+     * Links all Parent and Students in the list together.
+     * Used when loading data from the JSON file.
+     */
+    public void linkAllParents() {
+        persons.resolveAllParentLinks();
     }
 
     //// util methods

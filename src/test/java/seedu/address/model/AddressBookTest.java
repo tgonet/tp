@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import javafx.collections.FXCollections;
@@ -76,6 +77,11 @@ public class AddressBookTest {
         Person editedAlice = new StudentBuilder(ALICE).withAddress(VALID_ADDRESS_BOB).withTags(VALID_TAG_PARENT)
                 .build();
         assertTrue(addressBook.hasPerson(editedAlice));
+    }
+
+    @Test
+    public void linkParent_null_throwsNullPointerExecption() {
+        Assertions.assertThrows(NullPointerException.class, () -> addressBook.linkParent(null));
     }
 
     @Test

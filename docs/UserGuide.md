@@ -80,11 +80,14 @@ Adds a person to the address book.
 Format: `add n/NAME p/PHONE_NUMBER a/ADDRESS r/ROLE [t/TAG]…​`
 
 * A person can have any number of tags (including 0).
-* A person can have one of the two roles: `student` or `parent`
+* A person can have one of the two roles: `student` or `parent`.
+* A person that has the `student` role can have `[TAGS]`.
+* A person that has the `parent` role **cannot** have `[TAGS]`.
 
 Examples:
-* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 r/parent`
-* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 r/student t/criminal `
+* `add n/John Doe p/98765432 a/902 East Coast Parkway, #01-26, Singapore r/parent`
+* `add n/Betsy Crowe p/87654321 a/742 Ang Mo Kio Avenue 5 12-30, Singapore r/student t/math`
+* `add n/Lorem Ipsum p/97531864 a/6001 Beach Road 02-37 Golden Mile Tower, Singapore r/student`
 
 ### Listing all persons : `list`
 
@@ -166,6 +169,62 @@ Format: `view INDEX`
 ![viewResult.png](images/viewResult.png)
 * The index refers to the index number shown in the displayer person list.
 
+### Add session: `addsession`
+
+Adds a session of the specified person from the address book.
+
+Format: `addsession INDEX d/DAY ti/TIME`
+
+* Adds a session about the person at the specified `INDEX`.
+* A person can have any number of sessions (including 0).
+* The index refers to the index number shown in the displayed person list.
+* The index **must be a positive integer** 1, 2, 3, …​
+
+Examples:
+* `addsession 1 d/Mon ti/3pm-5pm`
+* `addsession 1 d/Thurs ti/9:30AM-11:45AM`
+
+### Delete session: `deletesession`
+
+Deletes a session of the specified person from the address book.
+
+Format: `deletesession INDEX d/DAY ti/TIME`
+
+* Deletes a session about the person at the specified `INDEX`.
+* The index refers to the index number shown in the displayed person list.
+* The index **must be a positive integer** 1, 2, 3, …​
+
+Examples:
+* `deletesession 1 d/Mon ti/3pm-5pm`
+* `deletesession 1 d/Thurs ti/9:30AM-11:45AM`
+
+### View session: `viewsession`
+
+View the session(s) of the specified day and time from the address book.
+
+Format: `viewsession DAY-[TIME]`
+
+* The result is displayed in the app as a list.
+  ![viewSession.png](images/viewSession.png)
+
+Examples:
+* `viewsession Mon-[9am-5pm]`
+
+### Editing a session : `editsession`
+
+Edits an existing session of a person in the address book.
+
+Format: `editsession INDEX d/DAY ti/TIME nd/DAY nti/TIME`
+
+* Edits the session of the person at the specified `INDEX`. 
+* The index refers to the index number shown in the displayed person list. 
+* The index **must be a positive integer** 1, 2, 3, …​
+* Existing values will be updated to the input values.
+
+Examples:
+*  `editsession 1 d/Mon ti/3pm-5pm nd/Thurs nti/9:30AM-11:45AM` Edits the session's day and time of the 1st person to be `Thurs` and `9:30AM-11:45AM`.
+*  `editsession 2 d/Thurs ti/9:30AM-11:45AM nd/Mon nti/3pm-5pm` Edits the session's day and time of the 2nd person to be `Mon` and `3pm-5pm`.
+
 ### Clearing all entries : `clear`
 
 Clears all entries from the address book.
@@ -215,12 +274,16 @@ _Details coming soon ..._
 
 Action | Format, Examples
 --------|------------------
-**Add** | `add n/NAME p/PHONE_NUMBER a/ADDRESS r/role [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend r/student t/colleague`
+**Add** | `add n/NAME p/PHONE_NUMBER a/ADDRESS r/role [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 r/student t/math`
 **Clear** | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee`
 **Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
 **Remark** | `remark INDEX rm/REMARK` <br> e.g., `remark 1 rm/hardworking`
 **View** | `view INDEX` <br> e.g., `view 2`
+**Add Session** | `addsession INDEX d/DAY ti/TIME` <br> e.g., `addsession 2 d/Mon ti/9am-5pm`
+**Delete Session** | `deletesession INDEX d/DAY ti/TIME` <br> e.g., `deletesession 2 ti/9am-5pm`
+**View Session** | `viewsession DAY-[TIME]` <br> e.g., `viewsession Mon-[9am-5pm]`
+**Edit Session** | `editsession INDEX d/DAY ti/TIME nd/DAY nti/TIME` <br> e.g., `editsession 2 d/Thurs ti/9:30AM-11:45AM nd/Mon nti/9.30am-11.45am`
 **List** | `list`
 **Help** | `help`

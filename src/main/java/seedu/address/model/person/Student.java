@@ -16,6 +16,10 @@ public class Student extends Person {
     protected final Set<Session> sessions;
     private final Set<Tag> tags = new HashSet<>();
 
+    // Allow parent to be null
+    private Parent myParent = null; // Mark as transient if needed in the future
+    private Name parentName = null;
+
     /**
      * Every field must be present and not null.
      *
@@ -26,7 +30,7 @@ public class Student extends Person {
      * @param tags
      */
     public Student(Name name, Phone phone, Address address, Remark remark, Set<Tag> tags) {
-        super(name, phone, address, new Role("student"), remark);
+        super(name, phone, address, Role.STUDENT_ROLE, remark);
         this.tags.addAll(tags);
         this.sessions = new HashSet<>();
     }
@@ -40,11 +44,42 @@ public class Student extends Person {
      * @param address
      * @param remark
      * @param tags
+     * @param sessions
      */
     public Student(Name name, Phone phone, Address address, Remark remark, Set<Tag> tags, Set<Session> sessions) {
-        super(name, phone, address, new Role("student"), remark);
+        super(name, phone, address, Role.STUDENT_ROLE, remark);
         this.tags.addAll(tags);
         this.sessions = sessions;
+    }
+
+    /**
+     * This is the constructor used for constructing a Student from JSON data
+     * Every field must be present and not null.
+     *
+     * @param name
+     * @param phone
+     * @param address
+     * @param remark
+     * @param tags
+     * @param sessions
+     * @param parentName
+     */
+    public Student(Name name, Phone phone, Address address, Remark remark, Set<Tag> tags,
+            Set<Session> sessions, Name parentName) {
+        super(name, phone, address, Role.STUDENT_ROLE, remark);
+        this.tags.addAll(tags);
+        this.sessions = sessions;
+        this.parentName = parentName;
+    }
+
+    /**
+     * Creates dummy Student object for filtering
+     *
+     * @param name
+     */
+    public Student(Name name) {
+        super(name, Role.STUDENT_ROLE);
+        this.sessions = new HashSet<>();
     }
 
     /**
@@ -65,6 +100,26 @@ public class Student extends Person {
 
     public boolean hasSession(Session session) {
         return this.sessions.contains(session);
+    }
+
+    public boolean hasParent() {
+        return this.parentName != null;
+    }
+
+    public boolean hasLinkedParent() {
+        return this.parentName != null && this.myParent != null;
+    }
+
+    public Name getParentName() {
+        return this.parentName;
+    }
+
+    public void setParentName(Name parentName) {
+        this.parentName = parentName;
+    }
+
+    public void setParent(Parent parent) {
+        myParent = parent;
     }
 
     /**
@@ -102,6 +157,7 @@ public class Student extends Person {
                 .add("role", role)
                 .add("remark", remark)
                 .add("tags", tags)
+                .add("parent", parentName)
                 .toString();
     }
 }
