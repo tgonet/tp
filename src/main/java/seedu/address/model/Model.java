@@ -1,6 +1,7 @@
 package seedu.address.model;
 
 import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
@@ -9,86 +10,117 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.Student;
 
 /**
- * The API of the Model component.
+ * API for model component.
+ * Keeps address book state plus user prefs, and exposes filtered list.
  */
 public interface Model {
-    /** {@code Predicate} that always evaluate to true */
+
+    /** Always-true predicate to show all persons. */
     Predicate<Person> PREDICATE_SHOW_ALL_PERSONS = unused -> true;
 
+    // ---------- UserPrefs ----------
+
     /**
-     * Replaces user prefs data with the data in {@code userPrefs}.
+     * Replace prefs with given read-only view.
+     * @param userPrefs prefs; not null
      */
     void setUserPrefs(ReadOnlyUserPrefs userPrefs);
 
     /**
-     * Returns the user prefs.
+     * Accessor for current prefs.
+     * @return prefs view
      */
     ReadOnlyUserPrefs getUserPrefs();
 
     /**
-     * Returns the user prefs' GUI settings.
+     * Accessor for GUI settings.
+     * @return GUI settings
      */
     GuiSettings getGuiSettings();
 
     /**
-     * Sets the user prefs' GUI settings.
+     * Update GUI settings.
+     * @param guiSettings settings; not null
      */
     void setGuiSettings(GuiSettings guiSettings);
 
     /**
-     * Returns the user prefs' address book file path.
+     * Accessor for book file path.
+     * @return path
      */
     Path getAddressBookFilePath();
 
     /**
-     * Sets the user prefs' address book file path.
+     * Update book file path.
+     * @param addressBookFilePath path; not null
      */
     void setAddressBookFilePath(Path addressBookFilePath);
 
+    // ---------- AddressBook data ----------
+
     /**
-     * Replaces address book data with the data in {@code addressBook}.
+     * Replace in-memory book with given read-only view.
+     * @param addressBook data; not null
      */
     void setAddressBook(ReadOnlyAddressBook addressBook);
 
-    /** Returns the AddressBook */
+    /**
+     * Accessor for in-memory book.
+     * @return read-only view
+     */
     ReadOnlyAddressBook getAddressBook();
 
     /**
-     * Returns true if a person with the same identity as {@code person} exists in the address book.
+     * Check presence of person.
+     * @param person target; not null
+     * @return true if present
      */
     boolean hasPerson(Person person);
 
     /**
-     * Deletes the given person.
-     * The person must exist in the address book.
+     * Remove person from book.
+     * @param target person; not null
      */
     void deletePerson(Person target);
 
     /**
-     * Adds the given person.
-     * {@code person} must not already exist in the address book.
+     * Add person to book.
+     * @param person person; not null
      */
     void addPerson(Person person);
 
     /**
-     * Replaces the given person {@code target} with {@code editedPerson}.
-     * {@code target} must exist in the address book.
-     * The person identity of {@code editedPerson} must not be the same as another existing person in the address book.
+     * Replace existing person with edited copy.
+     * @param target original; not null
+     * @param editedPerson replacement; not null
      */
     void setPerson(Person target, Person editedPerson);
 
     /**
-     * Links the given Student with its Parent by name
-     * The Parent must exist in the address book.
+     * Link parent to student record.
+     * Called by AddCommand post-create.
+     * @param student target; not null
      */
     void linkParent(Student student);
 
-    /** Returns an unmodifiable view of the filtered person list */
-    ObservableList<Person> getFilteredPersonList();
+    // ---------- Filter / sort / expose ----------
 
     /**
-     * Updates the filter of the filtered person list to filter by the given {@code predicate}.
-     * @throws NullPointerException if {@code predicate} is null.
+     * Update predicate used by filtered list.
+     * @param predicate filter; not null
      */
     void updateFilteredPersonList(Predicate<Person> predicate);
+
+    /**
+     * Sort current filtered list with comparator; stable inside equal keys.
+     * Allows commands to order output without mutating stored data.
+     * @param comparator order; not null
+     */
+    void sortFilteredPersonList(Comparator<Person> comparator);
+
+    /**
+     * Unmodifiable view of current filtered (and possibly sorted) list.
+     * @return observable list
+     */
+    ObservableList<Person> getFilteredPersonList();
 }
