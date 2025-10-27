@@ -430,6 +430,12 @@ Use case ends.
 
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
 * **Private contact detail**: A contact detail that is not meant to be shared with others
+* **Tutor**: A user of EduConnect who manages and tracks their students' and parents' contact information
+* **Student**: An individual who is taught by a tutor. Their contact information is stored in EduConnect
+* **Parent**: The guardian or person linked to a student. Their contact information may be stored in EduConnect
+* **Role**: A label assigned to each contact, indicating whether they are a `Student` or a `Parent`
+* **Session**: A timeslot which a Student attends a lesson with the tutor. This only applies to `Student`
+* **Tag**: A label indicating the subject a Student is taking under the tutor. This only applies to `Student` 
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -458,6 +464,27 @@ testers are expected to do more *exploratory* testing.
        Expected: The most recent window size and location is retained.
 
 1. _{ more test cases …​ }_
+
+### Leaving a remark
+
+1. Leaving a remark on a student/parent in the list
+   1. Prerequisites: List all persons using the `list` command. Ensure at least one person is displayed in the list.
+   
+   1. Test case: `remark 1 rm/weak at math`<br>
+      Expected: First contact remark is updated to "weak at math". 
+      The details of the remark is shown in the status message.
+   
+   1. Test case: `remark 1`<br>
+      Expected: First contact remark is removed (if any) and is updated to "". 
+      The details of the remark is shown in the status message.
+   
+   1. Test case: `remark 0 rm/weak at english`<br>
+      Expected: No remark is added. Error details are shown in the status message. Status bar remains the same.
+   
+   1. Other incorrect remark commands to try: `remark`, `remark abc`, `remark 0`, `remark -1` <br>
+      Expected: Similar to previous
+   
+   1. To view remarks on a person, use the `view` command. Refer to the [User Guide](UserGuide.md) for more details.
 
 ### Deleting a person
 
