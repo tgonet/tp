@@ -23,6 +23,8 @@ Class Role
 Class Tag
 Class Remark
 Class Session
+Class Time
+Class Day
 
 Class I #FFFFFF
 }
@@ -51,6 +53,8 @@ Person *--> Role
 Person *--> "*" Remark
 Student *--> "*" Session
 Student *--> "*" Tag
+Session *--> Time
+Session *--> Day
 
 Person -[hidden]up--> I
 UniquePersonList -[hidden]right-> I
