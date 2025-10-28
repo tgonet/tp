@@ -179,6 +179,7 @@ Format: `addsession INDEX d/DAY ti/TIME`
 * A person can have any number of sessions (including 0).
 * The index refers to the index number shown in the displayed person list.
 * The index **must be a positive integer** 1, 2, 3, …​
+* The start time must not be greater than the end time
 
 Examples:
 * `addsession 1 d/Mon ti/3pm-5pm`

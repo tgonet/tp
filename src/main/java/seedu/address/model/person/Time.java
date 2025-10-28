@@ -10,6 +10,7 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  * e.g., "3pm-5pm", "09:30AM-11:45AM", or "12:00am-1:15pm".</p>
  *
  * <p>Hours must be between 1 and 12, and minutes, if present, must be between 00 and 59.</p>
+ * <p>Start time must be earlier than end time.</p>
  */
 public class Time {
     public static final String MESSAGE_CONSTRAINTS =

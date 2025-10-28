@@ -275,24 +275,20 @@ _{Explain here how the data archiving feature will be implemented}_
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​                                    | I want to …​                                                    | So that I can…​                                                        |
-| -------- | ------------------------------------------ |-----------------------------------------------------------------| ---------------------------------------------------------------------- |
-| `* * *`  | user                                       | add student contact with name, address and phone number         | build my address book               
-| `* * *`  | user                                       | view all contacts                                               |     see what is stored  without filtering or sorting                                                                   |
-| `* * *`  | user                                       | delete a contact by index                                       | remove entries that I no longer need                                   |
-| `* * *`  | user                                       | find a person by name                                           | locate details of persons without having to go through the entire list |
-| `* *`    | tutor                                      | store both student and parent contact details under the same entry | reach the right person depending on context                |
-| `*`      | new tutor | see the system populate the address book with sample students   | understand how it works                                                |
-| `*`      | expert tutor | archieve old students                                           | reduce the number of contacts in my address book                                                |
-| `*`      | tutor | group students according to timeslots/subject                   | manage my time more efficiently and avoid confusion       
-| `*`      | tutor | set preferred contact methods                                   | communicate with them in the way they prefer                                                |
-| `*`      | student | export class times as files that can be imported by scheduling app | sync tutoring sessions with my digital calendar and avoid scheduling conflicts                                              |
-| `*`      | tutor | what class i have on a specific date                            | better prepare for class                                            |
-| `*`      | tutor | filter students according to subject                            | know which student belongs to which class                                              |
-| `*`      | tutor | leave remark about each student                                 | keep track of learning progress and special requests
-| `*`      | tutor | be reminded whenever i have an upcoming session                 | plan for it and not be late                                            |
-| `*`      | tutor | display the student's timeslot in a readable format             | easily plan future timeslots for students                                         |
-| `*`      | tutor | flag contacts                                                   | reach them easily
+| Priority | As a …​                                    | I want to …​                                                  | So that I can…​                                                                |
+| -------- | ------------------------------------------ |---------------------------------------------------------------|--------------------------------------------------------------------------------|
+| `* * *`  | user                                       | add student contact with name, address and phone number       | build my address book                                                          
+| `* * *`  | user                                       | view all contacts                                             | see what is stored  without filtering or sorting                               |
+| `* * *`  | user                                       | delete a contact by index                                     | remove entries that I no longer need                                           |
+| `* * *`  | user                                       | find a person by name                                         | locate details of persons without having to go through the entire list         |
+| `* *`    | tutor                                      | add a parent contact with name, address and phone number      | have another point of contact                                                  |
+| `* *`    | tutor                                      | link a parent contact to the student                          | contact the parent if needed                                                   |
+| `*`      | new tutor | see the system populate the address book with sample students | understand how it works                                                        |
+| `*`      | tutor | filter my contacts according to roles                         | have an easier time searching for a certain individual if needed be
+| `*`      | tutor | see what classes i have on a specific date                    | better prepare for class                                                       |
+| `*`      | tutor | filter students according to subject                          | know which student belongs to which class                                      |
+| `*`      | tutor | leave remark about each student                               | keep track of learning progress and special requests
+| `*`      | tutor | display the student's timeslot in a readable format           | easily plan future timeslots for students                                      |
 *{More to be added}*
 
 ## Use cases
@@ -328,8 +324,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 **Goal**: Locate contacts by case-insensitive name matching or role.  
 **Precondition**: At least one contact exists.  
 **MSS**
-1. User enters `find NAME` or `find student/parent`.
-2. System filters contacts whose names contain all provided keywords.
+1. User enters `find n/NAME` or `find r/ROLE`.
+2. System filters contacts whose names/role contain all provided keywords.
 3. System displays the filtered list with new indices.  
    Use case ends.  
    **Extensions**
@@ -407,6 +403,25 @@ Use case ends.
 * 1a. `I` is not a valid visible index (≤0 or > list size, or non-integer).
     * 1a1. System shows error and keeps list unchanged. Use case ends.
 
+### UC10 — Add session to student
+**Goal**: Add session to update the classes the student is in.  
+**Precondition**: The student exist.
+**MSS**
+1. User enters `find I d/DAY ti/TIME` where `I` is a 1-based index in the current list.
+2. System adds session to referenced student.
+3. System confirms addition of session to student and updates the list.
+   Use case ends.
+
+**Extensions**
+* 1a. `I` is not a valid visible index (≤0 or > list size, or non-integer).
+    * 1a1. System shows error and keeps list unchanged. Use case ends.
+* 1b. Validation fails (e.g., invalid day/time)
+  * 1b1. System shows error and usage hint. Resume at step 1.
+* 1c. Adding to a parent contact
+  * 1c1. System shows error and keeps list unchanged.
+* 1d. Duplicate session detected by exact same day and time
+  * 1b1. System warns about duplicate and aborts creation. Use case ends.
+
 ### Non-Functional Requirements
 #### Portability
 1. Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
@@ -435,7 +450,7 @@ Use case ends.
 * **Parent**: The guardian or person linked to a student. Their contact information may be stored in EduConnect
 * **Role**: A label assigned to each contact, indicating whether they are a `Student` or a `Parent`
 * **Session**: A timeslot which a Student attends a lesson with the tutor. This only applies to `Student`
-* **Tag**: A label indicating the subject a Student is taking under the tutor. This only applies to `Student` 
+* **Tag**: A label indicating the subject a Student is taking under the tutor. This only applies to `Student`  
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -510,3 +525,22 @@ testers are expected to do more *exploratory* testing.
     1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
 
 1. _{ more test cases …​ }_
+
+### Add session to a student
+
+1. Adding a session to a student while the contacts are being shown
+
+    1. Prerequisites: The list is not empty and contains at least 1 student contact
+
+    1. Test case: `addsession 1 d/Mon ti/1pm-3pm`<br>
+       Expected: The status message informing the user that the selected student is updated. The UI shows the newly added session in the student contact
+
+    1. Test case: `addsession 1 d/Mons ti/1pm-3pm`<br>
+       Expected: No seession is added. Error details shown in the status message.
+
+    1. Other incorrect delete commands to try: `addsession`, `addsession x d/Mons ti/1pm-3pm`, `...` (where x is larger than the list size)<br>
+       Expected: Similar to previous.
+
+1. _{ more test cases …​ }_
+
+
