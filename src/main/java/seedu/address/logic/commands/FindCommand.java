@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Person;
@@ -40,15 +41,20 @@ public class FindCommand extends Command {
     }
 
     @Override
-    public CommandResult execute(Model model) {
+    public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        Predicate<Person> predicate = person -> true;
 
-        if (this.namePredicate != null) {
-            predicate = predicate.and(this.namePredicate);
-        }
-        if (rolePredicate != null) {
-            predicate = predicate.and(this.rolePredicate);
+        Predicate<Person> predicate;
+        if (this.namePredicate.isEmpty() && this.rolePredicate.isEmpty()) {
+            predicate = person -> false;
+        } else {
+            predicate = person ->true;
+            if (!this.namePredicate.isEmpty()) {
+                predicate = predicate.and(this.namePredicate);
+            }
+            if (!this.rolePredicate.isEmpty()) {
+                predicate = predicate.and(this.rolePredicate);
+            }
         }
         model.updateFilteredPersonList(predicate);
         return new CommandResult(

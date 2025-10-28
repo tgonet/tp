@@ -10,7 +10,9 @@ import java.util.List;
 
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.Name;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.person.Role;
 import seedu.address.model.person.RoleContainsKeywordsPredicate;
 
 /**
@@ -34,16 +36,41 @@ public class FindCommandParser implements Parser<FindCommand> {
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_ROLE);
 
         List<String> name = argMultimap.getValue(PREFIX_NAME)
-                .map(value -> Arrays.asList(value.split("\\s+")))
+                .map(value -> Arrays.stream(value.split("\\s+"))
+                        .filter(part -> !part.isEmpty())
+                        .map(part -> {
+                            try {
+                                return ParserUtil.parseName(part).fullName;
+                            } catch (ParseException e) {
+                                throw new RuntimeException(e);
+                            }
+                        })
+                        .toList())
                 .orElse(Collections.emptyList());
-        NameContainsKeywordsPredicate namePredicate = name.isEmpty() ? null
-                : new NameContainsKeywordsPredicate(name);
+
+        if (argMultimap.getValue(PREFIX_NAME).isPresent() && name.isEmpty()) {
+            throw new ParseException(Name.MESSAGE_CONSTRAINTS);
+        }
+        NameContainsKeywordsPredicate namePredicate = new NameContainsKeywordsPredicate(name);
 
         List<String> role = argMultimap.getValue(PREFIX_ROLE)
-                .map(value -> Arrays.asList(value.split("\\s+")))
+                .map(value -> Arrays.stream(value.split("\\s+"))
+                        .filter(part -> !part.isEmpty())
+                        .map(part -> {
+                            try {
+                                return ParserUtil.parseRole(part).role;
+                            } catch (ParseException e) {
+                                throw new RuntimeException(e);
+                            }
+                        })
+                        .toList())
                 .orElse(Collections.emptyList());
-        RoleContainsKeywordsPredicate rolePredicate = role.isEmpty() ? null
-                : new RoleContainsKeywordsPredicate(role);
+
+        if (argMultimap.getValue(PREFIX_ROLE).isPresent() && role.isEmpty()) {
+            throw new ParseException(Role.MESSAGE_CONSTRAINTS);
+        }
+
+        RoleContainsKeywordsPredicate rolePredicate = new RoleContainsKeywordsPredicate(role);
 
         // List<String> tagList = argMultimap.getValue(PREFIX_TAG)
         //         .map(value -> Arrays.asList(value.split("\\s+")))

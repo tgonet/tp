@@ -86,7 +86,7 @@ public class FindCommandTest {
     public void execute_zeroKeywords_noPersonFound() {
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0);
         NameContainsKeywordsPredicate predicate = prepareNamePredicate(" ");
-        FindCommand command = new FindCommand(predicate, null);
+        FindCommand command = new FindCommand(predicate, new RoleContainsKeywordsPredicate(Collections.emptyList()));
         expectedModel.updateFilteredPersonList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
         assertEquals(Collections.emptyList(), model.getFilteredPersonList());
@@ -96,7 +96,7 @@ public class FindCommandTest {
     public void execute_multipleNameKeywords_multiplePersonsFound() {
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 3);
         NameContainsKeywordsPredicate predicate = prepareNamePredicate("Kurz Elle Kunz");
-        FindCommand command = new FindCommand(predicate, null);
+        FindCommand command = new FindCommand(predicate, new RoleContainsKeywordsPredicate(Collections.emptyList()));
         expectedModel.updateFilteredPersonList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
         assertEquals(Arrays.asList(CARL, ELLE, FIONA), model.getFilteredPersonList());
@@ -106,7 +106,7 @@ public class FindCommandTest {
     public void execute_multipleRoleKeywords_multiplePersonsFound() {
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 2);
         RoleContainsKeywordsPredicate predicate = prepareRolePredicate("parent");
-        FindCommand command = new FindCommand(null, predicate);
+        FindCommand command = new FindCommand(new NameContainsKeywordsPredicate(Collections.emptyList()), predicate);
         expectedModel.updateFilteredPersonList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
         assertEquals(Arrays.asList(FIONA, GEORGE), model.getFilteredPersonList());
@@ -115,9 +115,10 @@ public class FindCommandTest {
     @Test
     public void toStringMethod() {
         NameContainsKeywordsPredicate predicate = new NameContainsKeywordsPredicate(Arrays.asList("keyword"));
-        FindCommand findCommand = new FindCommand(predicate, null);
+        FindCommand findCommand = new FindCommand(predicate,
+                new RoleContainsKeywordsPredicate(Collections.emptyList()));
         String expected = FindCommand.class.getCanonicalName() + "{name predicate=" + predicate
-                + ", role predicate=null}";
+                + ", role predicate=seedu.address.model.person.RoleContainsKeywordsPredicate{keywords=[]}}";
         assertEquals(expected, findCommand.toString());
     }
 
