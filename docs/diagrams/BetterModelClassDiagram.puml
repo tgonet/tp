@@ -23,4 +23,7 @@ Person *--> "*" Remark
 
 Student *-right-> "*" Session
 Student *-left-> Tag
+
+Session *--> Time
+Session *--> Day
 @enduml

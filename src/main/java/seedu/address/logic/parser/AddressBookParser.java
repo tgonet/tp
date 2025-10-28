@@ -37,20 +37,8 @@ public class AddressBookParser {
     private static final Logger logger = LogsCenter.getLogger(AddressBookParser.class);
 
     /**
-     * Parses the raw {@code userInput} into a concrete {@link Command} for execution.
-     * <p>Behavior:
-     * <ul>
-     *   <li>Splits the first token as the command word and the remainder as arguments
-     *       using {@code BASIC_COMMAND_FORMAT}.</li>
-     *   <li>Routes the command word to the corresponding parser (e.g., {@code add}, {@code edit}).</li>
-     *   <li>Accepts both {@code viewSession} and {@code viewsession} as aliases for the
-     *       {@link seedu.address.logic.commands.ViewSessionCommand}.</li>
-     *   <li>Logs the command word and arguments at {@code FINE} level.</li>
-     * </ul>
-     *
-     * @param userInput full user input string; must be non-null and may contain leading/trailing spaces
-     * @return a {@link Command} instance ready to be executed by the logic layer
-     * @throws ParseException if the input does not match the expected format or the command word is unknown
+     * Parse raw {@code userInput} into a concrete {@link Command}.
+     * Splits first token as command and remainder as args.
      */
     public Command parseCommand(String userInput) throws ParseException {
         final Matcher matcher = BASIC_COMMAND_FORMAT.matcher(userInput.trim());
@@ -82,21 +70,22 @@ public class AddressBookParser {
             return new ExitCommand();
         case HelpCommand.COMMAND_WORD:
             return new HelpCommand();
+
         case AddSessionCommand.COMMAND_WORD:
             return new AddSessionCommandParser().parse(arguments);
-
         case EditSessionCommand.COMMAND_WORD:
             return new EditSessionCommandParser().parse(arguments);
-
         case DeleteSessionCommand.COMMAND_WORD:
             return new DeleteSessionCommandParser().parse(arguments);
 
         case ViewCommand.COMMAND_WORD:
             return new ViewCommandParser().parse(arguments);
 
-        // Accept both camel-case and lower-case.
+        // Support both camel-case and lower-case + optional leading slash aliases.
         case ViewSessionCommand.COMMAND_WORD:
         case ViewSessionCommand.COMMAND_WORD_LOWER:
+        case "/" + ViewSessionCommand.COMMAND_WORD:
+        case "/" + ViewSessionCommand.COMMAND_WORD_LOWER:
             return new ViewSessionCommandParser().parse(arguments);
 
         default:
