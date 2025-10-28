@@ -285,7 +285,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* *`    | tutor                                      | link a parent contact to the student                          | contact the parent if needed                                                   |
 | `*`      | new tutor | see the system populate the address book with sample students | understand how it works                                                        |
 | `*`      | tutor | filter my contacts according to roles                         | have an easier time searching for a certain individual if needed be
-| `*`      | tutor | see what class i have on a specific date                      | better prepare for class                                                       |
+| `*`      | tutor | see what classes i have on a specific date                    | better prepare for class                                                       |
 | `*`      | tutor | filter students according to subject                          | know which student belongs to which class                                      |
 | `*`      | tutor | leave remark about each student                               | keep track of learning progress and special requests
 | `*`      | tutor | display the student's timeslot in a readable format           | easily plan future timeslots for students                                      |
