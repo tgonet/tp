@@ -155,6 +155,13 @@ Classes used by multiple components are in the `seedu.address.commons` package.
 
 This section describes some noteworthy details on how certain features are implemented.
 
+### Remark feature
+
+The following activity diagram summarizes what happens when a user executes a remark command:
+
+![RemarkActivityDiagram](images/RemarkActivityDiagram.png)
+
+
 ### \[Proposed\] Undo/redo feature
 
 #### Proposed Implementation
@@ -243,6 +250,15 @@ _{more aspects and alternatives to be added}_
 
 _{Explain here how the data archiving feature will be implemented}_
 
+### Edit session
+
+The `edit session` command modifies an existing session in the address book. The implementation involves the following steps:
+
+1. **Parsing**: The command is parsed to extract the relevant information such as the index of the student, the day and time of the session, and the new day and time of the session if applicable.
+2. **Validation**: The command is validated to ensure that the index of the student is valid and that the new day and time of the session (if applicable) are valid.
+3. **Execution**: The session is modified in the address book. If the new day and time of the session are applicable, the session is updated with the new day and time. Otherwise, the session is deleted.
+4. **Committing**: The address book state is committed to the `addressBookStateList`. The `currentStatePointer` is not changed as the user is not undoing or redoing any commands.
+5. **Saving the state**: The `addressBookStateList` is saved to disk to persist the state of the address book.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -290,6 +306,56 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `*`      | tutor     | leave remark about each student                               | keep track of learning progress and special requests                   |
 | `*`      | tutor     | display the student's timeslot in a readable format           | easily plan future timeslots for students                              |
 *{More to be added}*
+
+## Edit Session Command
+
+The `editsession` command allows users to modify an existing session's day and/or time for a student in the address book.
+
+### Implementation
+
+The edit session mechanism is facilitated by `EditSessionCommand` and `EditSessionCommandParser`. It extends `Command` and implements the following key operations:
+
+* `EditSessionCommand#execute()` - Executes the command to edit a session
+* `EditSessionCommand#toCopy()` - Creates a new `Person` with the updated session
+* `EditSessionCommandParser#parse()` - Parses the user input and creates a new `EditSessionCommand`
+
+Given below is an example usage scenario and how the edit session mechanism behaves at each step.
+
+#### Example Usage Scenario
+
+1. The user executes `editsession 1 d/Mon ti/12pm-1pm d/Tue ti/1pm-2pm` to change a session from Monday 12pm-1pm to Tuesday 1pm-2pm for the first student in the list.
+2. The `AddressBookParser` identifies the command word `editsession` and creates a new `EditSessionCommandParser`.
+3. The `EditSessionCommandParser` parses the arguments and creates a new `EditSessionCommand` with the provided index, old session details, and new session details.
+4. The `EditSessionCommand` is executed, which:
+   - Retrieves the target student from the filtered person list
+   - Verifies the student exists and has the specified session
+   - Creates a new `Student` object with the updated session
+   - Replaces the original student with the updated one in the model
+   - Updates the filtered person list
+
+#### Activity Diagram
+
+![EditCommandActivityDiagram.png](images/EditCommandActivityDiagram.png)
+
+#### Design Considerations
+
+**Aspect: How edit session executes:**
+
+* **Alternative 1 (current choice):** Create a new Student object with updated sessions
+  * Pros: Immutable objects ensure thread safety and make the code easier to reason about
+  * Cons: Slight performance overhead due to object creation
+
+* **Alternative 2:** Modify the existing Student object
+  * Pros: Better performance as no new object is created
+  * Cons: Mutable state can lead to bugs in a multi-threaded environment
+
+**Aspect: Error handling:**
+
+The command includes comprehensive error handling for cases such as:
+- Invalid index
+- Missing or invalid parameters
+- Non-existent session
+- Attempting to edit a non-student's session
 
 ## Use cases
 
@@ -474,6 +540,23 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
   * 1d1. System warns about nonexistence and aborts creation.  
     Use case ends.
 
+### UC11 - Edit a student's session
+**Goal**: Edit a student's session to update the classes the student is in.  
+**Precondition**: The student exist.
+**MSS**
+1. Tutor requests to edit a session for a specific student by providing the student's index, old session details (day and time), and new session details (new day and time).
+2. System updates the student's session with the new details.
+3. System displays a success message confirming the session was edited
+   Use case ends.
+
+**Extensions**
+* 1a. The given index is invalid.
+    * 1a1. System shows error and keeps list unchanged. Use case ends.
+* 1b. Validation fails (e.g., invalid day/time)
+  * 1b1. System shows error and usage hint. Resume at step 1.
+* 1c. Editing to a parent contact
+  * 1c1. System shows error and keeps list unchanged.
+
 ### Non-Functional Requirements
 #### Portability
 1. Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
@@ -531,6 +614,98 @@ testers are expected to do more *exploratory* testing.
        Expected: The most recent window size and location is retained.
 
 1. _{ more test cases …​ }_
+
+### Adding Person
+
+1. **Adding a Parent**
+   - **Prerequisites**: 
+     1. Another Person with these names in the test cases do not already exist inside the address book.
+   1. Test Case - Adding a Parent (Success)
+      <br>`add n/Klaus Tay p/99837264 a/Cruise Centre 1 Maritime Square #02-127, 099253 r/parent`
+      <br>Expected: 
+      - Success Message: "New person added: Klaus Tay; Phone: 99837264; Address: Cruise Centre 1 Maritime Square #02-127, 099253; Role: parent; Remark: ; Children: []"
+      - New person named Klaus Tay added to the contact list, the person should be tagged as a Parent.
+      - New person should appear at the bottom of the contacts list. If person does not appear, run the `list` command to verify the full list of contacts.
+   2. Test Case - Adding a Parent with Tags (Failure)
+      <br>`add n/Bob Lee p/89658345 a/150 SOUTH BRIDGE ROAD 11-04 FOOK HAI BUILDING r/parent t/math`
+      <br>Expected:
+      - Error Message: "Parents are NOT allowed to have tags!<br>
+        add: Adds a person to the address book. Parameters: n/NAME p/PHONE a/ADDRESS r/ROLE [t/TAG]...<br>
+        Example: add n/John Doe p/98765432 a/311, Clementi Ave 2, #02-25 r/student t/math"
+      - Invalid person is **not added** to the address book
+   3. Test Case - Adding a Parent with a Parent (Failure)
+      <br>`add n/Peter Peterson p/92272634 a/123 Lorong 1 Toa Payoh #02-515, 310986 r/parent par/Bob Lee`
+      <br>Expected:
+      - Error Message: "Parents are NOT allowed to have parents!<br>
+        add: Adds a person to the address book. Parameters: n/NAME p/PHONE a/ADDRESS r/ROLE [t/TAG]...<br>
+        Example: add n/John Doe p/98765432 a/311, Clementi Ave 2, #02-25 r/student t/math"
+      - Invalid person is **not added** to the address book
+
+
+2. **Adding a Student** 
+   - **Prerequisites**: 
+     1. Another Person with these names in the test cases do not already exist inside the address book.
+     2. Already completed the previous section on Adding a Parent.
+   1. Test Case - Adding a Student without Tags (Success)
+      <br>`add n/Orion Lee p/98273648 a/1 HarbourFront Walk, Singapore 098585 r/student`
+      <br>Expected:
+      - Success Message: "New person added: Onion Lee; Phone: 98273648; Address: 1 HarbourFront Walk, Singapore 098585; Role: student; Remark: ; Tags: ; Parent: null"
+      - New person named Orion Lee added to the contact list, the person should be tagged as a Student.
+      - New person should appear at the bottom of the contacts list. If person does not appear, run the `list` command to verify the full list of contacts.
+   2. Test Case - Adding a Student with Tags (Success)
+      <br>`add n/Akira Lee p/98278876 a/67 Millenia Walk, Singapore 194585 r/student t/english`
+      <br>Expected:
+      - Success Message: "New person added: Akira Lee; Phone: 98278876; Address: 67 Millenia Walk, Singapore 194585; Role: student; Remark: ; Tags: [english]; Parent: null"
+      - New person named Akira Lee added to the contact list, the person should be tagged as a Student.
+      - New person should appear at the bottom of the contacts list. If person does not appear, run the `list` command to verify the full list of contacts.
+   3. Test Case - Adding a Student with Parent's name (Success)
+      <br>`add n/Ray Lee p/98927376 a/123 Lorong 1 Toa Payoh 02-515 224585 r/student par/Klaus Tay`
+      <br>Expected:
+       - Success Message: "New person added: Ray Lee; Phone: 98927376; Address: 123 Lorong 1 Toa Payoh 02-515 224585; Role: student; Remark: ; Tags: ; Parent: Klaus Tay"
+       - New person named Ray Lee added to the contact list, the person should be tagged as a Student.
+       - New person should appear at the bottom of the contacts list. If person does not appear, run the `list` command to verify the full list of contacts.
+   4. Test Case - Adding a Student with Tags and Parent's name (Success)
+      <br>`add n/Shermaine Lee p/98927376 a/Aljunied Industrial Complex 623 Aljunied Road #02-01 r/student t/science par/Klaus Tay`
+      <br>Expected:
+       - Success Message: "New person added: Shermaine Lee; Phone: 98927376; Address: Aljunied Industrial Complex 623 Aljunied Road #02-01; Role: student; Remark: ; Tags: [science]; Parent: Klaus Tay"
+       - New person named Shermaine Lee added to the contact list, the person should be tagged as a Student.
+       - New person should appear at the bottom of the contacts list. If person does not appear, run the `list` command to verify the full list of contacts.
+
+
+3. **Adding a Person**
+   - **Prerequisites**: 
+     1. Another Person with these names in the test cases do not already exist inside the address book.
+     2. Please complete the previous 2 sections on Adding a Student and Adding a Parent.
+   1. Test Case - Adding a Person with an Invalid Role (Failure)
+      <br>`add n/Jane Tan p/91234567 a/21 Choa Chu Kang Ave 4, #05-01 r/teacher`
+      <br>Expected:
+      - Error Message: "Role should only be student or parent"
+      - Invalid person is **not added** to the address book.
+   2. Test Case - Adding a Person with an Invalid Phone Number (Failure)
+      <br>`add n/Lim Boon Kee p/12345 a/19 Orchard Road, #03-04 r/student`
+      <br>Expected:
+       - Error Message: "Phone numbers should only contain numbers, start with 8 or 9 and it should be 8 digits long"
+       - Invalid person is **not added** to the address book.
+   3. Test Case - Adding a Person with an Invalid Name (Failure)
+      <br>`add n/@@@### p/98761234 a/21 Serangoon Avenue 1, #02-17 r/parent`
+      <br>Expected:
+       - Error Message: "Names should only contain alphabetic characters, spaces, hyphens, apostrophes, and it should not be blank"
+       - Invalid person is **not added** to the address book.
+   4. Test Case - Adding a Person with an Invalid Address (Failure)
+      <br>`add n/Amelia Tan p/98127634 a/ r/student`
+      <br>Expected:
+       - Error Message: "Addresses should be between 20 - 100 characters long and cantake any values except for special characters, and it should not be blank"
+       - Invalid person is **not added** to the address book.
+   5. Test Case - Adding a Duplicate Person (Failure)
+      <br>`add n/Klaus Tay p/99837264 a/Cruise Centre 1 Maritime Square #02-127, 099253 r/parent`
+      <br>Expected:
+       - Error Message: "This person already exists in the address book"
+       - Invalid person is **not added** to the address book.
+
+### Editing a Person
+<br>**Prerequisites**:
+- The address book already contains several persons from the “Adding a Person” test cases, including at least one Parent (e.g. Klaus Tay) and one Student (e.g. Akira Lee).
+- Ensure that the person to be edited exists in the displayed list before performing each test case.
 
 ### Leaving a remark
 

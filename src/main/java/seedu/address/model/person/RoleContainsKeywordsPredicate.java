@@ -16,6 +16,14 @@ public class RoleContainsKeywordsPredicate implements Predicate<Person> {
         this.keywords = keywords;
     }
 
+    /**
+     * Returns true if the keywords list is empty.
+     * @return true if the keywords list is empty, false otherwise.
+     */
+    public boolean isEmpty() {
+        return this.keywords.isEmpty();
+    }
+
     @Override
     public boolean test(Person person) {
         return keywords.stream()

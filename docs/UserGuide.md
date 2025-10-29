@@ -44,7 +44,7 @@ EduConnect is a desktop application that **helps tutors manage contact informati
 
 <div markdown="block" class="alert alert-info">
 
-**:information_source: Notes about the command format:**<br>
+**Notes about the command format:**<br>
 
 * Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
   e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
@@ -77,17 +77,21 @@ Format: `help`
 
 Adds a person to the address book.
 
-Format: `add n/NAME p/PHONE_NUMBER a/ADDRESS r/ROLE [t/TAG]…​`
+Format: `add n/NAME p/PHONE_NUMBER a/ADDRESS r/ROLE [par/PARENT_NAME] [t/TAG]…`
 
 * A person can have any number of tags (including 0).
 * A person can have one of the two roles: `student` or `parent`.
 * A person that has the `student` role can have `[TAGS]`.
 * A person that has the `parent` role **cannot** have `[TAGS]`.
+* You may specify a parent for a student using the `par/` prefix.
+  * The specified parent **must already exist** in the address book.
+  * Only students can have a `par/` field — parents cannot have one.
 
 Examples:
 * `add n/John Doe p/98765432 a/902 East Coast Parkway, #01-26, Singapore r/parent`
 * `add n/Betsy Crowe p/87654321 a/742 Ang Mo Kio Avenue 5 12-30, Singapore r/student t/math`
 * `add n/Lorem Ipsum p/97531864 a/6001 Beach Road 02-37 Golden Mile Tower, Singapore r/student`
+* `add n/Onion Lee p/99274628 a/1 HarbourFront Walk, Singapore 098585 r/student par/Keith`
 
 ### Listing all persons : `list`
 
@@ -99,26 +103,31 @@ Format: `list`
 
 Edits an existing person in the address book.
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]…​`
+Format: `edit INDEX [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]…`
 
 * Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
 * When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
-* You can remove all the person’s tags by typing `t/` without
-    specifying any tags after it.
+* You can remove all the person’s tags by typing `t/` without specifying any tags after it.
+* You may specify or change a student’s parent using the `par/` prefix.
+  * The specified parent **must already exist** in the address book.
+  * Only students can have a parent; specifying `par/` for a parent will result in an error.
+* A parent’s children (Student) **cannot be edited directly**. Relationships are updated automatically when their corresponding student entries are modified.
 
 Examples:
 *  `edit 1 p/91234567` Edits the phone number of the 1st person to be `91234567`.
 *  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
+*  `edit 3 n/Alex Yeo par/Keith` Edits the name and parent of the 3rd person to be `Alex Yeo` and their parent to be `Keith`. (Assuming `Keith` is a Parent that already exists in the address book)
 
 ### Locating persons by name: `find`
 
 Finds persons whose information matches/contains given criteria.
 
-Format: `find [n/NAME] [r/ROLE]`
+Format: `find [n/NAME] [r/ROLE] [t/TAG]`
 
 * The search is case-insensitive. e.g `n/hans` will match `Hans`
+* At least one of the parameters must be provided.
 * The order of the keywords does not matter. e.g. `n/Hans Bo` will match `Bo Hans`
 * Only the name or the role can be searched.
 * Only full words will be matched e.g. `n/Han` will not match `Hans`, `r/stu` will not match `student`
@@ -131,6 +140,7 @@ Examples:
 * `find n/alex david` returns `Alex Yeoh`, `David Li`<br>
 ![findAlexDavidResult.png](images/findAlexDavidResult.png)
 * `find r/student` returns all persons with role of `student`
+* `find r/student t/math physics` returns all persons with role of `student` whose tags include either `math` or `physics`
 
 ### Deleting a person : `delete`
 
@@ -220,7 +230,8 @@ Format: `editsession INDEX d/DAY ti/TIME nd/DAY nti/TIME`
 * Edits the session of the person at the specified `INDEX`. 
 * The index refers to the index number shown in the displayed person list. 
 * The index **must be a positive integer** 1, 2, 3, …​
-* Existing values will be updated to the input values.
+* Existing values will be updated to the input values specified by `nd/` and `nti/`.
+* The start time must not be greater than the end time.
 
 Examples:
 *  `editsession 1 d/Mon ti/3pm-5pm nd/Thurs nti/9:30AM-11:45AM` Edits the session's day and time of the 1st person to be `Thurs` and `9:30AM-11:45AM`.
@@ -279,7 +290,7 @@ Action | Format, Examples
 **Clear** | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee`
-**Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
+**Find** | `find [n/NAME] [r/ROLE] [t/TAG]`<br> e.g., `find n/James Jake`
 **Remark** | `remark INDEX rm/REMARK` <br> e.g., `remark 1 rm/hardworking`
 **View** | `view INDEX` <br> e.g., `view 2`
 **Add Session** | `addsession INDEX d/DAY ti/TIME` <br> e.g., `addsession 2 d/Mon ti/9am-5pm`
