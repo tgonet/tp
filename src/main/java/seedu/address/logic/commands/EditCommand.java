@@ -1,10 +1,12 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.Messages.MESSAGE_NO_PARENT_FOR_PARENT;
+import static seedu.address.logic.Messages.MESSAGE_NO_TAGS_FOR_PARENT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PARENT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
@@ -46,7 +48,7 @@ public class EditCommand extends Command {
             + "[" + PREFIX_NAME + "NAME] "
             + "[" + PREFIX_PHONE + "PHONE] "
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
-            + "[" + PREFIX_REMARK + "REMARK] "
+            + "[" + PREFIX_PARENT + "PARENT] "
             + "[" + PREFIX_TAG + "TAG]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 ";
@@ -81,17 +83,16 @@ public class EditCommand extends Command {
         Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
         Phone updatedPhone = editPersonDescriptor.getPhone().orElse(personToEdit.getPhone());
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
-        Remark updatedRemark = editPersonDescriptor.getRemark().orElse(personToEdit.getRemark());
-        // Do not allow updating of Role
+        // Do not allow updating of Role or Remark
 
         if (personToEdit instanceof Student studentToEdit) {
             Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(studentToEdit.getTags());
             Set<Session> updatedSessions = editPersonDescriptor.getSessions().orElse(studentToEdit.getSessions());
             Name updatedParentName = editPersonDescriptor.getParentName().orElse(studentToEdit.getParentName());
-            return new Student(updatedName, updatedPhone, updatedAddress, updatedRemark,
+            return new Student(updatedName, updatedPhone, updatedAddress, personToEdit.getRemark(),
                     updatedTags, updatedSessions, updatedParentName);
         } else {
-            return new Parent(updatedName, updatedPhone, updatedAddress, updatedRemark);
+            return new Parent(updatedName, updatedPhone, updatedAddress, personToEdit.getRemark());
         }
     }
 
@@ -105,26 +106,46 @@ public class EditCommand extends Command {
         }
 
         Person personToEdit = lastShownList.get(index.getZeroBased());
+
+        // Validate using editPersonDescriptor, if we use editedPerson some data might be lost after parsing
+        validateRoleInputs(personToEdit, editPersonDescriptor, model);
+
         Person editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);
 
         if (!personToEdit.isSamePerson(editedPerson) && model.hasPerson(editedPerson)) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
         }
 
-        // If updating parent, check if that new parent exists
-        if (personToEdit instanceof Student student) {
-            Student editedStudent = (Student) editedPerson;
-            // Check if parent names are different
-            if (student.getParentName() != null
-                    && !student.getParentName().equals(editedStudent.getParentName())
-                    && !model.hasPerson(new Parent(editedStudent.getParentName()))) {
-                throw new CommandException(MESSAGE_INVALID_PARENT);
-            }
-        }
-
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson)));
+    }
+
+    private void validateRoleInputs(Person personToEdit, EditPersonDescriptor editPersonDescriptor,
+                                    Model model) throws CommandException {
+        // Unable to do role based validation in the Parser due to
+        // being unable to check the role of the person we are editing.
+        // So we shall do it here instead.
+        if (personToEdit instanceof Parent parent) {
+            if (editPersonDescriptor.getParentName().isPresent()) {
+                throw new CommandException(MESSAGE_NO_PARENT_FOR_PARENT);
+            }
+            if (editPersonDescriptor.getTags().isPresent()) {
+                throw new CommandException(MESSAGE_NO_TAGS_FOR_PARENT);
+            }
+        }
+
+        if (personToEdit instanceof Student student) {
+            // Check if student already has parent name
+            // and if existing parent name is diff from new one
+            // and if new parent exists
+            if (student.getParentName() != null
+                    && editPersonDescriptor.getParentName().isPresent()
+                    && !student.getParentName().equals(editPersonDescriptor.getParentName().get())
+                    && !model.hasPerson(new Parent(editPersonDescriptor.getParentName().get()))) {
+                throw new CommandException(MESSAGE_INVALID_PARENT);
+            }
+        }
     }
 
     @Override
@@ -159,8 +180,8 @@ public class EditCommand extends Command {
         private Name name;
         private Phone phone;
         private Address address;
-        private Role role;
-        private Remark remark;
+        private Role role; // Only used for Testing
+        private Remark remark; // Only used for Testing
         private Set<Tag> tags;
         private Set<Session> sessions;
         private Name parentName;
@@ -187,7 +208,7 @@ public class EditCommand extends Command {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, address, tags, remark, parentName);
+            return CollectionUtil.isAnyNonNull(name, phone, address, tags, parentName);
         }
 
         public Optional<Name> getName() {
@@ -214,6 +235,14 @@ public class EditCommand extends Command {
             this.address = address;
         }
 
+        public Optional<Name> getParentName() {
+            return Optional.ofNullable(parentName);
+        }
+
+        public void setParentName(Name parentName) {
+            this.parentName = parentName;
+        }
+
         public Optional<Role> getRole() {
             return Optional.ofNullable(role);
         }
@@ -228,14 +257,6 @@ public class EditCommand extends Command {
 
         public void setRemark(Remark remark) {
             this.remark = remark;
-        }
-
-        public Optional<Name> getParentName() {
-            return Optional.ofNullable(parentName);
-        }
-
-        public void setParentName(Name parentName) {
-            this.parentName = parentName;
         }
 
         /**
@@ -287,9 +308,9 @@ public class EditCommand extends Command {
             return Objects.equals(name, otherEditPersonDescriptor.name)
                     && Objects.equals(phone, otherEditPersonDescriptor.phone)
                     && Objects.equals(address, otherEditPersonDescriptor.address)
+                    && Objects.equals(parentName, otherEditPersonDescriptor.parentName)
                     && Objects.equals(role, otherEditPersonDescriptor.role)
                     && Objects.equals(remark, otherEditPersonDescriptor.remark)
-                    && Objects.equals(parentName, otherEditPersonDescriptor.parentName)
                     && Objects.equals(tags, otherEditPersonDescriptor.tags);
         }
 

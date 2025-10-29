@@ -64,10 +64,10 @@ public class AddCommandParser implements Parser<AddCommand> {
     private void validateRoleInputs(Role role, Set<Tag> tagList, Name parentName) throws ParseException {
         if (role.isParent()) {
             if (!tagList.isEmpty()) {
-                throw new ParseException(String.format(MESSAGE_NO_TAGS_FOR_PARENT, AddCommand.MESSAGE_USAGE));
+                throw new ParseException(MESSAGE_NO_TAGS_FOR_PARENT);
             }
             if (parentName != null) {
-                throw new ParseException(String.format(MESSAGE_NO_PARENT_FOR_PARENT, AddCommand.MESSAGE_USAGE));
+                throw new ParseException(MESSAGE_NO_PARENT_FOR_PARENT);
             }
         }
         // Student role validation logic can be added here in the future
