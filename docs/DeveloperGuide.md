@@ -422,6 +422,23 @@ Use case ends.
 * 1d. Duplicate session detected by exact same day and time
   * 1b1. System warns about duplicate and aborts creation. Use case ends.
 
+### UC11 - Edit a student's session
+**Goal**: Edit a student's session to update the classes the student is in.  
+**Precondition**: The student exist.
+**MSS**
+1. Tutor requests to edit a session for a specific student by providing the student's index, old session details (day and time), and new session details (new day and time).
+2. System updates the student's session with the new details.
+3. System displays a success message confirming the session was edited
+   Use case ends.
+
+**Extensions**
+* 1a. The given index is invalid.
+    * 1a1. System shows error and keeps list unchanged. Use case ends.
+* 1b. Validation fails (e.g., invalid day/time)
+  * 1b1. System shows error and usage hint. Resume at step 1.
+* 1c. Editing to a parent contact
+  * 1c1. System shows error and keeps list unchanged.
+
 ### Non-Functional Requirements
 #### Portability
 1. Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
