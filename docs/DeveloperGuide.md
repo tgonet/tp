@@ -632,17 +632,13 @@ testers are expected to do more *exploratory* testing.
    2. Test Case - Adding a Parent with Tags (Failure)
       <br>`add n/Bob Lee p/89658345 a/150 SOUTH BRIDGE ROAD 11-04 FOOK HAI BUILDING r/parent t/math`
       <br>Expected:
-      - Error Message: "Parents are NOT allowed to have tags!<br>
-        add: Adds a person to the address book. Parameters: n/NAME p/PHONE a/ADDRESS r/ROLE [t/TAG]...<br>
-        Example: add n/John Doe p/98765432 a/311, Clementi Ave 2, #02-25 r/student t/math"
-      - Invalid person is **not added** to the address book
+      - Error Message: "Parents are NOT allowed to have tags!"
+      - Invalid person is **not added** to the address book.
    3. Test Case - Adding a Parent with a Parent (Failure)
       <br>`add n/Peter Peterson p/92272634 a/123 Lorong 1 Toa Payoh #02-515, 310986 r/parent par/Bob Lee`
       <br>Expected:
-      - Error Message: "Parents are NOT allowed to have parents!<br>
-        add: Adds a person to the address book. Parameters: n/NAME p/PHONE a/ADDRESS r/ROLE [t/TAG]...<br>
-        Example: add n/John Doe p/98765432 a/311, Clementi Ave 2, #02-25 r/student t/math"
-      - Invalid person is **not added** to the address book
+      - Error Message: "Parents are NOT allowed to have parents!"
+      - Invalid person is **not added** to the address book.
 
 
 2. **Adding a Student** 
@@ -673,6 +669,16 @@ testers are expected to do more *exploratory* testing.
        - Success Message: "New person added: Shermaine Lee; Phone: 98927376; Address: Aljunied Industrial Complex 623 Aljunied Road #02-01; Role: student; Remark: ; Tags: [science]; Parent: Klaus Tay"
        - New person named Shermaine Lee added to the contact list, the person should be tagged as a Student.
        - New person should appear at the bottom of the contacts list. If person does not appear, run the `list` command to verify the full list of contacts.
+   5. Test Case - Adding a Student with a non-existent Parent
+      <br>`add n/Germaine Lee p/98927376 a/334 Aljunied Street Road #02-02 r/student par/Nonexistent Parent`
+      <br>Expected:
+      - Error Message: "This parent does not exist in the address book"
+      - Invalid person is **not added** to the address book.
+   6. Test Case - Adding a Student with an Invalid Parent
+      <br>`add n/Germaine Lee p/98927376 a/334 Aljunied Street Road #02-02 r/student par/3`
+      <br>Expected:
+      - Error Message: "Names should only contain alphabetic characters, spaces, hyphens, apostrophes, and it should not be blank"
+      - Invalid person is **not added** to the address book.
 
 
 3. **Adding a Person**
@@ -709,6 +715,99 @@ testers are expected to do more *exploratory* testing.
 <br>**Prerequisites**:
 - The address book already contains several persons from the “Adding a Person” test cases, including at least one Parent (e.g. Klaus Tay) and one Student (e.g. Akira Lee).
 - Ensure that the person to be edited exists in the displayed list before performing each test case.
+
+1. **Editing a Parent**
+   - Note: **ALL** the test cases in this section **MUST** be performed on a Parent contact or the results cannot be guaranteed.
+   - **Please replace the `<INDEX>` portion of the test case with a valid index of a Parent contact in your copy of the address book before running the test case.**
+   - **Prerequisites**:
+     1. There must be 1 existing Parent contact in the address book.
+   1. Test Case - Editing a Parent to add Tags (Failure)
+      <br>`edit <INDEX> t/science`
+      <br>Expected:
+       - Error Message: "Parents are NOT allowed to have tags!"
+       - The Parent is not updated and details remain unchanged.
+   2. Test Case - Editing a Parent to add a Parent (Failure)
+      <br>`edit <INDEX> par/Bob Lee`
+      <br>Expected:
+      - Error Message: "Parents are NOT allowed to have parents!"
+      - The Parent is not updated and details remain unchanged.
+
+
+2. **Editing a Student**
+   - Note: **ALL** the test cases in this section **MUST** be performed on a Student contact or the results cannot be guaranteed.
+   - **Please replace the `<INDEX>` portion of the test case with a valid index of a Student contact in your copy of the address book before running the test case.**
+   - **Prerequisites**:
+      1. There must be 1 existing Parent contact in the address book.
+      2. There must be 1 existing Student contact in the address book. 
+   1. Test Case - Editing a Student's Parent (Success)
+      - Note: use the name of any existing parent contact in you address book if you do not have a Parent contact in your address book with the name Klaus Tay.
+      <br>`edit <INDEX> par/Klaus Tay`
+      <br>Expected:
+      - Sample Success Message: "Edited Person: Tom Jones; Phone: 90001111; Address: 2 Keppel Road #01-05 HarbourFront, Singapore 098635; Role: student; Remark: ; Tags: [math]; Parent: Klaus Tay"
+      - The Student's Parent is updated to Klaus Tay (or whatever Parent's name you put), who already exists in the address book.
+   2. Test Case - Editing a Student's Tags (Success)
+      <br>`edit <INDEX> t/math t/science`
+      <br>Expected:
+      - Sample Success Message: "Edited Person: Tom Jones; Phone: 90001111; Address: 2 Keppel Road #01-05 HarbourFront, Singapore 098635; Role: student; Remark: ; Tags: [science][math]; Parent: Klaus Tay"
+      - The Student's Tags are updated to math and science replacing any existing Tags.
+   3. Test Case - Clearing a Student's Tags (Success)
+      <br>`edit <INDEX> t/`
+      <br>Expected:
+      - Sample Success Message: "Edited Person: Tom Jones; Phone: 90001111; Address: 2 Keppel Road #01-05 HarbourFront, Singapore 098635; Role: student; Remark: ; Tags: ; Parent: Klaus Tay"
+      - All existing Tags for the Student are removed.
+   4. Test Case - Editing a Student's Parent to a non-existent Parent (Failure)
+      <br>`edit <INDEX> par/Nonexistent Parent`
+      <br>Expected:
+      - Error Message: "This parent does not exist in the address book"
+      - The specified Parent does not exist in the address book.
+      - No changes are made.
+
+
+3. **Editing a Person**
+   1. Test Case - Editing a Person's Address (Success)
+      <br>`edit 1 a/2 Keppel Road #01-05 HarbourFront, Singapore 098635`
+      <br>Expected:
+      - Sample Success Message: "Edited Person: Alex Yeoh; Phone: 87438807; Address: 2 Keppel Road #01-05 HarbourFront, Singapore 098635; Role: student; Remark: ; Tags: [math]; Parent: null"
+      - Person's address is updated to the new address.
+      - All other details remain unchanged.
+   2. Test Case - Editing a Person's Phone (Success)
+      <br>`edit 1 p/90001111`
+      <br>Expected:
+       - Sample Success Message: "Edited Person: Alex Yeoh; Phone: 90001111; Address: 2 Keppel Road #01-05 HarbourFront, Singapore 098635; Role: student; Remark: ; Tags: [math]; Parent: null"
+       - Person's phone number is updated to the new phone number.
+       - All other details remain unchanged.
+   3. Test Case - Editing a Person's Name (Success)
+      <br>`edit 1 n/Tom Jones`
+      <br>Expected:
+       - Sample Success Message: "Edited Person: Tom Jones; Phone: 90001111; Address: 2 Keppel Road #01-05 HarbourFront, Singapore 098635; Role: student; Remark: ; Tags: [math]; Parent: null"
+       - Person's name is updated to the new name.
+       - All other details remain unchanged.
+       - If the contact updated was a Parent, the name change will be reflected in its related Student contacts.
+   4. Test Case - Editing with Invalid Index (Failure)
+      <br>`edit 999 p/91234567`
+      <br>Expected:
+      - Error Message: "The person index provided is invalid"
+      - No changes are made because the specified index is out of range.
+   5. Test Case - Editing with NO fields provided (Failure)
+      <br>`edit 1`
+      <br>Expected:
+      - Error Message: "At least one field to edit must be provided."
+      - No changes are made because the specified index is out of range.
+   6. Test Case - Editing with Invalid Phone number (Failure)
+      <br>`edit 2 p/12`
+      <br>Expected:
+      - Error Message: "Phone numbers should only contain numbers, start with 8 or 9 and it should be 8 digits long"
+      - No changes are made because the Invalid Phone number is rejected.
+   7. Test Case - Editing with Invalid Name (Failure)
+      <br>`edit 2 n/$$$###`
+      <br>Expected:
+      - Error Message: "Names should only contain alphabetic characters, spaces, hyphens, apostrophes, and it should not be blank"
+      - No changes are made because the Invalid Name is rejected.
+   8. Test Case - Editing with Invalid Address (Failure)
+      <br>`edit 2 a/`
+      <br>Expected:
+      - Error Message: "Addresses should be between 20 - 100 characters long and can take any values except for special characters, and it should not be blank"
+      - No changes are made because the Invalid Address is rejected.
 
 ### Leaving a remark
 

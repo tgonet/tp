@@ -22,8 +22,8 @@ public class Messages {
     public static final String MESSAGE_DUPLICATE_FIELDS =
                 "Multiple values specified for the following single-valued field(s): ";
     public static final String MESSAGE_ONLY_STUDENT_COMMAND = "This is a command for students only";
-    public static final String MESSAGE_NO_TAGS_FOR_PARENT = "Parents are NOT allowed to have tags! \n%1$s";
-    public static final String MESSAGE_NO_PARENT_FOR_PARENT = "Parents are NOT allowed to have parents! \n%1$s";
+    public static final String MESSAGE_NO_TAGS_FOR_PARENT = "Parents are NOT allowed to have tags!";
+    public static final String MESSAGE_NO_PARENT_FOR_PARENT = "Parents are NOT allowed to have parents!";
 
     /**
      * Returns an error message indicating the duplicate prefixes.
