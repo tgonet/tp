@@ -157,7 +157,7 @@ This section describes some noteworthy details on how certain features are imple
 
 ### Remark feature
 
-The following activity diagram summarizes what happens when a user executes an add command with a remark:
+The following activity diagram summarizes what happens when a user executes a remark command:
 
 ![RemarkActivityDiagram](images/RemarkActivityDiagram.png)
 
