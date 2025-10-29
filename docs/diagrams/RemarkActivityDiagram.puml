@@ -1,0 +1,24 @@
+@startuml
+skin rose
+skinparam ActivityFontSize 15
+skinparam ArrowFontSize 12
+
+start
+:User executes "remark" command;
+
+if () then ([Person index is valid])
+    :Retrieve Person from AddressBook;
+    if () then ([Remark field provided])
+        :Update Person with new Remark;
+    else ([else])
+        :Clear Person's Remark;
+    endif
+    :Save updated AddressBook to state list;
+    :Display success message;
+else ([else])
+    :Display "Invalid person index" error;
+endif
+
+stop
+@enduml
+
