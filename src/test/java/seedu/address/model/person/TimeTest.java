@@ -39,6 +39,9 @@ public class TimeTest {
         assertFalse(Time.isValidTime("01am-2am")); // leading zero not allowed
         assertFalse(Time.isValidTime("09:00AM-11:15AM")); // leading zero not allowed
         assertFalse(Time.isValidTime("00am-1am")); // invalid hour
+        assertFalse(Time.isValidTime("11:59pm-12am")); // start time > end time
+        assertFalse(Time.isValidTime("9am-8:59am")); // start time > end time
+        assertFalse(Time.isValidTime("09:00AM-08:59AM")); // start time > end time
 
         // valid times
         assertTrue(Time.isValidTime("3pm-5pm"));

@@ -10,6 +10,7 @@ import static seedu.address.testutil.TypicalPersons.ALICE;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.function.Predicate;
 
 import org.junit.jupiter.api.Test;
@@ -26,13 +27,23 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.Student;
 import seedu.address.testutil.StudentBuilder;
 
+/**
+ * Unit tests for {@link AddCommand}.
+ * Focus: constructor guards, duplicate handling, parent linking constraint, equals & toString.
+ */
 public class AddCommandTest {
 
+    /**
+     * Ensure constructor rejects null person input.
+     */
     @Test
     public void constructor_nullPerson_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> new AddCommand(null));
     }
 
+    /**
+     * Happy path: model accepts add; feedback matches; state holds added person.
+     */
     @Test
     public void execute_personAcceptedByModel_addSuccessful() throws Exception {
         ModelStubAcceptingPersonAdded modelStub = new ModelStubAcceptingPersonAdded();
@@ -45,6 +56,9 @@ public class AddCommandTest {
         assertEquals(Arrays.asList(validPerson), modelStub.personsAdded);
     }
 
+    /**
+     * Adding a duplicate person must fail with {@link CommandException}.
+     */
     @Test
     public void execute_duplicatePerson_throwsCommandException() {
         Person validPerson = new StudentBuilder().build();
@@ -54,6 +68,9 @@ public class AddCommandTest {
         assertThrows(CommandException.class, AddCommand.MESSAGE_DUPLICATE_PERSON, () -> addCommand.execute(modelStub));
     }
 
+    /**
+     * Adding a student whose parent link cannot be resolved must fail.
+     */
     @Test
     public void execute_invalidParent_throwsCommandException() {
         Person validPerson = new StudentBuilder().build();
@@ -64,6 +81,9 @@ public class AddCommandTest {
         assertThrows(CommandException.class, AddCommand.MESSAGE_INVALID_PARENT, () -> addCommand.execute(modelStub));
     }
 
+    /**
+     * Equality contract must hold across representative cases.
+     */
     @Test
     public void equals() {
         Person alice = new StudentBuilder().withName("Alice").build();
@@ -71,23 +91,26 @@ public class AddCommandTest {
         AddCommand addAliceCommand = new AddCommand(alice);
         AddCommand addBobCommand = new AddCommand(bob);
 
-        // same object -> returns true
+        // same object -> true
         assertTrue(addAliceCommand.equals(addAliceCommand));
 
-        // same values -> returns true
+        // same values -> true
         AddCommand addAliceCommandCopy = new AddCommand(alice);
         assertTrue(addAliceCommand.equals(addAliceCommandCopy));
 
-        // different types -> returns false
+        // different types -> false
         assertFalse(addAliceCommand.equals(1));
 
-        // null -> returns false
+        // null -> false
         assertFalse(addAliceCommand.equals(null));
 
-        // different person -> returns false
+        // different person -> false
         assertFalse(addAliceCommand.equals(addBobCommand));
     }
 
+    /**
+     * toString must include class name and person payload.
+     */
     @Test
     public void toStringMethod() {
         AddCommand addCommand = new AddCommand(ALICE);
@@ -96,96 +119,127 @@ public class AddCommandTest {
     }
 
     /**
-     * A default model stub that have all of the methods failing.
+     * Default Model stub where every call fails.
+     * Extend in tests to override required bits only.
      */
     private class ModelStub implements Model {
+        /** {@inheritDoc} */
         @Override
         public void setUserPrefs(ReadOnlyUserPrefs userPrefs) {
             throw new AssertionError("This method should not be called.");
         }
 
+        /** {@inheritDoc} */
         @Override
         public ReadOnlyUserPrefs getUserPrefs() {
             throw new AssertionError("This method should not be called.");
         }
 
+        /** {@inheritDoc} */
         @Override
         public GuiSettings getGuiSettings() {
             throw new AssertionError("This method should not be called.");
         }
 
+        /** {@inheritDoc} */
         @Override
         public void setGuiSettings(GuiSettings guiSettings) {
             throw new AssertionError("This method should not be called.");
         }
 
+        /** {@inheritDoc} */
         @Override
         public Path getAddressBookFilePath() {
             throw new AssertionError("This method should not be called.");
         }
 
+        /** {@inheritDoc} */
         @Override
         public void setAddressBookFilePath(Path addressBookFilePath) {
             throw new AssertionError("This method should not be called.");
         }
 
-        @Override
-        public void addPerson(Person person) {
-            throw new AssertionError("This method should not be called.");
-        }
-
+        /** {@inheritDoc} */
         @Override
         public void setAddressBook(ReadOnlyAddressBook newData) {
             throw new AssertionError("This method should not be called.");
         }
 
+        /** {@inheritDoc} */
         @Override
         public ReadOnlyAddressBook getAddressBook() {
             throw new AssertionError("This method should not be called.");
         }
 
+        /** {@inheritDoc} */
         @Override
         public boolean hasPerson(Person person) {
             throw new AssertionError("This method should not be called.");
         }
 
+        /** {@inheritDoc} */
         @Override
         public void deletePerson(Person target) {
             throw new AssertionError("This method should not be called.");
         }
 
+        /** {@inheritDoc} */
+        @Override
+        public void addPerson(Person person) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        /** {@inheritDoc} */
         @Override
         public void setPerson(Person target, Person editedPerson) {
             throw new AssertionError("This method should not be called.");
         }
 
+        /** {@inheritDoc} */
         @Override
         public void linkParent(Student student) {
             throw new AssertionError("This method should not be called.");
         }
 
+        /** {@inheritDoc} */
         @Override
         public ObservableList<Person> getFilteredPersonList() {
             throw new AssertionError("This method should not be called.");
         }
 
+        /** {@inheritDoc} */
         @Override
         public void updateFilteredPersonList(Predicate<Person> predicate) {
             throw new AssertionError("This method should not be called.");
         }
+
+        /**
+         * Sort hook used by new view-session flow.
+         * No-op in this stub since add does not depend on order.
+         * @param comparator person comparator
+         */
+        @Override
+        public void sortFilteredPersonList(Comparator<Person> comparator) {
+            // no-op
+        }
     }
 
     /**
-     * A Model stub that contains a single person.
+     * Model stub with single existing person.
      */
     private class ModelStubWithPerson extends ModelStub {
         private final Person person;
 
+        /**
+         * Build stub around given person.
+         * @param person existing entry; not null
+         */
         ModelStubWithPerson(Person person) {
             requireNonNull(person);
             this.person = person;
         }
 
+        /** {@inheritDoc} */
         @Override
         public boolean hasPerson(Person person) {
             requireNonNull(person);
@@ -194,27 +248,29 @@ public class AddCommandTest {
     }
 
     /**
-     * A Model stub that always accept the person being added.
+     * Model stub that records added persons and accepts all adds.
      */
     private class ModelStubAcceptingPersonAdded extends ModelStub {
         final ArrayList<Person> personsAdded = new ArrayList<>();
 
+        /** {@inheritDoc} */
         @Override
         public boolean hasPerson(Person person) {
             requireNonNull(person);
             return personsAdded.stream().anyMatch(person::isSamePerson);
         }
 
+        /** {@inheritDoc} */
         @Override
         public void addPerson(Person person) {
             requireNonNull(person);
             personsAdded.add(person);
         }
 
+        /** {@inheritDoc} */
         @Override
         public ReadOnlyAddressBook getAddressBook() {
             return new AddressBook();
         }
     }
-
 }
