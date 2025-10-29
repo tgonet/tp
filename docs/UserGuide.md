@@ -124,9 +124,10 @@ Examples:
 
 Finds persons whose information matches/contains given criteria.
 
-Format: `find [n/NAME] [r/ROLE]`
+Format: `find [n/NAME] [r/ROLE] [t/TAG]`
 
 * The search is case-insensitive. e.g `n/hans` will match `Hans`
+* At least one of the parameters must be provided.
 * The order of the keywords does not matter. e.g. `n/Hans Bo` will match `Bo Hans`
 * Only the name or the role can be searched.
 * Only full words will be matched e.g. `n/Han` will not match `Hans`, `r/stu` will not match `student`
@@ -139,6 +140,7 @@ Examples:
 * `find n/alex david` returns `Alex Yeoh`, `David Li`<br>
 ![findAlexDavidResult.png](images/findAlexDavidResult.png)
 * `find r/student` returns all persons with role of `student`
+* `find r/student t/math physics` returns all persons with role of `student` whose tags include either `math` or `physics`
 
 ### Deleting a person : `delete`
 
@@ -232,7 +234,8 @@ Format: `editsession INDEX d/DAY ti/TIME nd/DAY nti/TIME`
 * Edits the session of the person at the specified `INDEX`. 
 * The index refers to the index number shown in the displayed person list. 
 * The index **must be a positive integer** 1, 2, 3, …​
-* Existing values will be updated to the input values.
+* Existing values will be updated to the input values specified by `nd/` and `nti/`.
+* The start time must not be greater than the end time.
 
 Examples:
 *  `editsession 1 d/Mon ti/3pm-5pm nd/Thurs nti/9:30AM-11:45AM` Edits the session's day and time of the 1st person to be `Thurs` and `9:30AM-11:45AM`.
@@ -291,7 +294,7 @@ Action | Format, Examples
 **Clear** | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee`
-**Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
+**Find** | `find [n/NAME] [r/ROLE] [t/TAG]`<br> e.g., `find n/James Jake`
 **Remark** | `remark INDEX rm/REMARK` <br> e.g., `remark 1 rm/hardworking`
 **View** | `view INDEX` <br> e.g., `view 2`
 **Add Session** | `addsession INDEX d/DAY ti/TIME` <br> e.g., `addsession 2 d/Mon ti/9am-5pm`
