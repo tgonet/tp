@@ -5,8 +5,8 @@ import static seedu.address.logic.Messages.MESSAGE_NO_PARENT_FOR_PARENT;
 import static seedu.address.logic.Messages.MESSAGE_NO_TAGS_FOR_PARENT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PARENT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
@@ -28,8 +28,6 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Parent;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
-import seedu.address.model.person.Remark;
-import seedu.address.model.person.Role;
 import seedu.address.model.person.Session;
 import seedu.address.model.person.Student;
 import seedu.address.model.tag.Tag;
@@ -48,7 +46,7 @@ public class EditCommand extends Command {
             + "[" + PREFIX_NAME + "NAME] "
             + "[" + PREFIX_PHONE + "PHONE] "
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
-            + "[" + PREFIX_REMARK + "REMARK] "
+            + "[" + PREFIX_PARENT + "PARENT] "
             + "[" + PREFIX_TAG + "TAG]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 ";
@@ -83,17 +81,16 @@ public class EditCommand extends Command {
         Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
         Phone updatedPhone = editPersonDescriptor.getPhone().orElse(personToEdit.getPhone());
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
-        Remark updatedRemark = editPersonDescriptor.getRemark().orElse(personToEdit.getRemark());
-        // Do not allow updating of Role
+        // Do not allow updating of Role or Remark
 
         if (personToEdit instanceof Student studentToEdit) {
             Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(studentToEdit.getTags());
             Set<Session> updatedSessions = editPersonDescriptor.getSessions().orElse(studentToEdit.getSessions());
             Name updatedParentName = editPersonDescriptor.getParentName().orElse(studentToEdit.getParentName());
-            return new Student(updatedName, updatedPhone, updatedAddress, updatedRemark,
+            return new Student(updatedName, updatedPhone, updatedAddress, personToEdit.getRemark(),
                     updatedTags, updatedSessions, updatedParentName);
         } else {
-            return new Parent(updatedName, updatedPhone, updatedAddress, updatedRemark);
+            return new Parent(updatedName, updatedPhone, updatedAddress, personToEdit.getRemark());
         }
     }
 
@@ -181,8 +178,6 @@ public class EditCommand extends Command {
         private Name name;
         private Phone phone;
         private Address address;
-        private Role role;
-        private Remark remark;
         private Set<Tag> tags;
         private Set<Session> sessions;
         private Name parentName;
@@ -198,8 +193,6 @@ public class EditCommand extends Command {
             setName(toCopy.name);
             setPhone(toCopy.phone);
             setAddress(toCopy.address);
-            setRole(toCopy.role);
-            setRemark(toCopy.remark);
             setTags(toCopy.tags);
             setSessions(toCopy.sessions);
             setParentName(toCopy.parentName);
@@ -209,7 +202,7 @@ public class EditCommand extends Command {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, address, tags, remark, parentName);
+            return CollectionUtil.isAnyNonNull(name, phone, address, tags, parentName);
         }
 
         public Optional<Name> getName() {
@@ -234,22 +227,6 @@ public class EditCommand extends Command {
 
         public void setAddress(Address address) {
             this.address = address;
-        }
-
-        public Optional<Role> getRole() {
-            return Optional.ofNullable(role);
-        }
-
-        public void setRole(Role role) {
-            this.role = role;
-        }
-
-        public Optional<Remark> getRemark() {
-            return Optional.ofNullable(remark);
-        }
-
-        public void setRemark(Remark remark) {
-            this.remark = remark;
         }
 
         public Optional<Name> getParentName() {
@@ -309,8 +286,6 @@ public class EditCommand extends Command {
             return Objects.equals(name, otherEditPersonDescriptor.name)
                     && Objects.equals(phone, otherEditPersonDescriptor.phone)
                     && Objects.equals(address, otherEditPersonDescriptor.address)
-                    && Objects.equals(role, otherEditPersonDescriptor.role)
-                    && Objects.equals(remark, otherEditPersonDescriptor.remark)
                     && Objects.equals(parentName, otherEditPersonDescriptor.parentName)
                     && Objects.equals(tags, otherEditPersonDescriptor.tags);
         }
@@ -321,8 +296,6 @@ public class EditCommand extends Command {
                     .add("name", name)
                     .add("phone", phone)
                     .add("address", address)
-                    .add("role", role)
-                    .add("remark", remark)
                     .add("tags", tags)
                     .add("parent", parentName)
                     .toString();
