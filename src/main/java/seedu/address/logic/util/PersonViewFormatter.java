@@ -31,7 +31,14 @@ public final class PersonViewFormatter {
 
         // Join tags deterministically for stable tests.
         final String tags;
+        final String parent;
         if (p instanceof Student s) {
+            if (s.hasLinkedParent() || s.hasParent()) {
+                parent = s.getParentName().toString();
+            } else {
+                parent = "-";
+            }
+
             tags = s.getTags().isEmpty()
                     ? "-"
                     : s.getTags().stream()
@@ -39,6 +46,7 @@ public final class PersonViewFormatter {
                     .sorted()
                     .collect(joining(", "));
         } else {
+            parent = "-";
             tags = "-";
         }
 
@@ -51,6 +59,7 @@ public final class PersonViewFormatter {
                 .append("Address: ").append(address).append(System.lineSeparator())
                 .append("Role: ").append(role).append(System.lineSeparator());
         if (p instanceof Student s) {
+            sb.append("Parent: ").append(parent).append(System.lineSeparator());
             sb.append("Tags: ").append(tags).append(System.lineSeparator());
         }
         sb.append("Remark: ").append(remark);
