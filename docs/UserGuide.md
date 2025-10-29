@@ -181,6 +181,9 @@ Format: `addsession INDEX d/DAY ti/TIME`
 * The index **must be a positive integer** 1, 2, 3, …​
 * The start time must not be greater than the end time
 
+* The result is displayed in the app as a list.
+  ![addsession.png](images/viewSession.png)
+
 Examples:
 * `addsession 1 d/Mon ti/3pm-5pm`
 * `addsession 1 d/Thurs ti/9:30AM-11:45AM`
