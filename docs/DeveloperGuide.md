@@ -494,16 +494,12 @@ testers are expected to do more *exploratory* testing.
    2. Test Case - Adding a Parent with Tags (Failure)
       <br>`add n/Bob Lee p/89658345 a/150 SOUTH BRIDGE ROAD 11-04 FOOK HAI BUILDING r/parent t/math`
       <br>Expected:
-      - Error Message: "Parents are NOT allowed to have tags!<br>
-        add: Adds a person to the address book. Parameters: n/NAME p/PHONE a/ADDRESS r/ROLE [t/TAG]...<br>
-        Example: add n/John Doe p/98765432 a/311, Clementi Ave 2, #02-25 r/student t/math"
+      - Error Message: "Parents are NOT allowed to have tags!"
       - Invalid person is **not added** to the address book
    3. Test Case - Adding a Parent with a Parent (Failure)
       <br>`add n/Peter Peterson p/92272634 a/123 Lorong 1 Toa Payoh #02-515, 310986 r/parent par/Bob Lee`
       <br>Expected:
-      - Error Message: "Parents are NOT allowed to have parents!<br>
-        add: Adds a person to the address book. Parameters: n/NAME p/PHONE a/ADDRESS r/ROLE [t/TAG]...<br>
-        Example: add n/John Doe p/98765432 a/311, Clementi Ave 2, #02-25 r/student t/math"
+      - Error Message: "Parents are NOT allowed to have parents!"
       - Invalid person is **not added** to the address book
 
 
