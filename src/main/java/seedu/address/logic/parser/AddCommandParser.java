@@ -52,32 +52,43 @@ public class AddCommandParser implements Parser<AddCommand> {
         Remark remark = new Remark(""); // add command does not allow adding remarks straight away
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
         Name parentName = argMultimap.getValue(PREFIX_PARENT).isPresent()
-                ? ParserUtil.parseName(argMultimap.getValue(PREFIX_PARENT).get())
-                : null;
+                ? ParserUtil.parseName(argMultimap.getValue(PREFIX_PARENT).get()) : null;
+
+        validateRoleInputs(role, tagList, parentName);
 
         // Update Logic here to create Person based on role
         // For now no error message is displayed if tags are entered for a parent,
         // the tags will just be discarded
-        Person person;
-        if (role.isStudent()) {
-            person = new Student(name, phone, address, remark, tagList);
-            if (argMultimap.getValue(PREFIX_PARENT).isPresent()) {
-                Student student = (Student) person;
-                student.setParentName(ParserUtil.parseName(argMultimap.getValue(PREFIX_PARENT).get()));
-            }
-        } else if (role.isParent()) {
-            if (!tagList.isEmpty()) {
-                throw new ParseException(String.format(MESSAGE_NO_TAGS_FOR_PARENT, AddCommand.MESSAGE_USAGE));
-            } else if (parentName != null) {
-                throw new ParseException(String.format(MESSAGE_NO_PARENT_FOR_PARENT, AddCommand.MESSAGE_USAGE));
-            }
-
-            person = new Parent(name, phone, address, remark);
-        } else {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
-        }
+        Person person = createPersonToAdd(role, name, phone, address, remark, tagList, parentName);
 
         return new AddCommand(person);
+    }
+
+    private void validateRoleInputs(Role role, Set<Tag> tagList, Name parentName) throws ParseException {
+        if (role.isParent()) {
+            if (!tagList.isEmpty()) {
+                throw new ParseException(String.format(MESSAGE_NO_TAGS_FOR_PARENT, AddCommand.MESSAGE_USAGE));
+            }
+            if (parentName != null) {
+                throw new ParseException(String.format(MESSAGE_NO_PARENT_FOR_PARENT, AddCommand.MESSAGE_USAGE));
+            }
+        }
+        // Student role validation logic can be added here in the future
+    }
+
+    private Person createPersonToAdd(Role role, Name name, Phone phone, Address address, Remark remark,
+                                     Set<Tag> tagList, Name parentName) throws ParseException {
+        if (role.isStudent()) {
+            Student student = new Student(name, phone, address, remark, tagList);
+            if (parentName != null) {
+                student.setParentName(parentName);
+            }
+            return student;
+        } else if (role.isParent()) {
+            return new Parent(name, phone, address, remark);
+        }
+
+        throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
     }
 
     /**
