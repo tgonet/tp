@@ -56,9 +56,6 @@ public class AddCommandParser implements Parser<AddCommand> {
 
         validateRoleInputs(role, tagList, parentName);
 
-        // Update Logic here to create Person based on role
-        // For now no error message is displayed if tags are entered for a parent,
-        // the tags will just be discarded
         Person person = createPersonToAdd(role, name, phone, address, remark, tagList, parentName);
 
         return new AddCommand(person);
