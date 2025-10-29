@@ -36,6 +36,7 @@ import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Remark;
 import seedu.address.model.person.RoleContainsKeywordsPredicate;
+import seedu.address.model.person.TagContainsKeywordsPredicate;
 import seedu.address.model.person.Time;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
 import seedu.address.testutil.ParentBuilder;
@@ -99,7 +100,8 @@ public class AddressBookParserTest {
                 FindCommand.COMMAND_WORD + " " + PREFIX_NAME + keywords.stream().collect(Collectors.joining(" "))
                         + " " + PREFIX_ROLE + keywordsForRole.stream().collect(Collectors.joining(" ")));
         assertEquals(new FindCommand(new NameContainsKeywordsPredicate(keywords),
-                new RoleContainsKeywordsPredicate(keywordsForRole)), command);
+                new RoleContainsKeywordsPredicate(keywordsForRole),
+                new TagContainsKeywordsPredicate(Collections.emptyList())), command);
     }
 
     @Test
@@ -109,7 +111,8 @@ public class AddressBookParserTest {
                 FindCommand.COMMAND_WORD + " " + PREFIX_NAME + keywords.stream()
                         .collect(Collectors.joining(" ")));
         assertEquals(new FindCommand(new NameContainsKeywordsPredicate(keywords),
-                new RoleContainsKeywordsPredicate(Collections.emptyList())), command);
+                new RoleContainsKeywordsPredicate(Collections.emptyList()),
+                new TagContainsKeywordsPredicate(Collections.emptyList())), command);
     }
 
     @Test
