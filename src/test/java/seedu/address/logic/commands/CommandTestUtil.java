@@ -7,6 +7,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_DAY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NEW_DAY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NEW_TIME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PARENT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
@@ -43,15 +44,15 @@ public class CommandTestUtil {
     public static final String VALID_ADDRESS_AMY = "Block 312, Amy Street 1, Singapore 654321";
     public static final String VALID_ADDRESS_BOB = "Block 123, Bobby Street 3, Singapore 678901";
     public static final String VALID_ADDRESS_CHARLES = "Block 456, Charles Street 55, Singapore 676767";
-    public static final String VALID_ROLE_AMY = "student";
-    public static final String VALID_ROLE_BOB = "student";
+    public static final String VALID_ROLE_STUDENT = "student";
+    public static final String VALID_ROLE_PARENT = "parent";
+    public static final String VALID_ROLE_AMY = VALID_ROLE_STUDENT;
+    public static final String VALID_ROLE_BOB = VALID_ROLE_STUDENT;
     public static final String VALID_TAG_SUBJECT = "math";
     public static final String VALID_TAG_SUBJECT2 = "science";
     public static final String VALID_REMARK_AMY = "Likes Math.";
     public static final String VALID_REMARK_BOB = "Favourite pastime: Teaching";
     public static final String VALID_REMARK_CHARLES = "I love my children.";
-    public static final String VALID_TAG_STUDENT = "student";
-    public static final String VALID_TAG_PARENT = "parent";
     public static final String VALID_DAY = "Mon";
     public static final String VALID_TIME = "12pm-1pm";
     public static final String VALID_DAY_EXTRA = "Tue";
@@ -62,7 +63,6 @@ public class CommandTestUtil {
     public static final String VALID_TIME_2PM = "2pm-3pm";
     public static final Session VALID_SESSION = new Session(new Day(VALID_DAY), new Time(VALID_TIME));
 
-
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
     public static final String NAME_DESC_BOB = " " + PREFIX_NAME + VALID_NAME_BOB;
     public static final String NAME_DESC_CHARLES = " " + PREFIX_NAME + VALID_NAME_CHARLES;
@@ -72,16 +72,17 @@ public class CommandTestUtil {
     public static final String ADDRESS_DESC_AMY = " " + PREFIX_ADDRESS + VALID_ADDRESS_AMY;
     public static final String ADDRESS_DESC_BOB = " " + PREFIX_ADDRESS + VALID_ADDRESS_BOB;
     public static final String ADDRESS_DESC_CHARLES = " " + PREFIX_ADDRESS + VALID_ADDRESS_CHARLES;
+    public static final String ROLE_DESC_STUDENT = " " + PREFIX_ROLE + VALID_ROLE_STUDENT;
+    public static final String ROLE_DESC_PARENT = " " + PREFIX_ROLE + VALID_ROLE_PARENT;
     public static final String ROLE_DESC_AMY = " " + PREFIX_ROLE + VALID_ROLE_AMY;
     public static final String ROLE_DESC_BOB = " " + PREFIX_ROLE + VALID_ROLE_BOB;
-    public static final String TAG_DESC_STUDENT = " " + PREFIX_TAG + VALID_TAG_STUDENT;
-    public static final String TAG_DESC_PARENT = " " + PREFIX_TAG + VALID_TAG_PARENT;
     public static final String TAG_DESC_SUBJECT = " " + PREFIX_TAG + VALID_TAG_SUBJECT;
     public static final String TAG_DESC_SUBJECT2 = " " + PREFIX_TAG + VALID_TAG_SUBJECT2;
     public static final String DAY_DESC = " " + PREFIX_DAY + VALID_DAY;
     public static final String TIME_DESC = " " + PREFIX_TIME + VALID_TIME;
     public static final String DAY_DESC_EXTRA = " " + PREFIX_DAY + VALID_DAY_EXTRA;
     public static final String TIME_DESC_EXTRA = " " + PREFIX_TIME + VALID_TIME_EXTRA;
+    public static final String PARENT_DESC_CHARLES = " " + PREFIX_PARENT + VALID_NAME_CHARLES;
 
     public static final String INVALID_NAME_DESC = " " + PREFIX_NAME + "James&"; // '&' not allowed in names
     public static final String INVALID_PHONE_DESC = " " + PREFIX_PHONE + "911a"; // 'a' not allowed in phones
