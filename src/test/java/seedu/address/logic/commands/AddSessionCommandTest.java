@@ -82,6 +82,27 @@ public class AddSessionCommandTest {
     }
 
     @Test
+    public void execute_overlappingSession_throwsCommandException() throws Exception {
+        Student student = new StudentBuilder().build();
+        AddressBook ab = new AddressBook();
+        ab.addPerson(student);
+        Model model = new ModelManager(ab, new UserPrefs());
+
+        Index index = Index.fromOneBased(1);
+        Day day = new Day("Mon");
+        Time firstTime = new Time("2pm-3pm");
+        AddSessionCommand firstAdd = new AddSessionCommand(index, day, firstTime);
+        // add once - should succeed
+        firstAdd.execute(model);
+
+        // adding overlapping session should fail with overlapping message
+        Time overlappingTime = new Time("2:30pm-3:30pm"); // overlaps with 2pm-3pm
+        AddSessionCommand overlapAdd = new AddSessionCommand(index, day, overlappingTime);
+        assertCommandFailure(overlapAdd, model, AddSessionCommand.MESSAGE_OVERLAPPING_SESSION);
+    }
+
+
+    @Test
     public void execute_onParent_throwsCommandException() {
         Person parent = new ParentBuilder().build();
         AddressBook ab = new AddressBook();
