@@ -243,6 +243,24 @@ _{more aspects and alternatives to be added}_
 
 _{Explain here how the data archiving feature will be implemented}_
 
+### ViewSession (day-only)
+
+**Intent**  
+List all students who have at least one session on a specified weekday, ordered by the earliest start time on that day. Supports both legacy single `SessionSlot` and the newer multi-session `Student.sessions`.
+
+---
+
+**Command format**
+
+```text
+viewsession: List all sessions on a day; earliest first.
+Parameters: d/DAY
+Example: viewsession d/Tuesday
+```
+![ViewSessionClassDiagram](images/ViewSessionClassDiagram.png)
+
+![ViewSessionActivityDiagram](images/ViewSessionActivityDiagram.png)
+
 
 --------------------------------------------------------------------------------------------------------------------
 
