@@ -1,0 +1,38 @@
+@startuml
+title EditSessionCommand Sequence Diagram
+
+actor User
+participant Parser as "AddressBookParser"
+participant ESCParser as "EditSessionCommandParser"
+participant ESC as "EditSessionCommand"
+participant Model
+
+User ->> Parser : editsession 1 d/Mon ti/12pm-1pm d/Tue ti/1pm-2pm
+activate Parser
+Parser ->> ESCParser : parse(args)
+activate ESCParser
+ESCParser -->> Parser : new EditSessionCommand
+deactivate ESCParser
+
+Parser ->> ESC : execute(model)
+activate ESC
+
+ESC ->> Model : getFilteredPersonList()
+activate Model
+Model -->> ESC : personList
+deactivate Model
+
+alt Index valid
+    ESC ->> ESC : toCopy(student, oldDay, oldTime, newDay, newTime)
+    ESC -->> ESC : newStudent
+    ESC ->> Model : setPerson(oldStudent, newStudent)
+    ESC ->> Model : updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS)
+else Index invalid
+    ESC --x User : CommandException
+end
+
+ESC -->> User : CommandResult
+deactivate ESC
+deactivate Parser
+
+@enduml

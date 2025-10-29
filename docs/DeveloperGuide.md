@@ -243,6 +243,15 @@ _{more aspects and alternatives to be added}_
 
 _{Explain here how the data archiving feature will be implemented}_
 
+### Edit session
+
+The `edit session` command modifies an existing session in the address book. The implementation involves the following steps:
+
+1. **Parsing**: The command is parsed to extract the relevant information such as the index of the student, the day and time of the session, and the new day and time of the session if applicable.
+2. **Validation**: The command is validated to ensure that the index of the student is valid and that the new day and time of the session (if applicable) are valid.
+3. **Execution**: The session is modified in the address book. If the new day and time of the session are applicable, the session is updated with the new day and time. Otherwise, the session is deleted.
+4. **Committing**: The address book state is committed to the `addressBookStateList`. The `currentStatePointer` is not changed as the user is not undoing or redoing any commands.
+5. **Saving the state**: The `addressBookStateList` is saved to disk to persist the state of the address book.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -290,6 +299,56 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `*`      | tutor | leave remark about each student                               | keep track of learning progress and special requests
 | `*`      | tutor | display the student's timeslot in a readable format           | easily plan future timeslots for students                                      |
 *{More to be added}*
+
+## Edit Session Command
+
+The `editsession` command allows users to modify an existing session's day and/or time for a student in the address book.
+
+### Implementation
+
+The edit session mechanism is facilitated by `EditSessionCommand` and `EditSessionCommandParser`. It extends `Command` and implements the following key operations:
+
+* `EditSessionCommand#execute()` - Executes the command to edit a session
+* `EditSessionCommand#toCopy()` - Creates a new `Person` with the updated session
+* `EditSessionCommandParser#parse()` - Parses the user input and creates a new `EditSessionCommand`
+
+Given below is an example usage scenario and how the edit session mechanism behaves at each step.
+
+#### Example Usage Scenario
+
+1. The user executes `editsession 1 d/Mon ti/12pm-1pm d/Tue ti/1pm-2pm` to change a session from Monday 12pm-1pm to Tuesday 1pm-2pm for the first student in the list.
+2. The `AddressBookParser` identifies the command word `editsession` and creates a new `EditSessionCommandParser`.
+3. The `EditSessionCommandParser` parses the arguments and creates a new `EditSessionCommand` with the provided index, old session details, and new session details.
+4. The `EditSessionCommand` is executed, which:
+   - Retrieves the target student from the filtered person list
+   - Verifies the student exists and has the specified session
+   - Creates a new `Student` object with the updated session
+   - Replaces the original student with the updated one in the model
+   - Updates the filtered person list
+
+#### Activity Diagram
+
+![EditCommandActivityDiagram.png](images/EditCommandActivityDiagram.png)
+
+#### Design Considerations
+
+**Aspect: How edit session executes:**
+
+* **Alternative 1 (current choice):** Create a new Student object with updated sessions
+  * Pros: Immutable objects ensure thread safety and make the code easier to reason about
+  * Cons: Slight performance overhead due to object creation
+
+* **Alternative 2:** Modify the existing Student object
+  * Pros: Better performance as no new object is created
+  * Cons: Mutable state can lead to bugs in a multi-threaded environment
+
+**Aspect: Error handling:**
+
+The command includes comprehensive error handling for cases such as:
+- Invalid index
+- Missing or invalid parameters
+- Non-existent session
+- Attempting to edit a non-student's session
 
 ## Use cases
 
@@ -421,6 +480,23 @@ Use case ends.
   * 1c1. System shows error and keeps list unchanged.
 * 1d. Duplicate session detected by exact same day and time
   * 1b1. System warns about duplicate and aborts creation. Use case ends.
+
+### UC11 - Edit a student's session
+**Goal**: Edit a student's session to update the classes the student is in.  
+**Precondition**: The student exist.
+**MSS**
+1. Tutor requests to edit a session for a specific student by providing the student's index, old session details (day and time), and new session details (new day and time).
+2. System updates the student's session with the new details.
+3. System displays a success message confirming the session was edited
+   Use case ends.
+
+**Extensions**
+* 1a. The given index is invalid.
+    * 1a1. System shows error and keeps list unchanged. Use case ends.
+* 1b. Validation fails (e.g., invalid day/time)
+  * 1b1. System shows error and usage hint. Resume at step 1.
+* 1c. Editing to a parent contact
+  * 1c1. System shows error and keeps list unchanged.
 
 ### Non-Functional Requirements
 #### Portability
