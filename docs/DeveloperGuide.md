@@ -161,6 +161,12 @@ The following activity diagram summarizes what happens when a user executes a re
 
 ![RemarkActivityDiagram](images/RemarkActivityDiagram.png)
 
+### Add Session feature
+
+The following activity diagram summarizes what happens when a user executes an addsession command:
+
+![AddSessionActivityDiagram](images/AddSessionActivityDiagram.png)
+
 
 ### \[Proposed\] Undo/redo feature
 

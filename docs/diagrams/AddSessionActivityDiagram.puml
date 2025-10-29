@@ -1,0 +1,29 @@
+AddSessionActivityDiagram.puml@startuml
+skin rose
+skinparam ActivityFontSize 15
+skinparam ArrowFontSize 12
+
+start
+:User executes "addsession" command;
+
+if () then ([Person index is valid])
+    :Retrieve Person from AddressBook;
+    if () then ([Retrieved person is a student])
+        if () then ([session is valid])
+        :Update Person with new session;
+        :Save updated AddressBook to state list;
+        :Display success message;
+        else ([else])
+            :Display appropriate error message;
+            endif
+        else ([else])
+            :Display "Not a student" error message;
+    endif
+
+else ([else])
+    :Display "Invalid person index" error;
+endif
+
+stop
+@enduml
+
