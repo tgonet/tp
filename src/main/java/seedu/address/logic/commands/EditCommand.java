@@ -1,6 +1,8 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.Messages.MESSAGE_NO_PARENT_FOR_PARENT;
+import static seedu.address.logic.Messages.MESSAGE_NO_TAGS_FOR_PARENT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
@@ -105,26 +107,46 @@ public class EditCommand extends Command {
         }
 
         Person personToEdit = lastShownList.get(index.getZeroBased());
+
+        // Validate using editPersonDescriptor, if we use editedPerson some data might be lost after parsing
+        validateRoleInputs(personToEdit, editPersonDescriptor, model);
+
         Person editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);
 
         if (!personToEdit.isSamePerson(editedPerson) && model.hasPerson(editedPerson)) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
         }
 
-        // If updating parent, check if that new parent exists
-        if (personToEdit instanceof Student student) {
-            Student editedStudent = (Student) editedPerson;
-            // Check if parent names are different
-            if (student.getParentName() != null
-                    && !student.getParentName().equals(editedStudent.getParentName())
-                    && !model.hasPerson(new Parent(editedStudent.getParentName()))) {
-                throw new CommandException(MESSAGE_INVALID_PARENT);
-            }
-        }
-
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson)));
+    }
+
+    private void validateRoleInputs(Person personToEdit, EditPersonDescriptor editPersonDescriptor,
+                                    Model model) throws CommandException {
+        // Unable to do role based validation in the Parser due to
+        // being unable to check the role of the person we are editing.
+        // So we shall do it here instead.
+        if (personToEdit instanceof Parent parent) {
+            if (editPersonDescriptor.getParentName().isPresent()) {
+                throw new CommandException(MESSAGE_NO_PARENT_FOR_PARENT);
+            }
+            if (editPersonDescriptor.getTags().isPresent()) {
+                throw new CommandException(MESSAGE_NO_TAGS_FOR_PARENT);
+            }
+        }
+
+        if (personToEdit instanceof Student student) {
+            // Check if student already has parent name
+            // and if existing parent name is diff from new one
+            // and if new parent exists
+            if (student.getParentName() != null
+                    && editPersonDescriptor.getParentName().isPresent()
+                    && !student.getParentName().equals(editPersonDescriptor.getParentName().get())
+                    && !model.hasPerson(new Parent(editPersonDescriptor.getParentName().get()))) {
+                throw new CommandException(MESSAGE_INVALID_PARENT);
+            }
+        }
     }
 
     @Override

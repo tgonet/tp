@@ -86,6 +86,7 @@ Format: `add n/NAME p/PHONE_NUMBER a/ADDRESS r/ROLE [par/PARENT_NAME] [t/TAG]…
 * You may specify a parent for a student using the `par/` prefix.
   * The specified parent **must already exist** in the address book.
   * Only students can have a `par/` field — parents cannot have one.
+  * `par/` field is not case-sensitive
 
 Examples:
 * `add n/John Doe p/98765432 a/902 East Coast Parkway, #01-26, Singapore r/parent`
@@ -107,9 +108,11 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]…`
 
 * Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
+* Role **CANNOT** be updated.
 * Existing values will be updated to the input values.
-* When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
-* You can remove all the person’s tags by typing `t/` without specifying any tags after it.
+* When editing tags, the existing tags of the student will be removed i.e adding of tags is not cumulative.
+  * You can remove all the student’s tags by typing `t/` without specifying any tags after it.
+  * Only students can have tags; specifying `t/` for a parent will result in an error.
 * You may specify or change a student’s parent using the `par/` prefix.
   * The specified parent **must already exist** in the address book.
   * Only students can have a parent; specifying `par/` for a parent will result in an error.
