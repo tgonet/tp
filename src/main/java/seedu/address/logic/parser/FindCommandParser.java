@@ -31,7 +31,6 @@ public class FindCommandParser implements Parser<FindCommand> {
 
         String trimmedArgs = args.trim();
 
-        // ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_ROLE, PREFIX_TAG);
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(" " + trimmedArgs, PREFIX_NAME, PREFIX_ROLE);
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_ROLE);
 
@@ -71,10 +70,6 @@ public class FindCommandParser implements Parser<FindCommand> {
         }
 
         RoleContainsKeywordsPredicate rolePredicate = new RoleContainsKeywordsPredicate(role);
-
-        // List<String> tagList = argMultimap.getValue(PREFIX_TAG)
-        //         .map(value -> Arrays.asList(value.split("\\s+")))
-        //         .orElse(Collections.emptyList());
 
         if (trimmedArgs.isEmpty()) {
             throw new ParseException(
