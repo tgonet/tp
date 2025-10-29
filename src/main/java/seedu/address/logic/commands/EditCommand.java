@@ -28,6 +28,8 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Parent;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Remark;
+import seedu.address.model.person.Role;
 import seedu.address.model.person.Session;
 import seedu.address.model.person.Student;
 import seedu.address.model.tag.Tag;
@@ -178,6 +180,8 @@ public class EditCommand extends Command {
         private Name name;
         private Phone phone;
         private Address address;
+        private Role role; // Only used for Testing
+        private Remark remark; // Only used for Testing
         private Set<Tag> tags;
         private Set<Session> sessions;
         private Name parentName;
@@ -193,6 +197,8 @@ public class EditCommand extends Command {
             setName(toCopy.name);
             setPhone(toCopy.phone);
             setAddress(toCopy.address);
+            setRole(toCopy.role);
+            setRemark(toCopy.remark);
             setTags(toCopy.tags);
             setSessions(toCopy.sessions);
             setParentName(toCopy.parentName);
@@ -235,6 +241,22 @@ public class EditCommand extends Command {
 
         public void setParentName(Name parentName) {
             this.parentName = parentName;
+        }
+
+        public Optional<Role> getRole() {
+            return Optional.ofNullable(role);
+        }
+
+        public void setRole(Role role) {
+            this.role = role;
+        }
+
+        public Optional<Remark> getRemark() {
+            return Optional.ofNullable(remark);
+        }
+
+        public void setRemark(Remark remark) {
+            this.remark = remark;
         }
 
         /**
@@ -287,6 +309,8 @@ public class EditCommand extends Command {
                     && Objects.equals(phone, otherEditPersonDescriptor.phone)
                     && Objects.equals(address, otherEditPersonDescriptor.address)
                     && Objects.equals(parentName, otherEditPersonDescriptor.parentName)
+                    && Objects.equals(role, otherEditPersonDescriptor.role)
+                    && Objects.equals(remark, otherEditPersonDescriptor.remark)
                     && Objects.equals(tags, otherEditPersonDescriptor.tags);
         }
 
@@ -296,6 +320,8 @@ public class EditCommand extends Command {
                     .add("name", name)
                     .add("phone", phone)
                     .add("address", address)
+                    .add("role", role)
+                    .add("remark", remark)
                     .add("tags", tags)
                     .add("parent", parentName)
                     .toString();
