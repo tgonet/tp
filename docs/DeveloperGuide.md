@@ -157,13 +157,10 @@ This section describes some noteworthy details on how certain features are imple
 
 ### Remark feature
 
-The following sequence diagram shows how an undo operation goes through the `Logic` component:
+The following activity diagram summarizes what happens when a user executes an add command with a remark:
 
-![RemarkSequenceDiagram](images/RemarkSequenceDiagram-Logic.png)
+![RemarkActivityDiagram](images/RemarkActivityDiagram.png)
 
-Similarly, how an undo operation goes through the `Model` component is shown below:
-
-![RemarkSequenceDiagram](images/RemarkSequenceDiagram-Model.png)
 
 ### \[Proposed\] Undo/redo feature
 
