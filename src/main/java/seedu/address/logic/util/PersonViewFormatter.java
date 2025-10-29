@@ -33,7 +33,7 @@ public final class PersonViewFormatter {
         final String tags;
         final String parent;
         if (p instanceof Student s) {
-            if (s.hasLinkedParent() || s.hasParent()) {
+            if (s.hasParent()) {
                 parent = s.getParentName().toString();
             } else {
                 parent = "-";
