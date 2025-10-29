@@ -37,7 +37,7 @@ public class EditPersonDescriptorBuilder {
         descriptor.setName(person.getName());
         descriptor.setPhone(person.getPhone());
         descriptor.setAddress(person.getAddress());
-        descriptor.setRole(person.getRole());
+//        descriptor.setRole(person.getRole());
         if (person instanceof Student student) {
             descriptor.setTags(student.getTags());
         }
