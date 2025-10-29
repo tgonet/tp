@@ -53,8 +53,6 @@ public class CommandTestUtil {
     public static final String VALID_REMARK_AMY = "Likes Math.";
     public static final String VALID_REMARK_BOB = "Favourite pastime: Teaching";
     public static final String VALID_REMARK_CHARLES = "I love my children.";
-    public static final String VALID_TAG_STUDENT = "student";
-    public static final String VALID_TAG_PARENT = "parent";
     public static final String VALID_DAY = "Mon";
     public static final String VALID_TIME = "12pm-1pm";
     public static final String VALID_DAY_EXTRA = "Tue";
@@ -78,8 +76,6 @@ public class CommandTestUtil {
     public static final String ROLE_DESC_PARENT = " " + PREFIX_ROLE + VALID_ROLE_PARENT;
     public static final String ROLE_DESC_AMY = " " + PREFIX_ROLE + VALID_ROLE_AMY;
     public static final String ROLE_DESC_BOB = " " + PREFIX_ROLE + VALID_ROLE_BOB;
-    public static final String TAG_DESC_STUDENT = " " + PREFIX_TAG + VALID_TAG_STUDENT;
-    public static final String TAG_DESC_PARENT = " " + PREFIX_TAG + VALID_TAG_PARENT;
     public static final String TAG_DESC_SUBJECT = " " + PREFIX_TAG + VALID_TAG_SUBJECT;
     public static final String TAG_DESC_SUBJECT2 = " " + PREFIX_TAG + VALID_TAG_SUBJECT2;
     public static final String DAY_DESC = " " + PREFIX_DAY + VALID_DAY;
