@@ -1,0 +1,46 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant "u:RemarkCommand" as RemarkCommand LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant ":Model" as Model MODEL_COLOR
+end box
+[-> LogicManager : execute(remark)
+activate LogicManager
+
+LogicManager -> AddressBookParser : parseCommand(remark)
+activate AddressBookParser
+
+create RemarkCommand
+AddressBookParser -> RemarkCommand
+activate RemarkCommand
+
+RemarkCommand --> AddressBookParser
+deactivate RemarkCommand
+
+AddressBookParser --> LogicManager : u
+deactivate AddressBookParser
+
+LogicManager -> RemarkCommand : execute()
+activate RemarkCommand
+
+RemarkCommand -> Model : addRemarkCommand()
+activate Model
+
+Model --> RemarkCommand
+deactivate Model
+
+RemarkCommand --> LogicManager : result
+deactivate RemarkCommand
+RemarkCommand -[hidden]-> LogicManager : result
+destroy RemarkCommand
+
+[<--LogicManager
+deactivate LogicManager
+@enduml

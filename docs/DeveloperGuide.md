@@ -155,6 +155,16 @@ Classes used by multiple components are in the `seedu.address.commons` package.
 
 This section describes some noteworthy details on how certain features are implemented.
 
+### Remark feature
+
+The following sequence diagram shows how an undo operation goes through the `Logic` component:
+
+![RemarkSequenceDiagram](images/RemarkSequenceDiagram-Logic.png)
+
+Similarly, how an undo operation goes through the `Model` component is shown below:
+
+![RemarkSequenceDiagram](images/RemarkSequenceDiagram-Model.png)
+
 ### \[Proposed\] Undo/redo feature
 
 #### Proposed Implementation
