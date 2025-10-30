@@ -72,7 +72,7 @@ The **API** of this component is specified in [`Ui.java`](https://github.com/se-
 
 ![Structure of the UI Component](images/UiClassDiagram.png)
 
-The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`, `StatusBarFooter` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class which captures the commonalities between classes that represent parts of the visible GUI.
+The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`, `PersonCountPanel`, `StatusBarFooter` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class which captures the commonalities between classes that represent parts of the visible GUI.
 
 The `UI` component uses the JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the [`MainWindow`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/resources/view/MainWindow.fxml)
 
@@ -155,93 +155,53 @@ Classes used by multiple components are in the `seedu.address.commons` package.
 
 This section describes some noteworthy details on how certain features are implemented.
 
-### \[Proposed\] Undo/redo feature
+### Add Person feature
 
-#### Proposed Implementation
+The following **truncated** activity diagram summarizes what happens when a user executes an add person command:
 
-The proposed undo/redo mechanism is facilitated by `VersionedAddressBook`. It extends `AddressBook` with an undo/redo history, stored internally as an `addressBookStateList` and `currentStatePointer`. Additionally, it implements the following operations:
+![AddPersonTruncatedActivityDiagram](images/AddPersonTruncatedActivityDiagram.png)
 
-* `VersionedAddressBook#commit()` — Saves the current address book state in its history.
-* `VersionedAddressBook#undo()` — Restores the previous address book state from its history.
-* `VersionedAddressBook#redo()` — Restores a previously undone address book state from its history.
+The following activity diagram **fully** summarizes what happens when a user executes an add person command:
 
-These operations are exposed in the `Model` interface as `Model#commitAddressBook()`, `Model#undoAddressBook()` and `Model#redoAddressBook()` respectively.
+![AddPersonActivityDiagram](images/AddPersonActivityDiagram.png)
 
-Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.
+### Edit Person feature
 
-Step 1. The user launches the application for the first time. The `VersionedAddressBook` will be initialized with the initial address book state, and the `currentStatePointer` pointing to that single address book state.
+The following **truncated** activity diagram summarizes what happens when a user executes an edit person command:
 
-![UndoRedoState0](images/UndoRedoState0.png)
+![EditPersonTruncatedActivityDiagram](images/EditPersonTruncatedActivityDiagram.png)
 
-Step 2. The user executes `delete 5` command to delete the 5th person in the address book. The `delete` command calls `Model#commitAddressBook()`, causing the modified state of the address book after the `delete 5` command executes to be saved in the `addressBookStateList`, and the `currentStatePointer` is shifted to the newly inserted address book state.
+The following activity diagram **fully** summarizes what happens when a user executes an edit person command:
 
-![UndoRedoState1](images/UndoRedoState1.png)
+![EditPersonActivityDiagram](images/EditPersonActivityDiagram.png)
 
-Step 3. The user executes `add n/David …​` to add a new person. The `add` command also calls `Model#commitAddressBook()`, causing another modified address book state to be saved into the `addressBookStateList`.
+### Remark feature
 
-![UndoRedoState2](images/UndoRedoState2.png)
+The following activity diagram summarizes what happens when a user executes a remark command:
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If a command fails its execution, it will not call `Model#commitAddressBook()`, so the address book state will not be saved into the `addressBookStateList`.
+![RemarkActivityDiagram](images/RemarkActivityDiagram.png)
 
-</div>
+### Add Session feature
 
-Step 4. The user now decides that adding the person was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undoAddressBook()`, which will shift the `currentStatePointer` once to the left, pointing it to the previous address book state, and restores the address book to that state.
+The following activity diagram summarizes what happens when a user executes an addsession command:
 
-![UndoRedoState3](images/UndoRedoState3.png)
+![AddSessionActivityDiagram](images/AddSessionActivityDiagram.png)
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If the `currentStatePointer` is at index 0, pointing to the initial AddressBook state, then there are no previous AddressBook states to restore. The `undo` command uses `Model#canUndoAddressBook()` to check if this is the case. If so, it will return an error to the user rather
-than attempting to perform the undo.
+### Delete session feature
 
-</div>
+The following activity diagram summarizes what happens when a user executes a delete session command:
 
-The following sequence diagram shows how an undo operation goes through the `Logic` component:
+![DeleteSessionActivityDiagram](images/DeleteSessionActivityDiagram.png)
 
-![UndoSequenceDiagram](images/UndoSequenceDiagram-Logic.png)
+### Edit session
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `UndoCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+The `edit session` command modifies an existing session in the address book. The implementation involves the following steps:
 
-</div>
-
-Similarly, how an undo operation goes through the `Model` component is shown below:
-
-![UndoSequenceDiagram](images/UndoSequenceDiagram-Model.png)
-
-The `redo` command does the opposite — it calls `Model#redoAddressBook()`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores the address book to that state.
-
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If the `currentStatePointer` is at index `addressBookStateList.size() - 1`, pointing to the latest address book state, then there are no undone AddressBook states to restore. The `redo` command uses `Model#canRedoAddressBook()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
-
-</div>
-
-Step 5. The user then decides to execute the command `list`. Commands that do not modify the address book, such as `list`, will usually not call `Model#commitAddressBook()`, `Model#undoAddressBook()` or `Model#redoAddressBook()`. Thus, the `addressBookStateList` remains unchanged.
-
-![UndoRedoState4](images/UndoRedoState4.png)
-
-Step 6. The user executes `clear`, which calls `Model#commitAddressBook()`. Since the `currentStatePointer` is not pointing at the end of the `addressBookStateList`, all address book states after the `currentStatePointer` will be purged. Reason: It no longer makes sense to redo the `add n/David …​` command. This is the behavior that most modern desktop applications follow.
-
-![UndoRedoState5](images/UndoRedoState5.png)
-
-The following activity diagram summarizes what happens when a user executes a new command:
-
-<img src="images/CommitActivityDiagram.png" width="250" />
-
-#### Design considerations:
-
-**Aspect: How undo & redo executes:**
-
-* **Alternative 1 (current choice):** Saves the entire address book.
-    * Pros: Easy to implement.
-    * Cons: May have performance issues in terms of memory usage.
-
-* **Alternative 2:** Individual command knows how to undo/redo by
-  itself.
-    * Pros: Will use less memory (e.g. for `delete`, just save the person being deleted).
-    * Cons: We must ensure that the implementation of each individual command are correct.
-
-_{more aspects and alternatives to be added}_
-
-### \[Proposed\] Data archiving
-
-_{Explain here how the data archiving feature will be implemented}_
+1. **Parsing**: The command is parsed to extract the relevant information such as the index of the student, the day and time of the session, and the new day and time of the session if applicable.
+2. **Validation**: The command is validated to ensure that the index of the student is valid and that the new day and time of the session (if applicable) are valid.
+3. **Execution**: The session is modified in the address book. If the new day and time of the session are applicable, the session is updated with the new day and time. Otherwise, the session is deleted.
+4. **Committing**: The address book state is committed to the `addressBookStateList`. The `currentStatePointer` is not changed as the user is not undoing or redoing any commands.
+5. **Saving the state**: The `addressBookStateList` is saved to disk to persist the state of the address book.
 
 ### ViewSession (day-only)
 
@@ -257,7 +217,6 @@ viewsession: List all sessions on a day; earliest first.
 Parameters: d/DAY
 Example: viewsession d/Tuesday
 ```
-
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -290,21 +249,72 @@ Example: viewsession d/Tuesday
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​                                    | I want to …​                                                  | So that I can…​                                                                |
-| -------- | ------------------------------------------ |---------------------------------------------------------------|--------------------------------------------------------------------------------|
-| `* * *`  | user                                       | add student contact with name, address and phone number       | build my address book                                                          
-| `* * *`  | user                                       | view all contacts                                             | see what is stored  without filtering or sorting                               |
-| `* * *`  | user                                       | delete a contact by index                                     | remove entries that I no longer need                                           |
-| `* * *`  | user                                       | find a person by name                                         | locate details of persons without having to go through the entire list         |
-| `* *`    | tutor                                      | add a parent contact with name, address and phone number      | have another point of contact                                                  |
-| `* *`    | tutor                                      | link a parent contact to the student                          | contact the parent if needed                                                   |
-| `*`      | new tutor | see the system populate the address book with sample students | understand how it works                                                        |
-| `*`      | tutor | filter my contacts according to roles                         | have an easier time searching for a certain individual if needed be
-| `*`      | tutor | see what classes i have on a specific date                    | better prepare for class                                                       |
-| `*`      | tutor | filter students according to subject                          | know which student belongs to which class                                      |
-| `*`      | tutor | leave remark about each student                               | keep track of learning progress and special requests
-| `*`      | tutor | display the student's timeslot in a readable format           | easily plan future timeslots for students                                      |
+| Priority | As a …​   | I want to …​                                                  | So that I can…​                                                        |
+|----------|-----------|---------------------------------------------------------------|------------------------------------------------------------------------|
+| `* * *`  | user      | add student contact with name, address and phone number       | build my address book                                                  |
+| `* * *`  | user      | view all contacts                                             | see what is stored  without filtering or sorting                       |
+| `* * *`  | user      | delete a contact by index                                     | remove entries that I no longer need                                   |
+| `* * *`  | user      | find a person by name                                         | locate details of persons without having to go through the entire list |
+| `* *`    | tutor     | add a parent contact with name, address and phone number      | have another point of contact                                          |
+| `* *`    | tutor     | link a parent contact to the student                          | contact the parent if needed                                           |
+| `*`      | new tutor | see the system populate the address book with sample students | understand how it works                                                |
+| `*`      | tutor     | filter my contacts according to roles                         | have an easier time searching for a certain individual if needed be    |
+| `*`      | tutor     | see what classes i have on a specific date                    | better prepare for class                                               |
+| `*`      | tutor     | filter students according to subject                          | know which student belongs to which class                              |
+| `*`      | tutor     | leave remark about each student                               | keep track of learning progress and special requests                   |
+| `*`      | tutor     | delete tutoring sessions no longer referenced for a student   | keep session records accurate and consistent                           |
+| `*`      | tutor     | display the student's timeslot in a readable format           | easily plan future timeslots for students                              |
 *{More to be added}*
+
+## Edit Session Command
+
+The `editsession` command allows users to modify an existing session's day and/or time for a student in the address book.
+
+### Implementation
+
+The edit session mechanism is facilitated by `EditSessionCommand` and `EditSessionCommandParser`. It extends `Command` and implements the following key operations:
+
+* `EditSessionCommand#execute()` - Executes the command to edit a session
+* `EditSessionCommand#toCopy()` - Creates a new `Person` with the updated session
+* `EditSessionCommandParser#parse()` - Parses the user input and creates a new `EditSessionCommand`
+
+Given below is an example usage scenario and how the edit session mechanism behaves at each step.
+
+#### Example Usage Scenario
+
+1. The user executes `editsession 1 d/Mon ti/12pm-1pm d/Tue ti/1pm-2pm` to change a session from Monday 12pm-1pm to Tuesday 1pm-2pm for the first student in the list.
+2. The `AddressBookParser` identifies the command word `editsession` and creates a new `EditSessionCommandParser`.
+3. The `EditSessionCommandParser` parses the arguments and creates a new `EditSessionCommand` with the provided index, old session details, and new session details.
+4. The `EditSessionCommand` is executed, which:
+   - Retrieves the target student from the filtered person list
+   - Verifies the student exists and has the specified session
+   - Creates a new `Student` object with the updated session
+   - Replaces the original student with the updated one in the model
+   - Updates the filtered person list
+
+#### Activity Diagram
+
+![EditCommandActivityDiagram.png](images/EditCommandActivityDiagram.png)
+
+#### Design Considerations
+
+**Aspect: How edit session executes:**
+
+* **Alternative 1 (current choice):** Create a new Student object with updated sessions
+  * Pros: Immutable objects ensure thread safety and make the code easier to reason about
+  * Cons: Slight performance overhead due to object creation
+
+* **Alternative 2:** Modify the existing Student object
+  * Pros: Better performance as no new object is created
+  * Cons: Mutable state can lead to bugs in a multi-threaded environment
+
+**Aspect: Error handling:**
+
+The command includes comprehensive error handling for cases such as:
+- Invalid index
+- Missing or invalid parameters
+- Non-existent session
+- Attempting to edit a non-student's session
 
 ## Use cases
 
@@ -313,72 +323,90 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 ### UC01 — Add a student contact
 **Goal**: Create a new student entry with name, address, and phone.  
 **Precondition**: Application is running; storage is writable.  
+
 **Main Success Scenario (MSS)**
 1. User enters `add n/NAME a/ADDRESS p/PHONE`.
 2. System validates fields and creates the contact.
 3. System confirms creation and displays the new contact.  
    Use case ends.  
-   **Extensions**
+
+**Extensions**
 * 2a. Validation fails (e.g., invalid name/phone, missing field).
-    * 2a1. System shows error and usage hint. Resume at step 1.
+  * 2a1. System shows error and usage hint. Resume at step 1.
 * 2b. Duplicate contact detected by exact same name and phone.
-    * 2b1. System warns about duplicate and aborts creation. Use case ends.
+  * 2b1. System warns about duplicate and aborts creation.  
+    Use case ends.
 
 ### UC02 — List all contacts
 **Goal**: Show every stored contact without filtering or sorting.  
 **Precondition**: Application is running.  
+
 **MSS**
 1. User enters `list`.
 2. System displays all contacts in index order.  
    Use case ends.  
-   **Extensions**
+
+**Extensions**
 * 2a. Address book is empty.
-    * 2a1. System displays “no contacts” placeholder. Use case ends.
+  * 2a1. System displays “no contacts” placeholder.  
+    Use case ends.
 
 ### UC03 — Find contacts by name/role
 **Goal**: Locate contacts by case-insensitive name matching or role.  
 **Precondition**: At least one contact exists.  
+
 **MSS**
-1. User enters `find n/NAME` or `find r/ROLE`.
+1. User enters `find n/NAME` or `find r/ROLE` or `find n/NAME r/ROLE`.
 2. System filters contacts whose names/role contain all provided keywords.
 3. System displays the filtered list with new indices.  
    Use case ends.  
-   **Extensions**
+
+**Extensions**
 * 2a. No matches found.
-    * 2a1. System shows empty result with guidance to broaden search.
+  * 2a1. System shows empty result with guidance to broaden search.  
+  Use case ends.
 
 ### UC04 — Delete a contact by index
 **Goal**: Remove one contact referenced by the current visible index.  
 **Precondition**: At least one contact is visible (e.g., after `list` or `find`).  
+
 **MSS**
 1. User enters `delete I` where `I` is a 1-based index in the current list.
 2. System deletes the referenced contact.
 3. System confirms deletion and updates the visible list.  
    Use case ends.  
-   **Extensions**
+
+**Extensions**
 * 1a. `I` is not a valid visible index (≤0 or > list size, or non-integer).
-    * 1a1. System shows error and keeps list unchanged. Use case ends.
+  * 1a1. System shows error and keeps list unchanged.  
+    Use case ends.
 * 2a. Underlying data changed between list and delete (rare race).
-    * 2a1. System rejects operation and asks user to refresh (`list`). Use case ends.
+  * 2a1. System rejects operation and asks user to refresh (`list`).  
+    Use case ends.
 
 ### UC05 — [Proposed] Delete multiple contacts by indices
 **Goal**: Remove several contacts in a single command.  
 **Precondition**: Multiple contacts are visible.  
+
 **MSS**
 1. User enters `delete I1, I2, …, Ik` with distinct, valid visible indices.
 2. System validates all indices against the current list snapshot.
 3. System deletes all referenced contacts atomically.
 4. System confirms deletion and updates the visible list.  
    Use case ends.  
-   **Extensions**
+   
+**Extensions**
 * 2a. Any index is invalid or duplicated.
-    * 2a1. System aborts the entire operation, reporting the offending indices. Use case ends.
+  * 2a1. System aborts the entire operation, reporting the offending indices.  
+    Use case ends.
 * 3a. Partial failure due to I/O error.
-    * 3a1. System rolls back and reports failure. Use case ends.
+  * 3a1. System rolls back and reports failure.  
+    Use case ends.
 
 ### UC06 — View help
 **Goal**: Display command summary and usage.  
 **Precondition**: Application is running.  
+
 **MSS**
 1. User enters `help`.
 2. System opens help window/panel with command formats and examples.  
@@ -387,6 +415,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 ### UC07 — Exit the application
 **Goal**: Close the application gracefully.  
 **Precondition**: Application is running.  
+
 **MSS**
 1. User enters `exit` (or clicks the window close button).
 2. System persists preferences, releases resources, and terminates.  
@@ -395,47 +424,100 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 ### UC08 — Add remarks to contact
 **Goal**: Add remarks for each contact to keep track of their learning progress and special requests.  
 **Precondition**: At least one contact exists.  
+
 **MSS**
 1. User enters `remark I rm/REMARK` where `I` is a 1-based index in the current list.
 2. System adds remark to referenced contact.
-3. System confirms addition of remark and updates the list.
-Use case ends.
-
-    **Extensions**
-* 1a. `I` is not a valid visible index (≤0 or > list size, or non-integer).
-    * 1a1. System shows error and keeps list unchanged. Use case ends.
-
-### UC09 — Delete remarks for contact
-**Goal**: Delete remarks for each contact to remove clutter.  
-**Precondition**: At least one contact exists. 
-**MSS**
-1. User enters `remark I` where `I` is a 1-based index in the current list.
-2. System deletes remark (if any) to referenced contact.
-3. System confirms deletion of remark and updates the list.
-   Use case ends.
-
-    **Extensions**
-* 1a. `I` is not a valid visible index (≤0 or > list size, or non-integer).
-    * 1a1. System shows error and keeps list unchanged. Use case ends.
-
-### UC10 — Add session to student
-**Goal**: Add session to update the classes the student is in.  
-**Precondition**: The student exist.
-**MSS**
-1. User enters `find I d/DAY ti/TIME` where `I` is a 1-based index in the current list.
-2. System adds session to referenced student.
-3. System confirms addition of session to student and updates the list.
+3. System confirms addition of remark and updates the list.  
    Use case ends.
 
 **Extensions**
 * 1a. `I` is not a valid visible index (≤0 or > list size, or non-integer).
-    * 1a1. System shows error and keeps list unchanged. Use case ends.
+  * 1a1. System shows error and keeps list unchanged.  
+    Use case ends.
+
+### UC09 — Delete remarks for contact
+**Goal**: Delete remarks for each contact to remove clutter.  
+**Precondition**: At least one contact exists.  
+
+**MSS**
+1. User enters `remark I` where `I` is a 1-based index in the current list.
+2. System deletes remark (if any) to referenced contact.
+3. System confirms deletion of remark and updates the list.  
+   Use case ends.
+
+**Extensions**
+* 1a. `I` is not a valid visible index (≤0 or > list size, or non-integer).
+  * 1a1. System shows error and keeps list unchanged.  
+    Use case ends.
+
+### UC10 — Add session to student
+**Goal**: Add session to update the classes the student is in.  
+**Precondition**: The student exists.  
+
+**MSS**
+1. User enters `addsession I d/DAY ti/TIME` where `I` is a 1-based index in the current list.
+2. System adds session to referenced student.
+3. System confirms addition of session to student and updates the list.  
+   Use case ends.
+
+**Extensions**
+* 1a. `I` is not a valid visible index (≤0 or > list size, or non-integer).
+  * 1a1. System shows error and keeps list unchanged.  
+    Use case ends.
+* 1b. Validation fails (e.g., invalid day/time or both)
+  * 1b1. System shows error and usage hint.  
+    Use case resumes at step 1.
+* 1c. Adding to a parent contact
+  * 1c1. System shows an error message and keeps list unchanged.  
+    Use case ends.
+* 1d. Duplicate session detected by exact same day and time.
+  * 1b1. System warns about duplicate and aborts creation.  
+    Use case ends.
+
+### UC11 — Delete a session for a student
+**Goal**: Delete a tutoring session for a student that is no longer referenced/required.  
+**Precondition**: At least one student exists, and at least one session exists for such student.  
+
+**MSS**
+1. User enters `deletesession I d/DAY ti/TIME` where `I` is a 1-based index in the current list.
+2. System deletes the corresponding session for the student.
+3. System confirms deletion of session  and updates the list.  
+   Use case ends.
+
+**Extensions**
+* 1a. `I` is not a valid visible index (≤0 or > list size, or non-integer).
+  * 1a1. System shows error and keeps list unchanged.  
+    Use case ends.
+* 1b. Validation fails (e.g., invalid day/time or both)
+  * 1b1. System shows error and usage hint.  
+    Use case ends.
+* 1c. User attempts to delete a tutoring session for a parent contact.
+  * 1c1. System shows an error message and keeps list unchanged.  
+    Use case ends.
+* 1d. User attempts to delete a nonexistent tutoring session for a student.
+  * 1d1. System warns about nonexistence and aborts creation.  
+    Use case ends.
+
+### UC12 - Edit a student's session
+**Goal**: Edit a student's session to update the classes the student is in.  
+**Precondition**: The student exists.  
+
+**MSS**
+1. Tutor requests to edit a session for a specific student by providing the student's index, old session details (day and time), and new session details (new day and time).
+2. System updates the student's session with the new details.
+3. System displays a success message confirming the session was edited  
+   Use case ends.
+
+**Extensions**
+* 1a. The given index is invalid.
+    * 1a1. System shows error and keeps list unchanged.  
+      Use case ends.
 * 1b. Validation fails (e.g., invalid day/time)
   * 1b1. System shows error and usage hint. Resume at step 1.
-* 1c. Adding to a parent contact
-  * 1c1. System shows error and keeps list unchanged.
-* 1d. Duplicate session detected by exact same day and time
-  * 1b1. System warns about duplicate and aborts creation. Use case ends.
+* 1c. Editing to a parent contact
+  * 1c1. System shows error and keeps list unchanged.  
+    Use case ends.
 
 ### Non-Functional Requirements
 #### Portability
@@ -495,6 +577,197 @@ testers are expected to do more *exploratory* testing.
 
 1. _{ more test cases …​ }_
 
+### Adding Person
+
+1. **Adding a Parent**
+   - **Prerequisites**: 
+     1. Another Person with these names in the test cases do not already exist inside the address book.
+   1. Test Case - Adding a Parent (Success)
+      <br>`add n/Klaus Tay p/99837264 a/Cruise Centre 1 Maritime Square #02-127, 099253 r/parent`
+      <br>Expected: 
+      - Success Message: "New person added: Klaus Tay; Phone: 99837264; Address: Cruise Centre 1 Maritime Square #02-127, 099253; Role: parent; Remark: ; Children: []"
+      - New person named Klaus Tay added to the contact list, the person should be tagged as a Parent.
+      - New person should appear at the bottom of the contacts list. If person does not appear, run the `list` command to verify the full list of contacts.
+   2. Test Case - Adding a Parent with Tags (Failure)
+      <br>`add n/Bob Lee p/89658345 a/150 SOUTH BRIDGE ROAD 11-04 FOOK HAI BUILDING r/parent t/math`
+      <br>Expected:
+      - Error Message: "Parents are NOT allowed to have tags!"
+      - Invalid person is **not added** to the address book.
+   3. Test Case - Adding a Parent with a Parent (Failure)
+      <br>`add n/Peter Peterson p/92272634 a/123 Lorong 1 Toa Payoh #02-515, 310986 r/parent par/Bob Lee`
+      <br>Expected:
+      - Error Message: "Parents are NOT allowed to have parents!"
+      - Invalid person is **not added** to the address book.
+
+
+2. **Adding a Student** 
+   - **Prerequisites**: 
+     1. Another Person with these names in the test cases do not already exist inside the address book.
+     2. Already completed the previous section on Adding a Parent.
+   1. Test Case - Adding a Student without Tags (Success)
+      <br>`add n/Orion Lee p/98273648 a/1 HarbourFront Walk, Singapore 098585 r/student`
+      <br>Expected:
+      - Success Message: "New person added: Onion Lee; Phone: 98273648; Address: 1 HarbourFront Walk, Singapore 098585; Role: student; Remark: ; Tags: ; Parent: null"
+      - New person named Orion Lee added to the contact list, the person should be tagged as a Student.
+      - New person should appear at the bottom of the contacts list. If person does not appear, run the `list` command to verify the full list of contacts.
+   2. Test Case - Adding a Student with Tags (Success)
+      <br>`add n/Akira Lee p/98278876 a/67 Millenia Walk, Singapore 194585 r/student t/english`
+      <br>Expected:
+      - Success Message: "New person added: Akira Lee; Phone: 98278876; Address: 67 Millenia Walk, Singapore 194585; Role: student; Remark: ; Tags: [english]; Parent: null"
+      - New person named Akira Lee added to the contact list, the person should be tagged as a Student.
+      - New person should appear at the bottom of the contacts list. If person does not appear, run the `list` command to verify the full list of contacts.
+   3. Test Case - Adding a Student with Parent's name (Success)
+      <br>`add n/Ray Lee p/98927376 a/123 Lorong 1 Toa Payoh 02-515 224585 r/student par/Klaus Tay`
+      <br>Expected:
+       - Success Message: "New person added: Ray Lee; Phone: 98927376; Address: 123 Lorong 1 Toa Payoh 02-515 224585; Role: student; Remark: ; Tags: ; Parent: Klaus Tay"
+       - New person named Ray Lee added to the contact list, the person should be tagged as a Student.
+       - New person should appear at the bottom of the contacts list. If person does not appear, run the `list` command to verify the full list of contacts.
+   4. Test Case - Adding a Student with Tags and Parent's name (Success)
+      <br>`add n/Shermaine Lee p/98927376 a/Aljunied Industrial Complex 623 Aljunied Road #02-01 r/student t/science par/Klaus Tay`
+      <br>Expected:
+       - Success Message: "New person added: Shermaine Lee; Phone: 98927376; Address: Aljunied Industrial Complex 623 Aljunied Road #02-01; Role: student; Remark: ; Tags: [science]; Parent: Klaus Tay"
+       - New person named Shermaine Lee added to the contact list, the person should be tagged as a Student.
+       - New person should appear at the bottom of the contacts list. If person does not appear, run the `list` command to verify the full list of contacts.
+   5. Test Case - Adding a Student with a non-existent Parent
+      <br>`add n/Germaine Lee p/98927376 a/334 Aljunied Street Road #02-02 r/student par/Nonexistent Parent`
+      <br>Expected:
+      - Error Message: "This parent does not exist in the address book"
+      - Invalid person is **not added** to the address book.
+   6. Test Case - Adding a Student with an Invalid Parent
+      <br>`add n/Germaine Lee p/98927376 a/334 Aljunied Street Road #02-02 r/student par/3`
+      <br>Expected:
+      - Error Message: "Names should only contain alphabetic characters, spaces, hyphens, apostrophes, and it should not be blank"
+      - Invalid person is **not added** to the address book.
+
+
+3. **Adding a Person**
+   - **Prerequisites**: 
+     1. Another Person with these names in the test cases do not already exist inside the address book.
+     2. Please complete the previous 2 sections on Adding a Student and Adding a Parent.
+   1. Test Case - Adding a Person with an Invalid Role (Failure)
+      <br>`add n/Jane Tan p/91234567 a/21 Choa Chu Kang Ave 4, #05-01 r/teacher`
+      <br>Expected:
+      - Error Message: "Role should only be student or parent"
+      - Invalid person is **not added** to the address book.
+   2. Test Case - Adding a Person with an Invalid Phone Number (Failure)
+      <br>`add n/Lim Boon Kee p/12345 a/19 Orchard Road, #03-04 r/student`
+      <br>Expected:
+       - Error Message: "Phone numbers should only contain numbers, start with 8 or 9 and it should be 8 digits long"
+       - Invalid person is **not added** to the address book.
+   3. Test Case - Adding a Person with an Invalid Name (Failure)
+      <br>`add n/@@@### p/98761234 a/21 Serangoon Avenue 1, #02-17 r/parent`
+      <br>Expected:
+       - Error Message: "Names should only contain alphabetic characters, spaces, hyphens, apostrophes, and it should not be blank"
+       - Invalid person is **not added** to the address book.
+   4. Test Case - Adding a Person with an Invalid Address (Failure)
+      <br>`add n/Amelia Tan p/98127634 a/ r/student`
+      <br>Expected:
+       - Error Message: "Addresses should be between 20 - 100 characters long and cantake any values except for special characters, and it should not be blank"
+       - Invalid person is **not added** to the address book.
+   5. Test Case - Adding a Duplicate Person (Failure)
+      <br>`add n/Klaus Tay p/99837264 a/Cruise Centre 1 Maritime Square #02-127, 099253 r/parent`
+      <br>Expected:
+       - Error Message: "This person already exists in the address book"
+       - Invalid person is **not added** to the address book.
+
+### Editing a Person
+<br>**Prerequisites**:
+- The address book already contains several persons from the “Adding a Person” test cases, including at least one Parent (e.g. Klaus Tay) and one Student (e.g. Akira Lee).
+- Ensure that the person to be edited exists in the displayed list before performing each test case.
+
+1. **Editing a Parent**
+   - Note: **ALL** the test cases in this section **MUST** be performed on a Parent contact or the results cannot be guaranteed.
+   - **Please replace the `<INDEX>` portion of the test case with a valid index of a Parent contact in your copy of the address book before running the test case.**
+   - **Prerequisites**:
+     1. There must be 1 existing Parent contact in the address book.
+   1. Test Case - Editing a Parent to add Tags (Failure)
+      <br>`edit <INDEX> t/science`
+      <br>Expected:
+       - Error Message: "Parents are NOT allowed to have tags!"
+       - The Parent is not updated and details remain unchanged.
+   2. Test Case - Editing a Parent to add a Parent (Failure)
+      <br>`edit <INDEX> par/Bob Lee`
+      <br>Expected:
+      - Error Message: "Parents are NOT allowed to have parents!"
+      - The Parent is not updated and details remain unchanged.
+
+
+2. **Editing a Student**
+   - Note: **ALL** the test cases in this section **MUST** be performed on a Student contact or the results cannot be guaranteed.
+   - **Please replace the `<INDEX>` portion of the test case with a valid index of a Student contact in your copy of the address book before running the test case.**
+   - **Prerequisites**:
+      1. There must be 1 existing Parent contact in the address book.
+      2. There must be 1 existing Student contact in the address book. 
+   1. Test Case - Editing a Student's Parent (Success)
+      - Note: use the name of any existing parent contact in you address book if you do not have a Parent contact in your address book with the name Klaus Tay.
+      <br>`edit <INDEX> par/Klaus Tay`
+      <br>Expected:
+      - Sample Success Message: "Edited Person: Tom Jones; Phone: 90001111; Address: 2 Keppel Road #01-05 HarbourFront, Singapore 098635; Role: student; Remark: ; Tags: [math]; Parent: Klaus Tay"
+      - The Student's Parent is updated to Klaus Tay (or whatever Parent's name you put), who already exists in the address book.
+   2. Test Case - Editing a Student's Tags (Success)
+      <br>`edit <INDEX> t/math t/science`
+      <br>Expected:
+      - Sample Success Message: "Edited Person: Tom Jones; Phone: 90001111; Address: 2 Keppel Road #01-05 HarbourFront, Singapore 098635; Role: student; Remark: ; Tags: [science][math]; Parent: Klaus Tay"
+      - The Student's Tags are updated to math and science replacing any existing Tags.
+   3. Test Case - Clearing a Student's Tags (Success)
+      <br>`edit <INDEX> t/`
+      <br>Expected:
+      - Sample Success Message: "Edited Person: Tom Jones; Phone: 90001111; Address: 2 Keppel Road #01-05 HarbourFront, Singapore 098635; Role: student; Remark: ; Tags: ; Parent: Klaus Tay"
+      - All existing Tags for the Student are removed.
+   4. Test Case - Editing a Student's Parent to a non-existent Parent (Failure)
+      <br>`edit <INDEX> par/Nonexistent Parent`
+      <br>Expected:
+      - Error Message: "This parent does not exist in the address book"
+      - The specified Parent does not exist in the address book.
+      - No changes are made.
+
+
+3. **Editing a Person**
+   1. Test Case - Editing a Person's Address (Success)
+      <br>`edit 1 a/2 Keppel Road #01-05 HarbourFront, Singapore 098635`
+      <br>Expected:
+      - Sample Success Message: "Edited Person: Alex Yeoh; Phone: 87438807; Address: 2 Keppel Road #01-05 HarbourFront, Singapore 098635; Role: student; Remark: ; Tags: [math]; Parent: null"
+      - Person's address is updated to the new address.
+      - All other details remain unchanged.
+   2. Test Case - Editing a Person's Phone (Success)
+      <br>`edit 1 p/90001111`
+      <br>Expected:
+       - Sample Success Message: "Edited Person: Alex Yeoh; Phone: 90001111; Address: 2 Keppel Road #01-05 HarbourFront, Singapore 098635; Role: student; Remark: ; Tags: [math]; Parent: null"
+       - Person's phone number is updated to the new phone number.
+       - All other details remain unchanged.
+   3. Test Case - Editing a Person's Name (Success)
+      <br>`edit 1 n/Tom Jones`
+      <br>Expected:
+       - Sample Success Message: "Edited Person: Tom Jones; Phone: 90001111; Address: 2 Keppel Road #01-05 HarbourFront, Singapore 098635; Role: student; Remark: ; Tags: [math]; Parent: null"
+       - Person's name is updated to the new name.
+       - All other details remain unchanged.
+       - If the contact updated was a Parent, the name change will be reflected in its related Student contacts.
+   4. Test Case - Editing with Invalid Index (Failure)
+      <br>`edit 999 p/91234567`
+      <br>Expected:
+      - Error Message: "The person index provided is invalid"
+      - No changes are made because the specified index is out of range.
+   5. Test Case - Editing with NO fields provided (Failure)
+      <br>`edit 1`
+      <br>Expected:
+      - Error Message: "At least one field to edit must be provided."
+      - No changes are made because the specified index is out of range.
+   6. Test Case - Editing with Invalid Phone number (Failure)
+      <br>`edit 2 p/12`
+      <br>Expected:
+      - Error Message: "Phone numbers should only contain numbers, start with 8 or 9 and it should be 8 digits long"
+      - No changes are made because the Invalid Phone number is rejected.
+   7. Test Case - Editing with Invalid Name (Failure)
+      <br>`edit 2 n/$$$###`
+      <br>Expected:
+      - Error Message: "Names should only contain alphabetic characters, spaces, hyphens, apostrophes, and it should not be blank"
+      - No changes are made because the Invalid Name is rejected.
+   8. Test Case - Editing with Invalid Address (Failure)
+      <br>`edit 2 a/`
+      <br>Expected:
+      - Error Message: "Addresses should be between 20 - 100 characters long and can take any values except for special characters, and it should not be blank"
+      - No changes are made because the Invalid Address is rejected.
+
 ### Leaving a remark
 
 1. Leaving a remark on a student/parent in the list
@@ -533,14 +806,6 @@ testers are expected to do more *exploratory* testing.
 
 1. _{ more test cases …​ }_
 
-### Saving data
-
-1. Dealing with missing/corrupted data files
-
-    1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
-
-1. _{ more test cases …​ }_
-
 ### Add session to a student
 
 1. Adding a session to a student while the contacts are being shown
@@ -558,4 +823,40 @@ testers are expected to do more *exploratory* testing.
 
 1. _{ more test cases …​ }_
 
+### Delete session for a student
 
+1. Delete a session to a student while the contacts are being shown
+
+   1. Prerequisites: The list is not empty and contains at least 1 student contact. Additionally, such student has only one tutoring session on Monday 2pm-4pm.
+
+   1. Test case: `deletesession 1 d/Mon ti/2pm-4pm`<br>
+      Expected: First contact (a student)'s tutoring session on Monday 2pm-4pm. UI shows confirmation of deletion.
+
+   1. Test case: `deletesession 1 d/Mons ti/2pm-4pm` (invalid day format)<br>
+      Expected: No deletion occurs. Valid inputs for day formats shown in the status message.
+
+   1. Test case: `deletesession 1 d/Mon ti/1400-1600` (invalid time format)<br>
+      Expected: No deletion occurs. Valid inputs for time formats shown in the status message.
+
+   1. Test case: `deletesession 1 d/Mon ti/2pm-5pm` (nonexistent session)<br>
+      Expected: No deletion occurs. Status message notes that such a session is non-existent.
+
+   1. Other incorrect delete commands to try: `deletesession`, `deletesession x d/Mon ti/1pm-3pm` (where x is larger than the list size), `deletesession 1 d/Mon ti/3pm-1pm`<br>
+      Expected: No deletion occurs. Status message notes corresponding errors.
+
+2. Delete a session to a parent while the contacts are being shown
+
+   1. Prerequisites: The list is not empty and contains at least 1 parent contact.
+
+   1. Test case: `deletesession 2 d/Mon ti/2pm-4pm` (2nd contact is a parent)<br>
+     Expected: No deletion occurs. Status message notes that such command is only for students.
+
+1. _{ more test cases …​ }_
+
+### Saving data
+
+1. Dealing with missing/corrupted data files
+
+    1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
+
+1. _{ more test cases …​ }_

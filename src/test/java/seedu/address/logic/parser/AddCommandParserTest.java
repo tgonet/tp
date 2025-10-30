@@ -1,6 +1,8 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.Messages.MESSAGE_NO_PARENT_FOR_PARENT;
+import static seedu.address.logic.Messages.MESSAGE_NO_TAGS_FOR_PARENT;
 import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_ADDRESS_DESC;
@@ -10,12 +12,14 @@ import static seedu.address.logic.commands.CommandTestUtil.INVALID_ROLE_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_TAG_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.PARENT_DESC_CHARLES;
 import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.PREAMBLE_NON_EMPTY;
 import static seedu.address.logic.commands.CommandTestUtil.PREAMBLE_WHITESPACE;
 import static seedu.address.logic.commands.CommandTestUtil.ROLE_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.ROLE_DESC_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.ROLE_DESC_PARENT;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_SUBJECT;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_SUBJECT2;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
@@ -32,6 +36,7 @@ import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailur
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static seedu.address.testutil.TypicalPersons.AMY;
 import static seedu.address.testutil.TypicalPersons.BOB;
+import static seedu.address.testutil.TypicalPersons.CHARLES;
 
 import org.junit.jupiter.api.Test;
 
@@ -41,6 +46,7 @@ import seedu.address.model.person.Address;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Role;
 import seedu.address.model.tag.Tag;
 import seedu.address.testutil.StudentBuilder;
 
@@ -138,6 +144,14 @@ public class AddCommandParserTest {
     }
 
     @Test
+    public void parse_parentNameProvidedForStudent_success() {
+        Person expectedPerson = new StudentBuilder(AMY).withParentName(CHARLES.getName().fullName).build();
+        assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + ADDRESS_DESC_AMY
+                        + ROLE_DESC_AMY + PARENT_DESC_CHARLES,
+                new AddCommand(expectedPerson));
+    }
+
+    @Test
     public void parse_compulsoryFieldMissing_failure() {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE);
 
@@ -179,7 +193,11 @@ public class AddCommandParserTest {
 
         // invalid tag
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + ADDRESS_DESC_BOB
-                + ROLE_DESC_BOB + INVALID_TAG_DESC + VALID_TAG_SUBJECT, Tag.MESSAGE_CONSTRAINTS);
+                + ROLE_DESC_BOB + INVALID_TAG_DESC + TAG_DESC_SUBJECT, Tag.MESSAGE_CONSTRAINTS);
+
+        // invalid role
+        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + ADDRESS_DESC_BOB
+                + INVALID_ROLE_DESC + TAG_DESC_SUBJECT, Role.MESSAGE_CONSTRAINTS);
 
         // two invalid values, only first invalid value reported
         assertParseFailure(parser, INVALID_NAME_DESC + PHONE_DESC_BOB + INVALID_ADDRESS_DESC + ROLE_DESC_BOB ,
@@ -189,5 +207,21 @@ public class AddCommandParserTest {
         assertParseFailure(parser, PREAMBLE_NON_EMPTY + NAME_DESC_BOB + PHONE_DESC_BOB
                 + ADDRESS_DESC_BOB + ROLE_DESC_BOB + TAG_DESC_SUBJECT + TAG_DESC_SUBJECT2,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_tagsOnParent_failure() {
+        // whitespace only preamble
+        assertParseFailure(parser, PREAMBLE_WHITESPACE + NAME_DESC_BOB + PHONE_DESC_BOB
+                + ADDRESS_DESC_BOB + ROLE_DESC_PARENT + TAG_DESC_SUBJECT,
+                String.format(MESSAGE_NO_TAGS_FOR_PARENT, AddCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_parentOnParent_failure() {
+        // whitespace only preamble
+        assertParseFailure(parser, PREAMBLE_WHITESPACE + NAME_DESC_BOB + PHONE_DESC_BOB
+                        + ADDRESS_DESC_BOB + ROLE_DESC_PARENT + PARENT_DESC_CHARLES,
+                String.format(MESSAGE_NO_PARENT_FOR_PARENT, AddCommand.MESSAGE_USAGE));
     }
 }

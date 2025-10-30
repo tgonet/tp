@@ -39,6 +39,7 @@ public class AddSessionCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "New session added for %1$s";
     public static final String MESSAGE_DUPLICATE_SESSION = "This session already exists for the person";
+    public static final String MESSAGE_OVERLAPPING_SESSION = "This session overlaps with another existing session.";
 
     private Index index;
     private final Day day;
@@ -77,9 +78,6 @@ public class AddSessionCommand extends Command {
 
         Person personToEdit = lastShownList.get(index.getZeroBased());
         if (personToEdit instanceof Student student) {
-            if (student.hasSession(new Session(day, time))) {
-                throw new CommandException(MESSAGE_DUPLICATE_SESSION);
-            }
             Person personUpdated = toCopy((Student) personToEdit, day, time);
             model.setPerson(personToEdit, personUpdated);
             model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
@@ -108,6 +106,13 @@ public class AddSessionCommand extends Command {
         Set<Session> updatedSessions = new HashSet<>(personToEdit.getSessions());
         if (updatedSessions.contains(newSession)) {
             throw new CommandException(MESSAGE_DUPLICATE_SESSION);
+        }
+
+        // check for duplicate sessions
+        for (Session existingSession : personToEdit.getSessions()) {
+            if (existingSession.isOverlap(newSession)) {
+                throw new CommandException(MESSAGE_OVERLAPPING_SESSION);
+            }
         }
         updatedSessions.add(newSession);
 
