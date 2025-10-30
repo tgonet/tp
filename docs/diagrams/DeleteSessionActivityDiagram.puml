@@ -11,26 +11,22 @@ if () then ([Person index given is a positive integer])
                 if () then ([Session given exists])
                     :Create new student with session deleted;
                     :Update contact list with new student created;
-                    stop
+                    :Notes user that session has been deleted for the student;
                 else ([else])
                     :Show error message that notes session nonexistence;
-                    stop
                 endif
             else ([else])
                 :Show error message that notes such command is only for students;
-                stop
             endif
         else ([else])
             :Show error message that notes index provided is invalid;
-            stop
         endif
     else ([else])
         :Show error message that notes invalid formatting of day/time;
-        stop
     endif
 else ([else])
     :Show "Invalid command format" error message;
-    stop
 endif
+stop
 
 @enduml
