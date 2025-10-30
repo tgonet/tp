@@ -221,6 +221,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `*`      | tutor     | see what classes i have on a specific date                    | better prepare for class                                               |
 | `*`      | tutor     | filter students according to subject                          | know which student belongs to which class                              |
 | `*`      | tutor     | leave remark about each student                               | keep track of learning progress and special requests                   |
+| `*`      | tutor     | delete tutoring sessions no longer referenced for a student   | keep session records accurate and consistent                           |
 | `*`      | tutor     | display the student's timeslot in a readable format           | easily plan future timeslots for students                              |
 *{More to be added}*
 
