@@ -19,7 +19,7 @@ public class ViewSessionCommandParser implements Parser<ViewSessionCommand> {
         ArgumentMultimap mm = ArgumentTokenizer.tokenize(args, PREFIX_DAY);
 
         if (!mm.getValue(PREFIX_DAY).isPresent() || !mm.getPreamble().isEmpty()) {
-            throw new ParseException("invalid command format. " + ViewSessionCommand.MESSAGE_USAGE);
+            throw new ParseException("Invalid command format!\n" + ViewSessionCommand.MESSAGE_USAGE);
         }
 
         DayOfWeek day = parseDay(mm.getValue(PREFIX_DAY).get().trim());
