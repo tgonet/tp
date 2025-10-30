@@ -283,7 +283,6 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `*`      | tutor     | leave remark about each student                               | keep track of learning progress and special requests                   |
 | `*`      | tutor     | delete tutoring sessions no longer referenced for a student   | keep session records accurate and consistent                           |
 | `*`      | tutor     | display the student's timeslot in a readable format           | easily plan future timeslots for students                              |
-*{More to be added}*
 
 ## Edit Session Command
 
