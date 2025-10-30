@@ -1,0 +1,21 @@
+@startuml
+skin rose
+skinparam ActivityFontSize 15
+skinparam ArrowFontSize 12
+
+start
+:User executes "add" command;
+
+if () then ([Role is "student"])
+    :Create new Student with tags (if any) and parent (if provided);
+    :Add Student to AddressBook;
+else ([Role is "parent"])
+    :Create new Parent;
+    :Add Parent to AddressBook;
+endif
+
+:Save updated AddressBook to state list;
+:Display success message;
+
+stop
+@enduml

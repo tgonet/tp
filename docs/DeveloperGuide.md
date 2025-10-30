@@ -155,6 +155,26 @@ Classes used by multiple components are in the `seedu.address.commons` package.
 
 This section describes some noteworthy details on how certain features are implemented.
 
+### Add Person feature
+
+The following **truncated** activity diagram summarizes what happens when a user executes a add person command:
+
+![AddPersonTruncatedActivityDiagram](images/AddPersonTruncatedActivityDiagram.png)
+
+The following activity diagram **fully** summarizes what happens when a user executes a add person command:
+
+![AddPersonActivityDiagram](images/AddPersonActivityDiagram.png)
+
+### Edit Person feature
+
+The following **truncated** activity diagram summarizes what happens when a user executes a add person command:
+
+![EditPersonTruncatedActivityDiagram](images/EditPersonTruncatedActivityDiagram.png)
+
+The following activity diagram **fully** summarizes what happens when a user executes a add person command:
+
+![EditPersonActivityDiagram](images/EditPersonActivityDiagram.png)
+
 ### Remark feature
 
 The following activity diagram summarizes what happens when a user executes a remark command:
