@@ -15,11 +15,11 @@ EduConnect is a desktop application that **helps tutors manage contact informati
 1. Ensure you have Java `17` or above installed in your Computer.<br>
    **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
 
-1. Download the latest `.jar` file from [here](https://github.com/se-edu/addressbook-level3/releases).
+1. Download the latest `.jar` file from [here](https://github.com/AY2526S1-CS2103-F11-1/tp/releases).
 
-1. Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
+1. Copy the file to the folder you want to use as the _home folder_ for your EduConnect.
 
-1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar addressbook.jar` command to run the application.<br>
+1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar educonnect.jar` command to run the application.<br>
    A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
    ![Ui](images/Ui.png)
 
@@ -199,7 +199,7 @@ Format: `addsession INDEX d/DAY ti/TIME`
 * The start time **must not be greater than** the end time.
 * The session to be added **must not overlap** another session for this particular student.
 * The result is displayed in the app as a list.
-  ![addsession.png](images/viewSession.png)
+  ![addsession.png](images/addSession.png)
 
 Examples:
 * `addsession 1 d/Mon ti/3pm-5pm`
