@@ -266,23 +266,26 @@ Example: viewsession d/Tuesday
 
 ### User stories
 
-Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
+**Priorities:**
+- High (must have): `* * *`
+- Medium (nice to have): `* *`
+- Low (unlikely to have): `*`
 
-| Priority | As a …​   | I want to …​                                                  | So that I can…​                                                        |
-|----------|-----------|---------------------------------------------------------------|------------------------------------------------------------------------|
-| `* * *`  | user      | add student contact with name, address and phone number       | build my address book                                                  |
-| `* * *`  | user      | view all contacts                                             | see what is stored  without filtering or sorting                       |
-| `* * *`  | user      | delete a contact by index                                     | remove entries that I no longer need                                   |
-| `* * *`  | user      | find a person by name                                         | locate details of persons without having to go through the entire list |
-| `* *`    | tutor     | add a parent contact with name, address and phone number      | have another point of contact                                          |
-| `* *`    | tutor     | link a parent contact to the student                          | contact the parent if needed                                           |
-| `*`      | new tutor | see the system populate the address book with sample students | understand how it works                                                |
-| `*`      | tutor     | filter my contacts according to roles                         | have an easier time searching for a certain individual if needed be    |
-| `*`      | tutor     | see what classes i have on a specific date                    | better prepare for class                                               |
-| `*`      | tutor     | filter students according to subject                          | know which student belongs to which class                              |
-| `*`      | tutor     | leave remark about each student                               | keep track of learning progress and special requests                   |
-| `*`      | tutor     | delete tutoring sessions no longer referenced for a student   | keep session records accurate and consistent                           |
-| `*`      | tutor     | display the student's timeslot in a readable format           | easily plan future timeslots for students                              |
+| Priority | As a...   | I want to...                                                  | So that I can...                                                        |
+|-----------|------------|--------------------------------------------------------------|-------------------------------------------------------------------------|
+| `* * *`   | user       | add student contact with name, address and phone number      | build my address book                                                   |
+| `* * *`   | user       | view all contacts                                            | see what is stored without filtering or sorting                         |
+| `* * *`   | user       | delete a contact by index                                    | remove entries that I no longer need                                    |
+| `* * *`   | user       | find a person by name                                        | locate details of persons without having to go through the entire list  |
+| `* *`     | tutor      | add a parent contact with name, address and phone number     | have another point of contact                                           |
+| `* *`     | tutor      | link a parent contact to the student                         | contact the parent if needed                                            |
+| `*`       | new tutor  | see the system populate the address book with sample students| understand how it works                                                 |
+| `*`       | tutor      | filter my contacts according to roles                        | have an easier time searching for a certain individual if needed        |
+| `*`       | tutor      | see what classes I have on a specific date                   | better prepare for class                                                |
+| `*`       | tutor      | filter students according to subject                         | know which student belongs to which class                               |
+| `*`       | tutor      | leave remark about each student                              | keep track of learning progress and special requests                    |
+| `*`       | tutor      | delete tutoring sessions no longer referenced for a student  | keep session records accurate and consistent                            |
+| `*`       | tutor      | display the student's timeslot in a readable format          | easily plan future timeslots for students                               |
 
 ## Edit Session Command
 
