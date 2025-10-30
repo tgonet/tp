@@ -224,15 +224,29 @@ Examples:
 
 ### View session: `viewsession`
 
-View the session(s) of the specified day and time from the address book.
+View the session(s) of the specified day from the address book. 
 
-Format: `viewsession DAY-[TIME]`
+The sessions will be returned in order, sorted by earliest start date.
 
-* The result is displayed in the app as a list.
-  ![viewSession.png](images/viewSession.png)
+If multiple sessions have the same start time, they will be further sorted 
+by lexicographic ordering of the contact name. 
+
+Format: `viewsession d/DAY, where DAY is the day of the week`
 
 Examples:
-* `viewsession Mon-[9am-5pm]`
+* `viewsession d/Mon `
+* `viewsession d/Monday `
+* `viewsession d/Tue `
+* `viewsession d/Tues `
+* `viewsession d/Tuesday `
+
+
+The result is displayed in the app as a list.
+
+  ![viewSessionOutput.png](images/viewSessionOutput.png)
+
+Examples:
+* `viewsession d/Mon`
 
 ### Editing a session : `editsession`
 
@@ -308,8 +322,8 @@ Action | Format, Examples
 **Remark** | `remark INDEX rm/REMARK` <br> e.g., `remark 1 rm/hardworking`
 **View** | `view INDEX` <br> e.g., `view 2`
 **Add Session** | `addsession INDEX d/DAY ti/TIME` <br> e.g., `addsession 2 d/Mon ti/9am-5pm`
-**Delete Session** | `deletesession INDEX d/DAY ti/TIME` <br> e.g., `deletesession 2 d/Tue ti/9am-5pm`
-**View Session** | `viewsession DAY-[TIME]` <br> e.g., `viewsession Mon-[9am-5pm]`
-**Edit Session** | `editsession INDEX d/DAY ti/TIME nd/DAY nti/TIME` <br> e.g., `editsession 2 d/Thur ti/9:30AM-11:45AM nd/Mon nti/9.30am-11.45am`
+**Delete Session** | `deletesession INDEX d/DAY ti/TIME` <br> e.g., `deletesession 2 ti/9am-5pm`
+**View Session** | `viewsession d/DAY` <br> e.g., `viewsession d/Mon`
+**Edit Session** | `editsession INDEX d/DAY ti/TIME nd/DAY nti/TIME` <br> e.g., `editsession 2 d/Thurs ti/9:30AM-11:45AM nd/Mon nti/9.30am-11.45am`
 **List** | `list`
 **Help** | `help`

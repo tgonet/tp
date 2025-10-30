@@ -193,6 +193,24 @@ The following activity diagram summarizes what happens when a user executes a de
 
 ![DeleteSessionActivityDiagram](images/DeleteSessionActivityDiagram.png)
 
+### ViewSession (day-only)
+
+**Intent**  
+List all students who have at least one session on a specified weekday, ordered by the earliest start time on that day. Supports both legacy single `SessionSlot` and the newer multi-session `Student.sessions`.
+
+---
+
+**Command format**
+
+```text
+viewsession: List all sessions on a day; earliest first.
+Parameters: d/DAY
+Example: viewsession d/Tuesday
+```
+![ViewSessionClassDiagram](images/ViewSessionClassDiagram.png)
+
+![ViewSessionActivityDiagram](images/ViewSessionActivityDiagram.png)
+
 ### Edit session
 
 The `edit session` command modifies an existing session in the address book. The implementation involves the following steps:

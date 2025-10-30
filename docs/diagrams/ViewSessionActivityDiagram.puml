@@ -5,30 +5,16 @@ start
 :User enters command (e.g., "viewsession d/Tuesday");
 :Logic.execute(userInput);
 
-if (BASIC_COMMAND_FORMAT matches) then (yes)
-  :AddressBookParser extracts commandWord+arguments;
-  if (commandWord is viewSession/viewsession//alias) then (yes)
-    :ViewSessionCommandParser.parse(arguments);
-    if (args valid: d/DAY present & no preamble) then (yes)
-      :parseDay -> DayOfWeek;
-      :new ViewSessionCommand(day);
-      :LogicManager.execute(cmd);
-      :cmd.hasSessionOnDay(person) predicate;
-      :Model.updateFilteredPersonList(predicate);
-      :Model.sortFilteredPersonList(byEarliestStartOnDay);
-      :UI observes list update and refreshes view;
-      :Return CommandResult("showing sessions on <DAY>");
-      stop
-    else (no)
-      :throw ParseException (usage text);
-      stop
-    endif
-  else (no)
-    :delegate to other command or throw unknown command;
-    stop
-  endif
-else (no)
-  :throw ParseException (invalid basic format);
-  stop
+if (valid BASIC_COMMAND_FORMAT?) then ([BASIC_COMMAND_FORMAT matches])
+  :Parse day token;
+  :Construct ViewSessionCommand(day);
+  :Execute command;
+  :Collect sessions on given day;
+  :Sort sessions by start time;
+  :Render list;
+else ([else])
+  :Show "Invalid command format!" with usage hint;
 endif
+
+stop
 @enduml
