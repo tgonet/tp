@@ -78,9 +78,6 @@ public class AddSessionCommand extends Command {
 
         Person personToEdit = lastShownList.get(index.getZeroBased());
         if (personToEdit instanceof Student student) {
-            if (student.hasSession(new Session(day, time))) {
-                throw new CommandException(MESSAGE_DUPLICATE_SESSION);
-            }
             Person personUpdated = toCopy((Student) personToEdit, day, time);
             model.setPerson(personToEdit, personUpdated);
             model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);

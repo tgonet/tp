@@ -1,0 +1,38 @@
+AddSessionActivityDiagram.puml@startuml
+skin rose
+skinparam ActivityFontSize 15
+skinparam ArrowFontSize 12
+
+start
+:User executes "addsession" command;
+
+if () then ([Day/Time value is valid])
+    if () then ([Person index is valid])
+        :Retrieve Person from AddressBook;
+        if () then ([Retrieved person is a student])
+            if() then ([Session does not exist for this student])
+                if () then ([Not an overlap session])
+                    :Update Person with new session;
+                    :Save updated AddressBook to state list;
+                    :Display success message;
+                else ([else])
+                    :Display "Overlap session" error;
+                    endif
+            else ([else])
+                :Display "Duplicated session" error;
+                endif
+        else ([else])
+            :Display "Not a student" error;
+            endif
+        else ([else])
+            :Display "Invalid person index" error;
+
+    endif
+
+else ([else])
+    :Display invalid Day/Time error message;
+endif
+
+stop
+@enduml
+

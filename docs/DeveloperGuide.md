@@ -181,6 +181,12 @@ The following activity diagram summarizes what happens when a user executes a re
 
 ![RemarkActivityDiagram](images/RemarkActivityDiagram.png)
 
+### Add Session feature
+
+The following activity diagram summarizes what happens when a user executes an addsession command:
+
+![AddSessionActivityDiagram](images/AddSessionActivityDiagram.png)
+
 ### Delete session feature
 
 The following activity diagram summarizes what happens when a user executes a delete session command:

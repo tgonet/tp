@@ -191,11 +191,15 @@ Adds a session of the specified person from the address book.
 
 Format: `addsession INDEX d/DAY ti/TIME`
 
-* Adds a session about the person at the specified `INDEX`.
-* A person can have any number of sessions (including 0).
+* Adds a session about the student at the specified `INDEX`.
+* A student can have any number of sessions (including 0).
 * The index refers to the index number shown in the displayed person list.
 * The index **must be a positive integer** 1, 2, 3, …​
-* The start time must not be greater than the end time
+* The start time **must not be greater than** the end time
+* The session to be added **must not overlap** another session for this particular student.
+
+* The result is displayed in the app as a list.
+  ![addsession.png](images/viewSession.png)
 
 Examples:
 * `addsession 1 d/Mon ti/3pm-5pm`
