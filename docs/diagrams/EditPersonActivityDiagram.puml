@@ -1,0 +1,47 @@
+@startuml
+skin rose
+skinparam ActivityFontSize 15
+skinparam ArrowFontSize 12
+
+start
+:User executes "edit" command;
+
+if () then ([Person index is valid])
+    if () then ([At least one editable field provided])
+        :Retrieve Person from AddressBook;
+        if () then ([Role or Remark field specified])
+            :Display "Role and Remark cannot be edited" error;
+        else ([else])
+            if () then ([Person is a Student])
+                if () then ([Parent name specified])
+                    if () then ([Parent exists in AddressBook])
+                        :Update Student's details (name, phone, address, tags, parent);
+                        :Save updated AddressBook to state list;
+                        :Display success message;
+                    else ([else])
+                        :Display "Specified parent does not exist" error;
+                    endif
+                else ([else])
+                    :Update Student's details (name, phone, address, tags);
+                    :Save updated AddressBook to state list;
+                    :Display success message;
+                endif
+            else ([Person is a Parent])
+                if () then ([Tags or parent specified])
+                    :Display "Parents cannot have tags or parents" error;
+                else ([else])
+                    :Update Parent's details (name, phone, address);
+                    :Save updated AddressBook to state list;
+                    :Display success message;
+                endif
+            endif
+        endif
+    else ([else])
+        :Display "No fields provided to edit" error;
+    endif
+else ([else])
+    :Display "Invalid person index" error;
+endif
+
+stop
+@enduml
