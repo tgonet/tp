@@ -594,8 +594,6 @@ testers are expected to do more *exploratory* testing.
     1. Re-launch the app by double-clicking the jar file.<br>
        Expected: The most recent window size and location is retained.
 
-1. _{ more test cases …​ }_
-
 ### Adding Person
 
 1. **Adding a Parent**
@@ -840,8 +838,6 @@ testers are expected to do more *exploratory* testing.
     1. Other incorrect delete commands to try: `addsession`, `addsession x d/Mons ti/1pm-3pm`, `...` (where x is larger than the list size)<br>
        Expected: Similar to previous.
 
-1. _{ more test cases …​ }_
-
 ### Delete session for a student
 
 1. Delete a session to a student while the contacts are being shown
@@ -869,13 +865,3 @@ testers are expected to do more *exploratory* testing.
 
    1. Test case: `deletesession 2 d/Mon ti/2pm-4pm` (2nd contact is a parent)<br>
      Expected: No deletion occurs. Status message notes that such command is only for students.
-
-1. _{ more test cases …​ }_
-
-### Saving data
-
-1. Dealing with missing/corrupted data files
-
-    1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
-
-1. _{ more test cases …​ }_
