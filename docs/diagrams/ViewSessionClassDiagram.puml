@@ -82,19 +82,18 @@ package "model" {
   }
 }
 
-' Relationships
+' Relationships (fixed: only one inheritance arrow Student -> Person)
 AddressBookParser --> ViewSessionCommandParser : delegates for "viewSession"/aliases
 ViewSessionCommandParser --> ViewSessionCommand : creates
 ViewSessionCommand --> Model : execute()
 Model --> Person : manages filtered list
-Student --|> Person
-Person --> SessionSlot : optional «legacy»
-Student --> Session : contains *
+
+
+' Associations and multiplicities
+Person "1" --> "0..1" SessionSlot : «legacy»
+Person "1" --> "1" Name : has
+Student "1" --> "*" Session : contains
 Session --> Day
 Session --> Time
-SessionSlot --> DayOfWeek
-ViewSessionCommand ..> LocalTime
-ViewSessionCommand ..> java.util.Comparator
-ViewSessionCommand ..> java.util.Optional
 
 @enduml
