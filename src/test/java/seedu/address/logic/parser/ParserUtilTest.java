@@ -1,9 +1,7 @@
 package seedu.address.logic.parser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static seedu.address.logic.parser.ParserUtil.MESSAGE_INVALID_INDEX;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 
@@ -19,6 +17,7 @@ import seedu.address.model.person.Address;
 import seedu.address.model.person.Day;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Remark;
 import seedu.address.model.person.Time;
 import seedu.address.model.tag.Tag;
 
@@ -26,13 +25,17 @@ public class ParserUtilTest {
     private static final String INVALID_NAME = "R@chel";
     private static final String INVALID_PHONE = "+651234";
     private static final String INVALID_ADDRESS = " ";
+    private static final String INVALID_DAY = "Funday";
+    private static final String INVALID_TIME = "25:00-26:00";
     private static final String INVALID_TAG = "#friend";
 
     private static final String VALID_NAME = "Rachel Walker";
-    private static final String VALID_PHONE = "98765432";
+    private static final String VALID_PHONE = "98123456";
     private static final String VALID_ADDRESS = "123 Main Street #0505";
-    private static final String VALID_TAG_1 = "student";
-    private static final String VALID_TAG_2 = "parent";
+    private static final String VALID_DAY = "Mon";
+    private static final String VALID_TIME = "10:00AM-11:00AM";
+    private static final String VALID_TAG_1 = "friend";
+    private static final String VALID_TAG_2 = "neighbor";
 
     private static final String WHITESPACE = " \t\r\n";
 
@@ -43,8 +46,8 @@ public class ParserUtilTest {
 
     @Test
     public void parseIndex_outOfRangeInput_throwsParseException() {
-        assertThrows(ParseException.class, MESSAGE_INVALID_INDEX, ()
-            -> ParserUtil.parseIndex(Long.toString(Integer.MAX_VALUE + 1)));
+        assertThrows(ParseException.class, ParserUtil.MESSAGE_INVALID_INDEX, ()
+                -> ParserUtil.parseIndex(Long.toString(Integer.MAX_VALUE + 1)));
     }
 
     @Test
@@ -126,6 +129,52 @@ public class ParserUtilTest {
     }
 
     @Test
+    public void parseDay_null_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> ParserUtil.parseDay((String) null));
+    }
+
+    @Test
+    public void parseDay_invalidValue_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseDay(INVALID_DAY));
+    }
+
+    @Test
+    public void parseDay_validValueWithoutWhitespace_returnsDay() throws Exception {
+        Day expectedDay = new Day(VALID_DAY);
+        assertEquals(expectedDay, ParserUtil.parseDay(VALID_DAY));
+    }
+
+    @Test
+    public void parseDay_validValueWithWhitespace_returnsTrimmedDay() throws Exception {
+        String dayWithWhitespace = WHITESPACE + VALID_DAY + WHITESPACE;
+        Day expectedDay = new Day(VALID_DAY);
+        assertEquals(expectedDay, ParserUtil.parseDay(dayWithWhitespace));
+    }
+
+    @Test
+    public void parseTime_null_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> ParserUtil.parseTime((String) null));
+    }
+
+    @Test
+    public void parseTime_invalidValue_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseTime(INVALID_TIME));
+    }
+
+    @Test
+    public void parseTime_validValueWithoutWhitespace_returnsTime() throws Exception {
+        Time expectedTime = new Time(VALID_TIME);
+        assertEquals(expectedTime, ParserUtil.parseTime(VALID_TIME));
+    }
+
+    @Test
+    public void parseTime_validValueWithWhitespace_returnsTrimmedTime() throws Exception {
+        String timeWithWhitespace = WHITESPACE + VALID_TIME + WHITESPACE;
+        Time expectedTime = new Time(VALID_TIME);
+        assertEquals(expectedTime, ParserUtil.parseTime(timeWithWhitespace));
+    }
+
+    @Test
     public void parseTag_null_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> ParserUtil.parseTag(null));
     }
@@ -171,45 +220,16 @@ public class ParserUtilTest {
         assertEquals(expectedTagSet, actualTagSet);
     }
 
+
     @Test
-    public void parseTime_validValue_success() throws Exception {
-        assertEquals(new Time("12pm-1pm"), ParserUtil.parseTime("12pm-1pm"));
-        // whitespace trimmed
-        assertEquals(new Time("12pm-1pm"), ParserUtil.parseTime("  12pm-1pm  "));
+    public void parseRemark_validValueWithoutWhitespace_returnsRemark() {
+        String testRemark = "Some remark";
+        assertEquals(new Remark(testRemark), ParserUtil.parseRemark(testRemark));
     }
 
     @Test
-    public void parseTime_invalidValue_throwsParseException() {
-        ParseException e = assertThrows(ParseException.class, () -> ParserUtil.parseTime("25:00"));
-        assertEquals(Time.MESSAGE_CONSTRAINTS, e.getMessage());
-
-        e = assertThrows(ParseException.class, () -> ParserUtil.parseTime(""));
-        assertEquals(Time.MESSAGE_CONSTRAINTS, e.getMessage());
-    }
-
-    @Test
-    public void parseTime_null_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> ParserUtil.parseTime(null));
-    }
-
-    @Test
-    public void parseDay_validValue_success() throws Exception {
-        assertEquals(new Day("Mon"), ParserUtil.parseDay("Mon"));
-        // whitespace trimmed
-        assertEquals(new Day("Mon"), ParserUtil.parseDay("  Mon  "));
-    }
-
-    @Test
-    public void parseDay_invalidValue_throwsParseException() {
-        ParseException e = assertThrows(ParseException.class, () -> ParserUtil.parseDay("Mondayzz"));
-        assertEquals(Day.MESSAGE_CONSTRAINTS, e.getMessage());
-
-        e = assertThrows(ParseException.class, () -> ParserUtil.parseDay(""));
-        assertEquals(Day.MESSAGE_CONSTRAINTS, e.getMessage());
-    }
-
-    @Test
-    public void parseDay_null_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> ParserUtil.parseDay(null));
+    public void parseRemark_validValueWithWhitespace_returnsTrimmedRemark() {
+        String testRemark = "   Some remark with whitespace   ";
+        assertEquals(new Remark("Some remark with whitespace"), ParserUtil.parseRemark(testRemark));
     }
 }

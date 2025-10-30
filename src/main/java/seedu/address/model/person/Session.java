@@ -40,6 +40,16 @@ public class Session {
     }
 
     /**
+     * Returns true if this session overlaps with another session on the same day.
+     */
+    public boolean isOverlap(Session other) {
+        if (!this.day.equals(other.day)) {
+            return false;
+        }
+        return this.time.isOverlap(other.time);
+    }
+
+    /**
      * Returns a string representation of this session.
      * The format is: DAY-[TIME], e.g., "Mon-[3pm-5pm]".
      *

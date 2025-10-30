@@ -66,7 +66,7 @@ public class PersonCard extends UiPart<Region> {
                     });
             student.getSessions().stream()
                     .forEach(s -> {
-                        Label sessionLabel = new Label(s.toString());
+                        Label sessionLabel = new Label(s.toString().toLowerCase());
                         sessionLabel.getStyleClass().add("session-box");
                         // Optional: add specific style based on day
                         sessionLabel.getStyleClass().add(s.getDay().getValue().toLowerCase());
