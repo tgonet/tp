@@ -126,7 +126,7 @@ Examples:
 *  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
 *  `edit 3 n/Alex Yeo par/Keith` Edits the name and parent of the 3rd person to be `Alex Yeo` and their parent to be `Keith`. (Assuming `Keith` is a Parent that already exists in the address book)
 
-### Locating persons by name: `find`
+### Locating persons by name, role or tag: `find`
 
 Finds persons whose information matches/contains given criteria.
 
@@ -160,7 +160,7 @@ Format: `delete INDEX`
 
 Examples:
 * `list` followed by `delete 2` deletes the 2nd person in the address book.
-* `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+* `find n/Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
 
 ### Leaving a remark : `remark`
 
@@ -195,9 +195,9 @@ Format: `addsession INDEX d/DAY ti/TIME`
 * A student can have any number of sessions (including 0).
 * The index refers to the index number shown in the displayed person list.
 * The index **must be a positive integer** 1, 2, 3, …​
-* The start time **must not be greater than** the end time
+* The index referred to **must** be a `Student`.
+* The start time **must not be greater than** the end time.
 * The session to be added **must not overlap** another session for this particular student.
-
 * The result is displayed in the app as a list.
   ![addsession.png](images/viewSession.png)
 
@@ -214,6 +214,9 @@ Format: `deletesession INDEX d/DAY ti/TIME`
 * Deletes a session about the person at the specified `INDEX`.
 * The index refers to the index number shown in the displayed person list.
 * The index **must be a positive integer** 1, 2, 3, …​
+* The index referred to **must** be a `Student`.
+* The start time **must not be greater than** the end time.
+* The session aiming to delete **must already exist** (same start time, end time, and occuring day) for the student in order for the command to succeed.
 
 Examples:
 * `deletesession 1 d/Mon ti/3pm-5pm`
@@ -240,6 +243,7 @@ Format: `editsession INDEX d/DAY ti/TIME nd/DAY nti/TIME`
 * Edits the session of the person at the specified `INDEX`. 
 * The index refers to the index number shown in the displayed person list. 
 * The index **must be a positive integer** 1, 2, 3, …​
+* The index referred to **must** be a `Student`.
 * Existing values will be updated to the input values specified by `nd/` and `nti/`.
 * The start time must not be greater than the end time.
 
@@ -304,7 +308,7 @@ Action | Format, Examples
 **Remark** | `remark INDEX rm/REMARK` <br> e.g., `remark 1 rm/hardworking`
 **View** | `view INDEX` <br> e.g., `view 2`
 **Add Session** | `addsession INDEX d/DAY ti/TIME` <br> e.g., `addsession 2 d/Mon ti/9am-5pm`
-**Delete Session** | `deletesession INDEX d/DAY ti/TIME` <br> e.g., `deletesession 2 ti/9am-5pm`
+**Delete Session** | `deletesession INDEX d/DAY ti/TIME` <br> e.g., `deletesession 2 d/Tue ti/9am-5pm`
 **View Session** | `viewsession DAY-[TIME]` <br> e.g., `viewsession Mon-[9am-5pm]`
 **Edit Session** | `editsession INDEX d/DAY ti/TIME nd/DAY nti/TIME` <br> e.g., `editsession 2 d/Thurs ti/9:30AM-11:45AM nd/Mon nti/9.30am-11.45am`
 **List** | `list`
