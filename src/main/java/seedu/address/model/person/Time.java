@@ -22,6 +22,8 @@ public class Time {
 
 
     private final String value;
+    private final int startTime;
+    private final int endTime;
 
     /**
      * Constructs a {@code Time}.
@@ -32,7 +34,13 @@ public class Time {
     public Time(String time) {
         requireNonNull(time);
         checkArgument(isValidTime(time), MESSAGE_CONSTRAINTS);
+
+        String[] timeParts = time.split("-");
+        int startMinutes = toMinutes(timeParts[0]);
+        int endMinutes = toMinutes(timeParts[1]);
         this.value = time;
+        this.startTime = startMinutes;
+        this.endTime = endMinutes;
     }
 
     /**
@@ -53,16 +61,16 @@ public class Time {
         }
 
         String[] timeParts = test.split("-");
-        return isStartBeforeEnd(timeParts[0], timeParts[1]);
+        int startMinutes = toMinutes(timeParts[0]);
+        int endMinutes = toMinutes(timeParts[1]);
+        return endMinutes > startMinutes;
     }
 
     /**
-     * Returns true if the end time is more than the start time
+     * Returns true if this time overlaps with another time.
      */
-    private static boolean isStartBeforeEnd(String start, String end) {
-        int startTime = toMinutes(start);
-        int endTime = toMinutes(end);
-        return endTime > startTime;
+    public boolean isOverlap(Time other) {
+        return this.startTime < other.endTime && this.endTime > other.startTime;
     }
 
     /**
