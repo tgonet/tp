@@ -785,14 +785,6 @@ testers are expected to do more *exploratory* testing.
 
 1. _{ more test cases …​ }_
 
-### Saving data
-
-1. Dealing with missing/corrupted data files
-
-    1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
-
-1. _{ more test cases …​ }_
-
 ### Add session to a student
 
 1. Adding a session to a student while the contacts are being shown
@@ -837,5 +829,13 @@ testers are expected to do more *exploratory* testing.
 
    1. Test case: `deletesession 2 d/Mon ti/2pm-4pm` (2nd contact is a parent)<br>
      Expected: No deletion occurs. Status message notes that such command is only for students.
+
+1. _{ more test cases …​ }_
+
+### Saving data
+
+1. Dealing with missing/corrupted data files
+
+    1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
 
 1. _{ more test cases …​ }_
