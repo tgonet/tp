@@ -1,0 +1,100 @@
+@startuml
+title ViewSession (day-only) - Class Diagram
+
+skinparam classAttributeIconSize 0
+
+package "logic.parser" {
+  class AddressBookParser {
+    - BASIC_COMMAND_FORMAT : Pattern
+    + parseCommand(userInput : String) : Command
+  }
+
+  interface Parser<T>
+  class ViewSessionCommandParser implements Parser<ViewSessionCommand> {
+    + parse(args : String) : ViewSessionCommand
+    - parseDay(s : String) : DayOfWeek
+  }
+}
+
+package "logic.commands" {
+  abstract class Command {
+    + execute(model : Model) : CommandResult
+  }
+
+  class ViewSessionCommand extends Command {
+    - day : DayOfWeek
+    + ViewSessionCommand(day : DayOfWeek)
+    + execute(model : Model) : CommandResult
+    - hasSessionOnDay(p : Person) : boolean
+    - byEarliestStartOnDay() : Comparator<Person>
+    - earliestStartOnDayOrMax(p : Person) : LocalTime
+    - parseStart(value : String) : Optional<LocalTime>
+    - sameDay(stored : Object, target : DayOfWeek) : boolean
+    - head3(s : String) : String
+    + equals(o : Object) : boolean
+    + toString() : String
+    {static} + COMMAND_WORD : String
+    {static} + COMMAND_WORD_LOWER : String
+    {static} + MESSAGE_USAGE : String
+  }
+
+  class CommandResult {
+    + feedbackToUser : String
+  }
+}
+
+package "model" {
+  interface Model {
+    + updateFilteredPersonList(predicate : java.util.function.Predicate<Person>) : void
+    + sortFilteredPersonList(comparator : java.util.Comparator<Person>) : void
+  }
+
+  class Person {
+    + getName() : Name
+    + getSessionSlot() : Optional<SessionSlot>
+  }
+
+  class Student extends Person {
+    + getSessions() : java.util.Set<Session>
+  }
+
+  class Session {
+    + getDay() : Day
+    + getTime() : Time
+  }
+
+  class SessionSlot {
+    + getDay() : DayOfWeek
+    + getStart() : LocalTime
+    {static} + MAX_TIME : LocalTime
+  }
+
+  class Day {
+    + getValue() : DayOfWeek
+  }
+
+  class Time {
+    + getValue() : String
+  }
+
+  class Name {
+    + fullName : String
+  }
+}
+
+' Relationships
+AddressBookParser --> ViewSessionCommandParser : delegates for "viewSession"/aliases
+ViewSessionCommandParser --> ViewSessionCommand : creates
+ViewSessionCommand --> Model : execute()
+Model --> Person : manages filtered list
+Student --|> Person
+Person --> SessionSlot : optional «legacy»
+Student --> Session : contains *
+Session --> Day
+Session --> Time
+SessionSlot --> DayOfWeek
+ViewSessionCommand ..> LocalTime
+ViewSessionCommand ..> java.util.Comparator
+ViewSessionCommand ..> java.util.Optional
+
+@enduml
