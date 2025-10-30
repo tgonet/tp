@@ -203,7 +203,7 @@ Format: `addsession INDEX d/DAY ti/TIME`
 
 Examples:
 * `addsession 1 d/Mon ti/3pm-5pm`
-* `addsession 1 d/Thurs ti/9:30AM-11:45AM`
+* `addsession 1 d/Thur ti/9:30AM-11:45AM`
 
 ### Delete session: `deletesession`
 
@@ -220,7 +220,7 @@ Format: `deletesession INDEX d/DAY ti/TIME`
 
 Examples:
 * `deletesession 1 d/Mon ti/3pm-5pm`
-* `deletesession 1 d/Thurs ti/9:30AM-11:45AM`
+* `deletesession 1 d/Thur ti/9:30AM-11:45AM`
 
 ### View session: `viewsession`
 
@@ -249,7 +249,7 @@ Format: `editsession INDEX d/DAY ti/TIME nd/DAY nti/TIME`
 
 Examples:
 *  `editsession 1 d/Mon ti/3pm-5pm nd/Thurs nti/9:30AM-11:45AM` Edits the session's day and time of the 1st person to be `Thurs` and `9:30AM-11:45AM`.
-*  `editsession 2 d/Thurs ti/9:30AM-11:45AM nd/Mon nti/3pm-5pm` Edits the session's day and time of the 2nd person to be `Mon` and `3pm-5pm`.
+*  `editsession 2 d/Thur ti/9:30AM-11:45AM nd/Mon nti/3pm-5pm` Edits the session's day and time of the 2nd person to be `Mon` and `3pm-5pm`.
 
 ### Clearing all entries : `clear`
 
