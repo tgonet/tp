@@ -161,6 +161,12 @@ The following activity diagram summarizes what happens when a user executes a re
 
 ![RemarkActivityDiagram](images/RemarkActivityDiagram.png)
 
+### Delete session feature
+
+The following activity diagram summarizes what happens when a user executes a delete session command:
+
+![DeleteSessionActivityDiagram](images/DeleteSessionActivityDiagram.png)
+
 ### Edit session
 
 The `edit session` command modifies an existing session in the address book. The implementation involves the following steps:
