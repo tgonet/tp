@@ -157,21 +157,21 @@ This section describes some noteworthy details on how certain features are imple
 
 ### Add Person feature
 
-The following **truncated** activity diagram summarizes what happens when a user executes a add person command:
+The following **truncated** activity diagram summarizes what happens when a user executes an add person command:
 
 ![AddPersonTruncatedActivityDiagram](images/AddPersonTruncatedActivityDiagram.png)
 
-The following activity diagram **fully** summarizes what happens when a user executes a add person command:
+The following activity diagram **fully** summarizes what happens when a user executes an add person command:
 
 ![AddPersonActivityDiagram](images/AddPersonActivityDiagram.png)
 
 ### Edit Person feature
 
-The following **truncated** activity diagram summarizes what happens when a user executes a add person command:
+The following **truncated** activity diagram summarizes what happens when a user executes an edit person command:
 
 ![EditPersonTruncatedActivityDiagram](images/EditPersonTruncatedActivityDiagram.png)
 
-The following activity diagram **fully** summarizes what happens when a user executes a add person command:
+The following activity diagram **fully** summarizes what happens when a user executes an edit person command:
 
 ![EditPersonActivityDiagram](images/EditPersonActivityDiagram.png)
 
