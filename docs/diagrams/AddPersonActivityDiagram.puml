@@ -1,0 +1,49 @@
+@startuml
+skin rose
+skinparam ActivityFontSize 15
+skinparam ArrowFontSize 12
+
+start
+:User executes "add" command;
+
+if () then ([All required fields provided])
+    if () then ([Role is valid])
+        if () then ([Person does not already exist])
+            if () then ([Role is "student"])
+                if () then ([Parent name specified])
+                    if () then ([Parent exists in AddressBook])
+                        :Create new Student with tags (if any) and parent;
+                        :Add Student to AddressBook;
+                        :Save updated AddressBook to state list;
+                        :Display success message;
+                    else ([else])
+                        :Display "Parent does not exist" error;
+                    endif
+                else ([else])
+                    :Create new Student with tags (if any);
+                    :Add Student to AddressBook;
+                    :Save updated AddressBook to state list;
+                    :Display success message;
+                endif
+            else ([Role is "parent"])
+                if () then ([Tags or parent specified])
+                    :Display "Parents cannot have tags or parents" error;
+                else ([No tags or parent specified])
+                    :Create new Parent;
+                    :Add Parent to AddressBook;
+                    :Save updated AddressBook to state list;
+                    :Display success message;
+                endif
+            endif
+        else ([else])
+            :Display "Duplicate person" error;
+        endif
+    else ([else])
+        :Display "Invalid role" error;
+    endif
+else ([else])
+    :Display "Invalid command format" error;
+endif
+
+stop
+@enduml

@@ -1,0 +1,21 @@
+@startuml
+skin rose
+skinparam ActivityFontSize 15
+skinparam ArrowFontSize 12
+
+start
+:User executes "edit" command;
+
+:Retrieve Person from AddressBook;
+
+if () then ([Person is a Student])
+    :Update Student's details (name, phone, address, tags, parent);
+else ([Person is a Parent])
+    :Update Parent's details (name, phone, address);
+endif
+
+:Save updated AddressBook to state list;
+:Display success message;
+
+stop
+@enduml

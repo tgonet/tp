@@ -126,7 +126,7 @@ Examples:
 *  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
 *  `edit 3 n/Alex Yeo par/Keith` Edits the name and parent of the 3rd person to be `Alex Yeo` and their parent to be `Keith`. (Assuming `Keith` is a Parent that already exists in the address book)
 
-### Locating persons by name: `find`
+### Locating persons by name, role or tag: `find`
 
 Finds persons whose information matches/contains given criteria.
 
@@ -160,7 +160,7 @@ Format: `delete INDEX`
 
 Examples:
 * `list` followed by `delete 2` deletes the 2nd person in the address book.
-* `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+* `find n/Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
 
 ### Leaving a remark : `remark`
 
@@ -191,15 +191,19 @@ Adds a session of the specified person from the address book.
 
 Format: `addsession INDEX d/DAY ti/TIME`
 
-* Adds a session about the person at the specified `INDEX`.
-* A person can have any number of sessions (including 0).
+* Adds a session about the student at the specified `INDEX`.
+* A student can have any number of sessions (including 0).
 * The index refers to the index number shown in the displayed person list.
 * The index **must be a positive integer** 1, 2, 3, …​
-* The start time must not be greater than the end time
+* The index referred to **must** be a `Student`.
+* The start time **must not be greater than** the end time.
+* The session to be added **must not overlap** another session for this particular student.
+* The result is displayed in the app as a list.
+  ![addsession.png](images/viewSession.png)
 
 Examples:
 * `addsession 1 d/Mon ti/3pm-5pm`
-* `addsession 1 d/Thurs ti/9:30AM-11:45AM`
+* `addsession 1 d/Thur ti/9:30AM-11:45AM`
 
 ### Delete session: `deletesession`
 
@@ -210,10 +214,13 @@ Format: `deletesession INDEX d/DAY ti/TIME`
 * Deletes a session about the person at the specified `INDEX`.
 * The index refers to the index number shown in the displayed person list.
 * The index **must be a positive integer** 1, 2, 3, …​
+* The index referred to **must** be a `Student`.
+* The start time **must not be greater than** the end time.
+* The session aiming to delete **must already exist** (same start time, end time, and occuring day) for the student in order for the command to succeed.
 
 Examples:
 * `deletesession 1 d/Mon ti/3pm-5pm`
-* `deletesession 1 d/Thurs ti/9:30AM-11:45AM`
+* `deletesession 1 d/Thur ti/9:30AM-11:45AM`
 
 ### View session: `viewsession`
 
@@ -250,12 +257,13 @@ Format: `editsession INDEX d/DAY ti/TIME nd/DAY nti/TIME`
 * Edits the session of the person at the specified `INDEX`. 
 * The index refers to the index number shown in the displayed person list. 
 * The index **must be a positive integer** 1, 2, 3, …​
+* The index referred to **must** be a `Student`.
 * Existing values will be updated to the input values specified by `nd/` and `nti/`.
 * The start time must not be greater than the end time.
 
 Examples:
-*  `editsession 1 d/Mon ti/3pm-5pm nd/Thurs nti/9:30AM-11:45AM` Edits the session's day and time of the 1st person to be `Thurs` and `9:30AM-11:45AM`.
-*  `editsession 2 d/Thurs ti/9:30AM-11:45AM nd/Mon nti/3pm-5pm` Edits the session's day and time of the 2nd person to be `Mon` and `3pm-5pm`.
+*  `editsession 1 d/Mon ti/3pm-5pm nd/Thur nti/9:30AM-11:45AM` Edits the session's day and time of the 1st person to be `Thur` and `9:30AM-11:45AM`.
+*  `editsession 2 d/Thur ti/9:30AM-11:45AM nd/Mon nti/3pm-5pm` Edits the session's day and time of the 2nd person to be `Mon` and `3pm-5pm`.
 
 ### Clearing all entries : `clear`
 
@@ -306,10 +314,10 @@ _Details coming soon ..._
 
 Action | Format, Examples
 --------|------------------
-**Add** | `add n/NAME p/PHONE_NUMBER a/ADDRESS r/role [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 r/student t/math`
+**Add** | `add n/NAME p/PHONE_NUMBER a/ADDRESS r/role [t/TAG] [par/PARENT]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 r/student t/math par/Keith Ho`
 **Clear** | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
-**Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee`
+**Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG] [par/PARENT]…​`<br> e.g.,`edit 2 n/James Lee`
 **Find** | `find [n/NAME] [r/ROLE] [t/TAG]`<br> e.g., `find n/James Jake`
 **Remark** | `remark INDEX rm/REMARK` <br> e.g., `remark 1 rm/hardworking`
 **View** | `view INDEX` <br> e.g., `view 2`
