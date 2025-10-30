@@ -248,7 +248,7 @@ Format: `editsession INDEX d/DAY ti/TIME nd/DAY nti/TIME`
 * The start time must not be greater than the end time.
 
 Examples:
-*  `editsession 1 d/Mon ti/3pm-5pm nd/Thurs nti/9:30AM-11:45AM` Edits the session's day and time of the 1st person to be `Thurs` and `9:30AM-11:45AM`.
+*  `editsession 1 d/Mon ti/3pm-5pm nd/Thur nti/9:30AM-11:45AM` Edits the session's day and time of the 1st person to be `Thurs` and `9:30AM-11:45AM`.
 *  `editsession 2 d/Thur ti/9:30AM-11:45AM nd/Mon nti/3pm-5pm` Edits the session's day and time of the 2nd person to be `Mon` and `3pm-5pm`.
 
 ### Clearing all entries : `clear`
@@ -310,6 +310,6 @@ Action | Format, Examples
 **Add Session** | `addsession INDEX d/DAY ti/TIME` <br> e.g., `addsession 2 d/Mon ti/9am-5pm`
 **Delete Session** | `deletesession INDEX d/DAY ti/TIME` <br> e.g., `deletesession 2 d/Tue ti/9am-5pm`
 **View Session** | `viewsession DAY-[TIME]` <br> e.g., `viewsession Mon-[9am-5pm]`
-**Edit Session** | `editsession INDEX d/DAY ti/TIME nd/DAY nti/TIME` <br> e.g., `editsession 2 d/Thurs ti/9:30AM-11:45AM nd/Mon nti/9.30am-11.45am`
+**Edit Session** | `editsession INDEX d/DAY ti/TIME nd/DAY nti/TIME` <br> e.g., `editsession 2 d/Thur ti/9:30AM-11:45AM nd/Mon nti/9.30am-11.45am`
 **List** | `list`
 **Help** | `help`
