@@ -72,7 +72,7 @@ The **API** of this component is specified in [`Ui.java`](https://github.com/se-
 
 ![Structure of the UI Component](images/UiClassDiagram.png)
 
-The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`, `StatusBarFooter` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class which captures the commonalities between classes that represent parts of the visible GUI.
+The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`, `PersonCountPanel`, `StatusBarFooter` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class which captures the commonalities between classes that represent parts of the visible GUI.
 
 The `UI` component uses the JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the [`MainWindow`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/resources/view/MainWindow.fxml)
 
@@ -167,94 +167,11 @@ The following activity diagram summarizes what happens when a user executes an a
 
 ![AddSessionActivityDiagram](images/AddSessionActivityDiagram.png)
 
+### Delete session feature
 
-### \[Proposed\] Undo/redo feature
+The following activity diagram summarizes what happens when a user executes a delete session command:
 
-#### Proposed Implementation
-
-The proposed undo/redo mechanism is facilitated by `VersionedAddressBook`. It extends `AddressBook` with an undo/redo history, stored internally as an `addressBookStateList` and `currentStatePointer`. Additionally, it implements the following operations:
-
-* `VersionedAddressBook#commit()` — Saves the current address book state in its history.
-* `VersionedAddressBook#undo()` — Restores the previous address book state from its history.
-* `VersionedAddressBook#redo()` — Restores a previously undone address book state from its history.
-
-These operations are exposed in the `Model` interface as `Model#commitAddressBook()`, `Model#undoAddressBook()` and `Model#redoAddressBook()` respectively.
-
-Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.
-
-Step 1. The user launches the application for the first time. The `VersionedAddressBook` will be initialized with the initial address book state, and the `currentStatePointer` pointing to that single address book state.
-
-![UndoRedoState0](images/UndoRedoState0.png)
-
-Step 2. The user executes `delete 5` command to delete the 5th person in the address book. The `delete` command calls `Model#commitAddressBook()`, causing the modified state of the address book after the `delete 5` command executes to be saved in the `addressBookStateList`, and the `currentStatePointer` is shifted to the newly inserted address book state.
-
-![UndoRedoState1](images/UndoRedoState1.png)
-
-Step 3. The user executes `add n/David …​` to add a new person. The `add` command also calls `Model#commitAddressBook()`, causing another modified address book state to be saved into the `addressBookStateList`.
-
-![UndoRedoState2](images/UndoRedoState2.png)
-
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If a command fails its execution, it will not call `Model#commitAddressBook()`, so the address book state will not be saved into the `addressBookStateList`.
-
-</div>
-
-Step 4. The user now decides that adding the person was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undoAddressBook()`, which will shift the `currentStatePointer` once to the left, pointing it to the previous address book state, and restores the address book to that state.
-
-![UndoRedoState3](images/UndoRedoState3.png)
-
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If the `currentStatePointer` is at index 0, pointing to the initial AddressBook state, then there are no previous AddressBook states to restore. The `undo` command uses `Model#canUndoAddressBook()` to check if this is the case. If so, it will return an error to the user rather
-than attempting to perform the undo.
-
-</div>
-
-The following sequence diagram shows how an undo operation goes through the `Logic` component:
-
-![UndoSequenceDiagram](images/UndoSequenceDiagram-Logic.png)
-
-<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `UndoCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
-
-</div>
-
-Similarly, how an undo operation goes through the `Model` component is shown below:
-
-![UndoSequenceDiagram](images/UndoSequenceDiagram-Model.png)
-
-The `redo` command does the opposite — it calls `Model#redoAddressBook()`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores the address book to that state.
-
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If the `currentStatePointer` is at index `addressBookStateList.size() - 1`, pointing to the latest address book state, then there are no undone AddressBook states to restore. The `redo` command uses `Model#canRedoAddressBook()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
-
-</div>
-
-Step 5. The user then decides to execute the command `list`. Commands that do not modify the address book, such as `list`, will usually not call `Model#commitAddressBook()`, `Model#undoAddressBook()` or `Model#redoAddressBook()`. Thus, the `addressBookStateList` remains unchanged.
-
-![UndoRedoState4](images/UndoRedoState4.png)
-
-Step 6. The user executes `clear`, which calls `Model#commitAddressBook()`. Since the `currentStatePointer` is not pointing at the end of the `addressBookStateList`, all address book states after the `currentStatePointer` will be purged. Reason: It no longer makes sense to redo the `add n/David …​` command. This is the behavior that most modern desktop applications follow.
-
-![UndoRedoState5](images/UndoRedoState5.png)
-
-The following activity diagram summarizes what happens when a user executes a new command:
-
-<img src="images/CommitActivityDiagram.png" width="250" />
-
-#### Design considerations:
-
-**Aspect: How undo & redo executes:**
-
-* **Alternative 1 (current choice):** Saves the entire address book.
-    * Pros: Easy to implement.
-    * Cons: May have performance issues in terms of memory usage.
-
-* **Alternative 2:** Individual command knows how to undo/redo by
-  itself.
-    * Pros: Will use less memory (e.g. for `delete`, just save the person being deleted).
-    * Cons: We must ensure that the implementation of each individual command are correct.
-
-_{more aspects and alternatives to be added}_
-
-### \[Proposed\] Data archiving
-
-_{Explain here how the data archiving feature will be implemented}_
+![DeleteSessionActivityDiagram](images/DeleteSessionActivityDiagram.png)
 
 ### Edit session
 
@@ -297,20 +214,21 @@ The `edit session` command modifies an existing session in the address book. The
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​                                    | I want to …​                                                  | So that I can…​                                                                |
-| -------- | ------------------------------------------ |---------------------------------------------------------------|--------------------------------------------------------------------------------|
-| `* * *`  | user                                       | add student contact with name, address and phone number       | build my address book                                                          
-| `* * *`  | user                                       | view all contacts                                             | see what is stored  without filtering or sorting                               |
-| `* * *`  | user                                       | delete a contact by index                                     | remove entries that I no longer need                                           |
-| `* * *`  | user                                       | find a person by name                                         | locate details of persons without having to go through the entire list         |
-| `* *`    | tutor                                      | add a parent contact with name, address and phone number      | have another point of contact                                                  |
-| `* *`    | tutor                                      | link a parent contact to the student                          | contact the parent if needed                                                   |
-| `*`      | new tutor | see the system populate the address book with sample students | understand how it works                                                        |
-| `*`      | tutor | filter my contacts according to roles                         | have an easier time searching for a certain individual if needed be
-| `*`      | tutor | see what classes i have on a specific date                    | better prepare for class                                                       |
-| `*`      | tutor | filter students according to subject                          | know which student belongs to which class                                      |
-| `*`      | tutor | leave remark about each student                               | keep track of learning progress and special requests
-| `*`      | tutor | display the student's timeslot in a readable format           | easily plan future timeslots for students                                      |
+| Priority | As a …​   | I want to …​                                                  | So that I can…​                                                        |
+|----------|-----------|---------------------------------------------------------------|------------------------------------------------------------------------|
+| `* * *`  | user      | add student contact with name, address and phone number       | build my address book                                                  |
+| `* * *`  | user      | view all contacts                                             | see what is stored  without filtering or sorting                       |
+| `* * *`  | user      | delete a contact by index                                     | remove entries that I no longer need                                   |
+| `* * *`  | user      | find a person by name                                         | locate details of persons without having to go through the entire list |
+| `* *`    | tutor     | add a parent contact with name, address and phone number      | have another point of contact                                          |
+| `* *`    | tutor     | link a parent contact to the student                          | contact the parent if needed                                           |
+| `*`      | new tutor | see the system populate the address book with sample students | understand how it works                                                |
+| `*`      | tutor     | filter my contacts according to roles                         | have an easier time searching for a certain individual if needed be    |
+| `*`      | tutor     | see what classes i have on a specific date                    | better prepare for class                                               |
+| `*`      | tutor     | filter students according to subject                          | know which student belongs to which class                              |
+| `*`      | tutor     | leave remark about each student                               | keep track of learning progress and special requests                   |
+| `*`      | tutor     | delete tutoring sessions no longer referenced for a student   | keep session records accurate and consistent                           |
+| `*`      | tutor     | display the student's timeslot in a readable format           | easily plan future timeslots for students                              |
 *{More to be added}*
 
 ## Edit Session Command
@@ -370,72 +288,90 @@ The command includes comprehensive error handling for cases such as:
 ### UC01 — Add a student contact
 **Goal**: Create a new student entry with name, address, and phone.  
 **Precondition**: Application is running; storage is writable.  
+
 **Main Success Scenario (MSS)**
 1. User enters `add n/NAME a/ADDRESS p/PHONE`.
 2. System validates fields and creates the contact.
 3. System confirms creation and displays the new contact.  
    Use case ends.  
-   **Extensions**
+
+**Extensions**
 * 2a. Validation fails (e.g., invalid name/phone, missing field).
-    * 2a1. System shows error and usage hint. Resume at step 1.
+  * 2a1. System shows error and usage hint. Resume at step 1.
 * 2b. Duplicate contact detected by exact same name and phone.
-    * 2b1. System warns about duplicate and aborts creation. Use case ends.
+  * 2b1. System warns about duplicate and aborts creation.  
+    Use case ends.
 
 ### UC02 — List all contacts
 **Goal**: Show every stored contact without filtering or sorting.  
 **Precondition**: Application is running.  
+
 **MSS**
 1. User enters `list`.
 2. System displays all contacts in index order.  
    Use case ends.  
-   **Extensions**
+
+**Extensions**
 * 2a. Address book is empty.
-    * 2a1. System displays “no contacts” placeholder. Use case ends.
+  * 2a1. System displays “no contacts” placeholder.  
+    Use case ends.
 
 ### UC03 — Find contacts by name/role
 **Goal**: Locate contacts by case-insensitive name matching or role.  
 **Precondition**: At least one contact exists.  
+
 **MSS**
-1. User enters `find n/NAME` or `find r/ROLE`.
+1. User enters `find n/NAME` or `find r/ROLE` or `find n/NAME r/ROLE`.
 2. System filters contacts whose names/role contain all provided keywords.
 3. System displays the filtered list with new indices.  
    Use case ends.  
-   **Extensions**
+
+**Extensions**
 * 2a. No matches found.
-    * 2a1. System shows empty result with guidance to broaden search.
+  * 2a1. System shows empty result with guidance to broaden search.  
+  Use case ends.
 
 ### UC04 — Delete a contact by index
 **Goal**: Remove one contact referenced by the current visible index.  
 **Precondition**: At least one contact is visible (e.g., after `list` or `find`).  
+
 **MSS**
 1. User enters `delete I` where `I` is a 1-based index in the current list.
 2. System deletes the referenced contact.
 3. System confirms deletion and updates the visible list.  
    Use case ends.  
-   **Extensions**
+
+**Extensions**
 * 1a. `I` is not a valid visible index (≤0 or > list size, or non-integer).
-    * 1a1. System shows error and keeps list unchanged. Use case ends.
+  * 1a1. System shows error and keeps list unchanged.  
+    Use case ends.
 * 2a. Underlying data changed between list and delete (rare race).
-    * 2a1. System rejects operation and asks user to refresh (`list`). Use case ends.
+  * 2a1. System rejects operation and asks user to refresh (`list`).  
+    Use case ends.
 
 ### UC05 — [Proposed] Delete multiple contacts by indices
 **Goal**: Remove several contacts in a single command.  
 **Precondition**: Multiple contacts are visible.  
+
 **MSS**
 1. User enters `delete I1, I2, …, Ik` with distinct, valid visible indices.
 2. System validates all indices against the current list snapshot.
 3. System deletes all referenced contacts atomically.
 4. System confirms deletion and updates the visible list.  
    Use case ends.  
-   **Extensions**
+   
+**Extensions**
 * 2a. Any index is invalid or duplicated.
-    * 2a1. System aborts the entire operation, reporting the offending indices. Use case ends.
+  * 2a1. System aborts the entire operation, reporting the offending indices.  
+    Use case ends.
 * 3a. Partial failure due to I/O error.
-    * 3a1. System rolls back and reports failure. Use case ends.
+  * 3a1. System rolls back and reports failure.  
+    Use case ends.
 
 ### UC06 — View help
 **Goal**: Display command summary and usage.  
 **Precondition**: Application is running.  
+
 **MSS**
 1. User enters `help`.
 2. System opens help window/panel with command formats and examples.  
@@ -444,6 +380,7 @@ The command includes comprehensive error handling for cases such as:
 ### UC07 — Exit the application
 **Goal**: Close the application gracefully.  
 **Precondition**: Application is running.  
+
 **MSS**
 1. User enters `exit` (or clicks the window close button).
 2. System persists preferences, releases resources, and terminates.  
@@ -452,64 +389,100 @@ The command includes comprehensive error handling for cases such as:
 ### UC08 — Add remarks to contact
 **Goal**: Add remarks for each contact to keep track of their learning progress and special requests.  
 **Precondition**: At least one contact exists.  
+
 **MSS**
 1. User enters `remark I rm/REMARK` where `I` is a 1-based index in the current list.
 2. System adds remark to referenced contact.
-3. System confirms addition of remark and updates the list.
-Use case ends.
-
-    **Extensions**
-* 1a. `I` is not a valid visible index (≤0 or > list size, or non-integer).
-    * 1a1. System shows error and keeps list unchanged. Use case ends.
-
-### UC09 — Delete remarks for contact
-**Goal**: Delete remarks for each contact to remove clutter.  
-**Precondition**: At least one contact exists. 
-**MSS**
-1. User enters `remark I` where `I` is a 1-based index in the current list.
-2. System deletes remark (if any) to referenced contact.
-3. System confirms deletion of remark and updates the list.
-   Use case ends.
-
-    **Extensions**
-* 1a. `I` is not a valid visible index (≤0 or > list size, or non-integer).
-    * 1a1. System shows error and keeps list unchanged. Use case ends.
-
-### UC10 — Add session to student
-**Goal**: Add session to update the classes the student is in.  
-**Precondition**: The student exist.
-**MSS**
-1. User enters `find I d/DAY ti/TIME` where `I` is a 1-based index in the current list.
-2. System adds session to referenced student.
-3. System confirms addition of session to student and updates the list.
+3. System confirms addition of remark and updates the list.  
    Use case ends.
 
 **Extensions**
 * 1a. `I` is not a valid visible index (≤0 or > list size, or non-integer).
-    * 1a1. System shows error and keeps list unchanged. Use case ends.
-* 1b. Validation fails (e.g., invalid day/time)
-  * 1b1. System shows error and usage hint. Resume at step 1.
-* 1c. Adding to a parent contact
-  * 1c1. System shows error and keeps list unchanged.
-* 1d. Duplicate session detected by exact same day and time
-  * 1b1. System warns about duplicate and aborts creation. Use case ends.
+  * 1a1. System shows error and keeps list unchanged.  
+    Use case ends.
 
-### UC11 - Edit a student's session
+### UC09 — Delete remarks for contact
+**Goal**: Delete remarks for each contact to remove clutter.  
+**Precondition**: At least one contact exists.  
+
+**MSS**
+1. User enters `remark I` where `I` is a 1-based index in the current list.
+2. System deletes remark (if any) to referenced contact.
+3. System confirms deletion of remark and updates the list.  
+   Use case ends.
+
+**Extensions**
+* 1a. `I` is not a valid visible index (≤0 or > list size, or non-integer).
+  * 1a1. System shows error and keeps list unchanged.  
+    Use case ends.
+
+### UC10 — Add session to student
+**Goal**: Add session to update the classes the student is in.  
+**Precondition**: The student exists.  
+
+**MSS**
+1. User enters `addsession I d/DAY ti/TIME` where `I` is a 1-based index in the current list.
+2. System adds session to referenced student.
+3. System confirms addition of session to student and updates the list.  
+   Use case ends.
+
+**Extensions**
+* 1a. `I` is not a valid visible index (≤0 or > list size, or non-integer).
+  * 1a1. System shows error and keeps list unchanged.  
+    Use case ends.
+* 1b. Validation fails (e.g., invalid day/time or both)
+  * 1b1. System shows error and usage hint.  
+    Use case resumes at step 1.
+* 1c. Adding to a parent contact
+  * 1c1. System shows an error message and keeps list unchanged.  
+    Use case ends.
+* 1d. Duplicate session detected by exact same day and time.
+  * 1b1. System warns about duplicate and aborts creation.  
+    Use case ends.
+
+### UC11 — Delete a session for a student
+**Goal**: Delete a tutoring session for a student that is no longer referenced/required.  
+**Precondition**: At least one student exists, and at least one session exists for such student.  
+
+**MSS**
+1. User enters `deletesession I d/DAY ti/TIME` where `I` is a 1-based index in the current list.
+2. System deletes the corresponding session for the student.
+3. System confirms deletion of session  and updates the list.  
+   Use case ends.
+
+**Extensions**
+* 1a. `I` is not a valid visible index (≤0 or > list size, or non-integer).
+  * 1a1. System shows error and keeps list unchanged.  
+    Use case ends.
+* 1b. Validation fails (e.g., invalid day/time or both)
+  * 1b1. System shows error and usage hint.  
+    Use case ends.
+* 1c. User attempts to delete a tutoring session for a parent contact.
+  * 1c1. System shows an error message and keeps list unchanged.  
+    Use case ends.
+* 1d. User attempts to delete a nonexistent tutoring session for a student.
+  * 1d1. System warns about nonexistence and aborts creation.  
+    Use case ends.
+
+### UC12 - Edit a student's session
 **Goal**: Edit a student's session to update the classes the student is in.  
-**Precondition**: The student exist.
+**Precondition**: The student exists.  
+
 **MSS**
 1. Tutor requests to edit a session for a specific student by providing the student's index, old session details (day and time), and new session details (new day and time).
 2. System updates the student's session with the new details.
-3. System displays a success message confirming the session was edited
+3. System displays a success message confirming the session was edited  
    Use case ends.
 
 **Extensions**
 * 1a. The given index is invalid.
-    * 1a1. System shows error and keeps list unchanged. Use case ends.
+    * 1a1. System shows error and keeps list unchanged.  
+      Use case ends.
 * 1b. Validation fails (e.g., invalid day/time)
   * 1b1. System shows error and usage hint. Resume at step 1.
 * 1c. Editing to a parent contact
-  * 1c1. System shows error and keeps list unchanged.
+  * 1c1. System shows error and keeps list unchanged.  
+    Use case ends.
 
 ### Non-Functional Requirements
 #### Portability
@@ -823,4 +796,32 @@ testers are expected to do more *exploratory* testing.
 
 1. _{ more test cases …​ }_
 
+### Delete session for a student
 
+1. Delete a session to a student while the contacts are being shown
+
+   1. Prerequisites: The list is not empty and contains at least 1 student contact. Additionally, such student has only one tutoring session on Monday 2pm-4pm.
+
+   1. Test case: `deletesession 1 d/Mon ti/2pm-4pm`<br>
+      Expected: First contact (a student)'s tutoring session on Monday 2pm-4pm. UI shows confirmation of deletion.
+
+   1. Test case: `deletesession 1 d/Mons ti/2pm-4pm` (invalid day format)<br>
+      Expected: No deletion occurs. Valid inputs for day formats shown in the status message.
+
+   1. Test case: `deletesession 1 d/Mon ti/1400-1600` (invalid time format)<br>
+      Expected: No deletion occurs. Valid inputs for time formats shown in the status message.
+
+   1. Test case: `deletesession 1 d/Mon ti/2pm-5pm` (nonexistent session)<br>
+      Expected: No deletion occurs. Status message notes that such a session is non-existent.
+
+   1. Other incorrect delete commands to try: `deletesession`, `deletesession x d/Mon ti/1pm-3pm` (where x is larger than the list size), `deletesession 1 d/Mon ti/3pm-1pm`<br>
+      Expected: No deletion occurs. Status message notes corresponding errors.
+
+2. Delete a session to a parent while the contacts are being shown
+
+   1. Prerequisites: The list is not empty and contains at least 1 parent contact.
+
+   1. Test case: `deletesession 2 d/Mon ti/2pm-4pm` (2nd contact is a parent)<br>
+     Expected: No deletion occurs. Status message notes that such command is only for students.
+
+1. _{ more test cases …​ }_
