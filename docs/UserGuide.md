@@ -199,7 +199,6 @@ Format: `addsession INDEX d/DAY ti/TIME`
 * The start time **must not be greater than** the end time.
 * The session to be added **must not overlap** another session for this particular student.
 * The result is displayed in the app as a list.
-  ![addsession.png](images/addSession.png)
 
 Examples:
 * `addsession 1 d/Mon ti/3pm-5pm`
