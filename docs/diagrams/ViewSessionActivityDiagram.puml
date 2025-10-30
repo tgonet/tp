@@ -5,7 +5,7 @@ start
 :User enters command (e.g., "viewsession d/Tuesday");
 :Logic.execute(userInput);
 
-if (valid BASIC_COMMAND_FORMAT?) then ([BASIC_COMMAND_FORMAT matches])
+if () then ([is valid BASIC_COMMAND_FORMAT])
   :Parse day token;
   :Construct ViewSessionCommand(day);
   :Execute command;

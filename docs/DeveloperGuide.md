@@ -266,24 +266,12 @@ Example: viewsession d/Tuesday
 
 ### User stories
 
-Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
+**Priorities:**
+- High (must have): `* * *`
+- Medium (nice to have): `* *`
+- Low (unlikely to have): `*`
 
-| Priority | As a …​   | I want to …​                                                  | So that I can…​                                                        |
-|----------|-----------|---------------------------------------------------------------|------------------------------------------------------------------------|
-| `* * *`  | user      | add student contact with name, address and phone number       | build my address book                                                  |
-| `* * *`  | user      | view all contacts                                             | see what is stored  without filtering or sorting                       |
-| `* * *`  | user      | delete a contact by index                                     | remove entries that I no longer need                                   |
-| `* * *`  | user      | find a person by name                                         | locate details of persons without having to go through the entire list |
-| `* *`    | tutor     | add a parent contact with name, address and phone number      | have another point of contact                                          |
-| `* *`    | tutor     | link a parent contact to the student                          | contact the parent if needed                                           |
-| `*`      | new tutor | see the system populate the address book with sample students | understand how it works                                                |
-| `*`      | tutor     | filter my contacts according to roles                         | have an easier time searching for a certain individual if needed be    |
-| `*`      | tutor     | see what classes i have on a specific date                    | better prepare for class                                               |
-| `*`      | tutor     | filter students according to subject                          | know which student belongs to which class                              |
-| `*`      | tutor     | leave remark about each student                               | keep track of learning progress and special requests                   |
-| `*`      | tutor     | delete tutoring sessions no longer referenced for a student   | keep session records accurate and consistent                           |
-| `*`      | tutor     | display the student's timeslot in a readable format           | easily plan future timeslots for students                              |
-*{More to be added}*
+![User Story Table](images/userStoryTable.png)
 
 ## Edit Session Command
 
@@ -403,26 +391,7 @@ The command includes comprehensive error handling for cases such as:
   * 2a1. System rejects operation and asks user to refresh (`list`).  
     Use case ends.
 
-### UC05 — [Proposed] Delete multiple contacts by indices
-**Goal**: Remove several contacts in a single command.  
-**Precondition**: Multiple contacts are visible.  
-
-**MSS**
-1. User enters `delete I1, I2, …, Ik` with distinct, valid visible indices.
-2. System validates all indices against the current list snapshot.
-3. System deletes all referenced contacts atomically.
-4. System confirms deletion and updates the visible list.  
-   Use case ends.  
-   
-**Extensions**
-* 2a. Any index is invalid or duplicated.
-  * 2a1. System aborts the entire operation, reporting the offending indices.  
-    Use case ends.
-* 3a. Partial failure due to I/O error.
-  * 3a1. System rolls back and reports failure.  
-    Use case ends.
-
-### UC06 — View help
+### UC05 — View help
 **Goal**: Display command summary and usage.  
 **Precondition**: Application is running.  
 
@@ -431,7 +400,7 @@ The command includes comprehensive error handling for cases such as:
 2. System opens help window/panel with command formats and examples.  
    Use case ends.
 
-### UC07 — Exit the application
+### UC06 — Exit the application
 **Goal**: Close the application gracefully.  
 **Precondition**: Application is running.  
 
@@ -440,7 +409,7 @@ The command includes comprehensive error handling for cases such as:
 2. System persists preferences, releases resources, and terminates.  
    Use case ends.
 
-### UC08 — Add remarks to contact
+### UC07 — Add remarks to contact
 **Goal**: Add remarks for each contact to keep track of their learning progress and special requests.  
 **Precondition**: At least one contact exists.  
 
@@ -455,7 +424,7 @@ The command includes comprehensive error handling for cases such as:
   * 1a1. System shows error and keeps list unchanged.  
     Use case ends.
 
-### UC09 — Delete remarks for contact
+### UC08 — Delete remarks for contact
 **Goal**: Delete remarks for each contact to remove clutter.  
 **Precondition**: At least one contact exists.  
 
@@ -470,7 +439,7 @@ The command includes comprehensive error handling for cases such as:
   * 1a1. System shows error and keeps list unchanged.  
     Use case ends.
 
-### UC10 — Add session to student
+### UC09 — Add session to student
 **Goal**: Add session to update the classes the student is in.  
 **Precondition**: The student exists.  
 
@@ -494,7 +463,7 @@ The command includes comprehensive error handling for cases such as:
   * 1b1. System warns about duplicate and aborts creation.  
     Use case ends.
 
-### UC11 — Delete a session for a student
+### UC10 — Delete a session for a student
 **Goal**: Delete a tutoring session for a student that is no longer referenced/required.  
 **Precondition**: At least one student exists, and at least one session exists for such student.  
 
@@ -518,7 +487,7 @@ The command includes comprehensive error handling for cases such as:
   * 1d1. System warns about nonexistence and aborts creation.  
     Use case ends.
 
-### UC12 - Edit a student's session
+### UC11 - Edit a student's session
 **Goal**: Edit a student's session to update the classes the student is in.  
 **Precondition**: The student exists.  
 
