@@ -189,6 +189,11 @@ The following activity diagram summarizes what happens when a user executes a re
 ![RemarkActivityDiagram](images/RemarkActivityDiagram.png)
 
 ### Add Session feature
+For the Add Session command, only the standard day formats — Mon, Tue, Wed, Thur, Fri, Sat, Sun or their full forms 
+(e.g., Monday, Friday) are accepted to keep inputs consistent.
+
+However, the View Session command is more flexible and also recognizes Thu or
+Thurs for convenience.
 
 The following activity diagram summarizes what happens when a user executes an addsession command:
 
@@ -201,6 +206,8 @@ The following activity diagram summarizes what happens when a user executes a de
 ![DeleteSessionActivityDiagram](images/DeleteSessionActivityDiagram.png)
 
 ### ViewSession (day-only)
+
+To give more flexibility, we will allow 
 
 **Intent**  
 List all students who have at least one session on a specified weekday, ordered by the earliest start time on that day. Supports both legacy single `SessionSlot` and the newer multi-session `Student.sessions`.
@@ -808,7 +815,7 @@ testers are expected to do more *exploratory* testing.
        Expected: The status message informing the user that the selected student is updated. The UI shows the newly added session in the student contact
 
     1. Test case: `addsession 1 d/Mons ti/1pm-3pm`<br>
-       Expected: No seession is added. Error details shown in the status message.
+       Expected: No session is added. Error details shown in the status message.
 
     1. Other incorrect delete commands to try: `addsession`, `addsession x d/Mons ti/1pm-3pm`, `...` (where x is larger than the list size)<br>
        Expected: Similar to previous.
