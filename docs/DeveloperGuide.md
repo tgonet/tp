@@ -158,10 +158,10 @@ This section describes some noteworthy details on how certain features are imple
 
 ### Add Person feature
 
-This command allows a user to add a contact (Student/Parent) into EduConnect. You cannot at duplicate contacts into EduConnect.
+This command allows a user to add a contact (Student/Parent) into EduConnect. You cannot add duplicate contacts into EduConnect.
 <br>Definition of Duplicate Contact: A contact with the **same name** as an existing contact.
 <br>Tutors often manage dozens of students and their parents.
-To keep their contact list reliable, EduConnect prevents duplicate contacts (same name) from being added.
+To keep their contact list concise and organised, EduConnect prevents duplicate contacts (same name) from being added.
 This ensures data integrity and reduces the risk of confusion during communication or scheduling.
 
 The following **truncated** activity diagram summarizes what happens when a user executes an add person command:
