@@ -161,6 +161,14 @@
     -fx-background-color: #9C27B0;  /* purple */
 }
 
+.sat {
+    -fx-background-color: #E91E63;  /* pink */
+}
+
+.sun {
+    -fx-background-color: #795548;  /* brown */
+}
+
 .stack-pane {
      -fx-background-color: derive(#1d1d1d, 20%);
 }
