@@ -281,21 +281,6 @@ The command includes comprehensive error handling for cases such as:
 - Non-existent session
 - Attempting to edit a non-student's session
 
-### ViewSession (day-only)
-
-**Intent**  
-List all students who have at least one session on a specified weekday, ordered by the earliest start time on that day. Supports both legacy single `SessionSlot` and the newer multi-session `Student.sessions`.
-
----
-
-**Command format**
-
-```text
-viewsession: List all sessions on a day; earliest first.
-Parameters: d/DAY
-Example: viewsession d/Tuesday
-```
-
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Documentation, logging, testing, configuration, dev-ops**
