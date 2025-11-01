@@ -59,7 +59,8 @@ public class HelpWindow extends UiPart<Stage> {
      *         </li>
      *         <li>
      *             if {@code dialogStage} is already showing.
-     *         </li>
+     *            logger.fine("Showing help page about the application.");
+     </li>
      *     </ul>
      */
     public void show() {
@@ -86,6 +87,10 @@ public class HelpWindow extends UiPart<Stage> {
      * Focuses on the help window.
      */
     public void focus() {
+        if (getRoot().isIconified()) {
+            getRoot().setIconified(false);
+        }
+        getRoot().toFront();
         getRoot().requestFocus();
     }
 
