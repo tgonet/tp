@@ -59,8 +59,7 @@ public class HelpWindow extends UiPart<Stage> {
      *         </li>
      *         <li>
      *             if {@code dialogStage} is already showing.
-     *            logger.fine("Showing help page about the application.");
-     </li>
+     *         </li>
      *     </ul>
      */
     public void show() {
