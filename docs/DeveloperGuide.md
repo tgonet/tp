@@ -737,7 +737,7 @@ testers are expected to do more *exploratory* testing.
       <br>`edit 1`
       <br>Expected:
       - Error Message: "At least one field to edit must be provided."
-      - No changes are made because the specified index is out of range.
+      - No changes are made because no fields were provided.
    6. Test Case - Editing with Invalid Phone number (Failure)
       <br>`edit 2 p/12`
       <br>Expected:
