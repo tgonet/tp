@@ -80,7 +80,7 @@ Adds a person to the address book.
 Format: `add n/NAME p/PHONE_NUMBER a/ADDRESS r/ROLE [par/PARENT_NAME] [t/TAG]…`
 
 * A person can have any number of tags (including 0).
-* A person can have one of the two roles: `student` or `parent`.
+* A person can have one of the two roles: `student` or `parent`, case-insensitive.
 * A person that has the `student` role can have `[TAGS]`.
 * A person that has the `parent` role **cannot** have `[TAGS]`.
 * You may specify a parent for a student using the `par/` prefix.
