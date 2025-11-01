@@ -593,7 +593,7 @@ testers are expected to do more *exploratory* testing.
    1. Test Case - Adding a Student without Tags (Success)
       <br>`add n/Orion Lee p/98273648 a/1 HarbourFront Walk, Singapore 098585 r/student`
       <br>Expected:
-      - Success Message: "New person added: Onion Lee; Phone: 98273648; Address: 1 HarbourFront Walk, Singapore 098585; Role: student; Remark: ; Tags: ; Parent: null"
+      - Success Message: "New person added: Orion Lee; Phone: 98273648; Address: 1 HarbourFront Walk, Singapore 098585; Role: student; Remark: ; Tags: ; Parent: null"
       - New person named Orion Lee added to the contact list, the person should be tagged as a Student.
       - New person should appear at the bottom of the contacts list. If person does not appear, run the `list` command to verify the full list of contacts.
    2. Test Case - Adding a Student with Tags (Success)
