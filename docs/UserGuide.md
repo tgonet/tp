@@ -79,6 +79,7 @@ Adds a person to the address book.
 
 Format: `add n/NAME p/PHONE_NUMBER a/ADDRESS r/ROLE [par/PARENT_NAME] [t/TAG]…`
 
+* A person's phone number has to be a Singapore number
 * A person can have any number of tags (including 0).
 * A person can have one of the two roles: `student` or `parent`.
 * A person that has the `student` role can have `[TAGS]`.
